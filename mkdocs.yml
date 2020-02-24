@@ -1,0 +1,24 @@
+site_name: 'py_client'
+repo_url: 'https://gitlab.ipleanware.com/braincube/core/python/py_client'
+theme: 
+  name: 'material'
+  custom_dir: 'custom_theme'
+  favicon: 'images/favicon.ico'
+extra_css:
+  - 'extra.css'
+extra:
+  logo: 'images/braincube.png'
+  search:
+    language: 'en, fr'
+markdown_extensions:
+  - codehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Documentation: documentation.md
+  - Contributing: contributing.md
+plugins:
+  - search
+  - mkdocstrings

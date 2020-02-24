@@ -1,0 +1,68 @@
+image: renovate/poetry
+
+
+stages:
+  - setup
+  - test
+  - documentation
+  - pages
+
+
+setup:
+  stage: setup
+  script:
+    - poetry config virtualenvs.in-project true
+    - poetry install
+  artifacts:
+    paths:
+      - .venv/
+    expire_in: 60 mins
+  
+mypy:
+  stage: test
+  script:
+    - poetry run mypy py_client
+
+black:
+  stage: test
+  script:
+    - poetry run black --check --diff py_client tests 
+
+lint:
+  stage: test
+  script:
+    - poetry run flake8 py_client
+    
+unittest:
+  stage: test
+  script:
+    - poetry run coverage run --source=py_client -m pytest tests/*
+    - poetry run coverage report
+    - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
+  artifacts:
+    paths:
+      - htmlcov
+
+documentation:
+  stage: documentation
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
+    - cp -r gitlabci-commons/braincube-pages/docs/* docs
+    - cp -r gitlabci-commons/braincube-pages/custom_theme .
+    - bash docs/build_doc.sh build
+  artifacts:
+    paths:
+      - site
+    expire_in: 60 mins
+  only:
+      - master          
+pages:
+  stage: pages
+  script:
+    - cp -r site public
+    - cp -r htmlcov public/
+  artifacts:
+    paths:
+      - public
+  only:
+      - master
