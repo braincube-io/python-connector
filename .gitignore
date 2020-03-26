@@ -143,4 +143,8 @@ gitlabci-commons/
 .env.development.local
 .env.test.local
 .env.production.local
+dummy.py
+config.json
 
+#badges
+badge*.svg

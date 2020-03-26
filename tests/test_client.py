@@ -5,45 +5,23 @@
 import os
 import json
 
-import py_client
 from py_client import client
+from py_client import base
+from py_client import constants
+from tests.mock import mock_client
 
 import pytest
 
 import responses
 from requests.exceptions import HTTPError
 
-
-@pytest.fixture
-def mock_client(mocker):
-    """Create a mock client to test its methods."""
-    m = mocker.patch.object(client.Client, "__init__", lambda x: None)
-    mclient = client.Client()
-    mclient._domain = "a.b"
-    mclient._oauth2_token = "abcd"
-    mclient._sso_token = "efgh"
-    mclient._timeout = 60
-    mclient._verify = True
-    mclient._headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "IPLSSOTOKEN": mclient._sso_token,
-    }
-    return mclient
-
-
-@pytest.mark.parametrize(
-    "path, url", [("c", "https://a.b/c"), ("test/c", "https://a.b/test/c"), ("/c", "https://a.b/c")]
-)
-def test_generate_url(mock_client, path, url):
-    """Test the _generate_url method."""
-    assert mock_client._generate_url(path) == url
+from tests.test_base import LOAD_URL
 
 
 @responses.activate
 def test_request_ws_error(mock_client):
     """Test whether request_ws throws a HTTPError."""
-    responses.add(responses.GET, "https://a.b/path", status=400)
+    responses.add(responses.GET, LOAD_URL, status=400)
     with pytest.raises(HTTPError):
         mock_client.request_ws("path")
 
@@ -51,7 +29,7 @@ def test_request_ws_error(mock_client):
 @responses.activate
 def test_request_ws_succes_get(mock_client):
     """Test whether request_ws for a GET."""
-    responses.add(responses.GET, "https://a.b/path", json={"val": 1}, status=200)
+    responses.add(responses.GET, LOAD_URL, json={"val": 1}, status=200)
     data = mock_client.request_ws("path", body_data={"data": 2})
     assert data["val"] == 1
     assert responses.calls[0].request.body == "data=2"
@@ -63,47 +41,66 @@ def test_request_ws_succes_get(mock_client):
 @responses.activate
 def test_request_ws_succes_post(mock_client):
     """Test whether request_ws for a POST."""
-    responses.add(responses.POST, "https://a.b/path", json={"val": 1}, status=200)
+    responses.add(responses.POST, LOAD_URL, json={"val": 1}, status=200)
     mock_client.request_ws("path", body_data={"data": 2}, rtype="POST")
     assert responses.calls[0].request.method == "POST"
 
 
 @responses.activate
-def test_request_sso_token(mock_client):
+def test_request_access(mock_client):
     """Test the _request_sso_token method"""
     path = "sso-server/rest/session/openWithToken"
     mock_url = "https://a.b/" + path
     sso_token = "efgh"
-    responses.add(responses.GET, mock_url, json={"token": sso_token}, status=200)
-    sso_token = mock_client._request_sso_token()
+    returned_json = {
+        "token": sso_token,
+        "accessList": [{"product": {"productId": "id1234", "name": "testbraincube",}}],
+    }
+    responses.add(responses.GET, mock_url, json=returned_json, status=200)
+    sso_token, braincubes = mock_client._request_access()
     assert sso_token == sso_token
     assert responses.calls[0].request.headers["Authorization"] == "Bearer {}".format(
         mock_client._oauth2_token
     )
+    assert len(braincubes) == 1
+    assert "testbraincube" in braincubes
 
 
 def test_create_client_no_config(mocker):
     """Test the Client creation."""
     mocker.patch.object(os.path, "exists", return_value=False)
-    with pytest.raises(FileNotFoundError, match=client.NO_CONFIG_MSG):
+    with pytest.raises(FileNotFoundError, match=constants.NO_CONFIG_MSG):
         client.Client()
+
+
+def test_str(mock_client):
+    assert str(mock_client) == "Client(domain=a.b)"
 
 
 def test_create_client(mocker):
     """Test the Client initialization."""
     mopen = mocker.mock_open(read_data=json.dumps({"oauth2_token": "abcd", "domain": "mock.com"}))
     p_mock = mocker.patch("builtins.open", mopen, create=True)
-    sso_mock = mocker.patch.object(client.Client, "_request_sso_token", lambda x: "efgh")
-    test_client = client.Client(config_file="conf.json")
+    check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=True))
+    sso_mock = mocker.patch.object(
+        client.Client, "_request_access", lambda x: ("efgh", [base.Base("test")])
+    )
+    test_client = client.get_instance(config_file="conf.json")
 
     assert test_client._domain == "mock.com"
     assert test_client._oauth2_token == "abcd"
     assert test_client._sso_token == "efgh"
-    test_client._timeout == 60
-    test_client._verify = True
-    test_client._headers == {
+    assert test_client._timeout == 60
+    assert test_client._verify == True
+    assert test_client._headers == {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "IPLSSOTOKEN": "efgh",
     }
-    print(test_client._sso_token)
+
+    test_client2 = client.get_instance()
+    assert test_client is test_client2
+    assert mopen.call_count == 1
+
+    with pytest.raises(Exception, match="A client has already been inialized."):
+        client.Client()

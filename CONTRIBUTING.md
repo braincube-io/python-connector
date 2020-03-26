@@ -53,6 +53,7 @@ A few violations could not be fixed and were ignored in the `.flake8` file:
   → Incompatible with `black`
 - [`C812`: missing trailing comma](https://github.com/PyCQA/flake8-commas/#errors)
   → Incompatible with `black`
+- [`D100`: Missing docstring in public module](http://www.pydocstyle.org/en/5.0.2/error_codes.html#grouping)
 
 ### docstring style
 

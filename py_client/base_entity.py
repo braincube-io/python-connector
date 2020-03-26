@@ -1,0 +1,121 @@
+# -*- coding: utf-8 -*-
+
+from py_client import constants
+from py_client import base
+from py_client import client
+from typing import Dict, List, Any
+
+
+class BaseEntity(base.Base):
+    """Basics components of an entity requested by the connector."""
+
+    bcid_key = "bcId"
+    name_key = "name"
+
+    def __init__(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
+        """Initialize BaseEntity.
+
+        Args:
+            bcid: Unique identifier of the object in braincube.
+            name: Usual name of the object.
+            metadata: Raw metadata associated to the object.
+            path: Path of the entity on the server.
+        """
+        self.initialize(bcid, name, metadata, path)
+
+    def __repr__(self) -> str:
+        """Produce the a detailed description of the BaseEntity object.
+
+        Returns:
+            A detailed description of the BaseEntity object.
+        """
+        description = self._get_str(attributes={"name": self._name, "id": self._bcid})
+        return "<{self_str} at {addr}>".format(self_str=description, addr=hex(id(self)))
+
+    @classmethod
+    def create_from_json(cls, json_data: Dict[str, str], entity_path: str) -> Any:
+        """Create an entity from a raw json.
+
+        Args:
+            json_data: Json dictionary obtained from a request to the webservice.
+            entity_path: Path of the entity on the webservice.
+
+        Returns:
+            The created entity.
+        """
+        entity = cls.__new__(cls)
+        entity.initialize(json_data[cls.bcid_key], json_data[cls.name_key], json_data, entity_path)
+        return entity
+
+    @classmethod
+    def create_one_from_path(cls, request_path: str, entity_path: str) -> Any:
+        """Create an entity from a request path.
+
+        Args:
+            request_path: Webservice path to request.
+            entity_path: Path of the entity on the webservice.
+
+        Returns:
+            The created entity.
+        """
+        json_data = client.request_ws(request_path.format(webservice="braincube"))
+        return cls.create_from_json(json_data, entity_path)
+
+    @classmethod
+    def create_many_from_path(
+        cls,
+        request_path: str,
+        entity_path: str,
+        page: int = -1,
+        page_size: int = constants.DEFAULT_PAGE_SIZE,
+    ) -> List[Any]:
+        """Create many entities from a request path.
+
+        Args:
+            request_path: Webservice path to request.
+            entity_path: Path of the entity on the webservice.
+            page: Index of page to return, all pages are return if page=-1
+            page_size: Number of elements on a page.
+
+        Returns:
+            The list of created created entity.
+        """
+        offset = 0 if page < 0 else page * page_size
+        entity_list: List[Any] = []
+
+        while True:
+            filled_path = "{path}?offset={offset}&size={size}".format(
+                path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
+            )
+            json_data = client.request_ws(filled_path)
+            new_entities = [cls.create_from_json(elmt, entity_path) for elmt in json_data["items"]]
+            entity_list += new_entities
+            if not new_entities or page > -1:
+                break
+            else:
+                offset += page_size
+        return entity_list
+
+    def get_metadata(self) -> Dict[str, Any]:
+        """Gets the metadata of the Object.
+
+        Returns:
+            A dictionary of metadata.
+        """
+        return self._metadata
+
+    def initialize(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
+        """Initialize BaseEntity.
+
+        Args:
+            bcid: Unique identifier of the object in braincube.
+            name: Usual name of the object.
+            metadata: Raw metadata associated to the object.
+            path: Path of the entity on the server.
+        """
+        self._bcid = bcid
+        self._name = name
+        self._metadata = metadata
+        if "{bcid}" in path:
+            path = path.replace("{bcid}", str(self._bcid))
+        self._path = path

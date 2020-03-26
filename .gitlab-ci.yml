@@ -1,12 +1,10 @@
 image: renovate/poetry
 
-
 stages:
   - setup
   - test
   - documentation
   - pages
-
 
 setup:
   stage: setup
@@ -42,6 +40,7 @@ unittest:
   artifacts:
     paths:
       - htmlcov
+    expire_in: 60 mins
 
 documentation:
   stage: documentation
@@ -53,13 +52,18 @@ documentation:
   artifacts:
     paths:
       - site
+      - badge_doc.svg
     expire_in: 60 mins
   only:
-      - master          
+      - master
+
 pages:
   stage: pages
   script:
-    - cp -r site public
+    - mkdir public
+    - mkdir public/badges
+    - cp badge*.svg public/badges
+    - cp -r site public/
     - cp -r htmlcov public/
   artifacts:
     paths:

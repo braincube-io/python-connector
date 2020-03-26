@@ -4,7 +4,9 @@
 
 import os
 import json
-from typing import Dict
+from typing import Dict, List, TypeVar
+
+from py_client import constants
 
 
 def read_config(path: str) -> Dict[str, str]:
@@ -69,3 +71,53 @@ def strip_domain(domain: str) -> str:
     if "//" in domain:
         domain = domain.split("//")[1]
     return strip_path(domain)
+
+
+def join_path(path_elmts: List[str]) -> str:
+    """Generate a a clean path from a succession of path elements.
+
+    Args:
+        path_elmts: A list of path elements to join.
+
+    Returns:
+        A clean path.
+    """
+    clean_elmts = [strip_path(elmts) for elmts in path_elmts]
+    return "/".join(clean_elmts)
+
+
+def generate_url(domain: str, path: str) -> str:
+    """Appends a path to the client domain to generate a valid url.
+
+    Args:
+        domain: Optional domain, overwrites the default.
+        path: Path on the domain.
+
+    Returns:
+        A complete url on the configured domain.
+    """
+    path = strip_path(path)
+    return "https://{domain}/{path}".format(domain=domain, path=path)
+
+
+def check_config_file(config_path: str = "") -> str:
+    """Choose the configuration according the preset rules.
+
+    Args:
+        config_path: Provided path to the configuration.
+
+    Returns:
+        Path to the first valid configuration file found.
+    """
+    if config_path == "":
+        if os.path.exists(constants.DEFAULT_CONFIG):
+            return constants.DEFAULT_CONFIG
+        elif os.path.exists(constants.DEFAULT_HOME_CONFIG):
+            return constants.DEFAULT_HOME_CONFIG
+    elif os.path.exists(config_path):
+        return config_path
+
+    raise FileNotFoundError(constants.NO_CONFIG_MSG)
+
+
+Type = TypeVar("Type")
