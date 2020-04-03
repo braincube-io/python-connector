@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py_client import constants
+from py_client import parameters
 from py_client import base
 from py_client import client
 from typing import Dict, List, Any
@@ -63,11 +63,7 @@ class BaseEntity(base.Base):
 
     @classmethod
     def create_many_from_path(
-        cls,
-        request_path: str,
-        entity_path: str,
-        page: int = -1,
-        page_size: int = constants.DEFAULT_PAGE_SIZE,
+        cls, request_path: str, entity_path: str, page: int = -1, page_size: int = -1,
     ) -> List[Any]:
         """Create many entities from a request path.
 
@@ -75,19 +71,22 @@ class BaseEntity(base.Base):
             request_path: Webservice path to request.
             entity_path: Path of the entity on the webservice.
             page: Index of page to return, all pages are return if page=-1
-            page_size: Number of elements on a page.
+            page_size: Number of entities per page.
 
         Returns:
             The list of created created entity.
         """
+        if page_size == -1:
+            page_size = parameters.get_parameter("page_size")
         offset = 0 if page < 0 else page * page_size
         entity_list: List[Any] = []
 
         while True:
-            filled_path = "{path}?offset={offset}&size={size}".format(
-                path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
+            json_data = client.request_ws(
+                "{path}?offset={offset}&size={size}".format(
+                    path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
+                )
             )
-            json_data = client.request_ws(filled_path)
             new_entities = [cls.create_from_json(elmt, entity_path) for elmt in json_data["items"]]
             entity_list += new_entities
             if not new_entities or page > -1:

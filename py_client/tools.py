@@ -4,7 +4,7 @@
 
 import os
 import json
-from typing import Dict, List, TypeVar
+from typing import Dict, List
 
 from py_client import constants
 
@@ -118,6 +118,3 @@ def check_config_file(config_path: str = "") -> str:
         return config_path
 
     raise FileNotFoundError(constants.NO_CONFIG_MSG)
-
-
-Type = TypeVar("Type")

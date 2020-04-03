@@ -4,7 +4,7 @@
 
 from typing import Dict, Any
 
-instances: Dict[str, Any] = {}
+instances: Dict[str, Any] = {"parameter_set": {}}
 
 
 def add_instance(key: str, instance: Any):

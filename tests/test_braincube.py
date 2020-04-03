@@ -4,6 +4,7 @@
 
 import responses
 
+from py_client import parameters
 from py_client import braincube
 from tests.mock import bc_obj, mock_client, mock_request_entity
 
@@ -41,11 +42,12 @@ def test_get_memory_base(bc_obj, mock_client):
     responses.add(responses.GET, MB_URL.format(bcid="1"), json=MB_JSON, status=200)
     mb = bc_obj.get_memory_base("1")
     assert mb._name == "abcd"
-    assert mb._path == "braincube/bcname/braincube/mb/1"
+    assert mb._path == "braincube/bcname/{webservice}/mb/1"
 
 
 def test_get_memory_base_list(mocker, monkeypatch, bc_obj, mock_request_entity):
-    mb_list = bc_obj.get_memory_base_list(page=10, page_size=2)
+    parameters.set_parameter({"page_size": 2})
+    mb_list = bc_obj.get_memory_base_list(page=10)
     mock_request_entity.assert_called_with(
         "braincube/bcname/braincube/mb/all/summary?offset=20&size=2"
     )

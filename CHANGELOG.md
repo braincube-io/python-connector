@@ -8,3 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - client to the braincube WS API
 - Braincube, MemoryBase, VariableDescription, JobDescription objects
+- Add get_data function to fetch the data

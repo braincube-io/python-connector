@@ -51,9 +51,11 @@ A few violations could not be fixed and were ignored in the `.flake8` file:
 - [`DAR401`: Missing exception(s) in Raises section: -r KeyError](https://github.com/terrencepreilly/darglint#error-codes)
 - [`WPS326`: Found implicit string concatenation](https://wemake-python-stylegui.de/en/latest/pages/usage/violations/consistency.html#wemake_python_styleguide.violations.consistency.ImplicitStringConcatenationViolation)
   → Incompatible with `black`
-- [`C812`: missing trailing comma](https://github.com/PyCQA/flake8-commas/#errors)
+- [`C812`, `815`: missing trailing comma](https://github.com/PyCQA/flake8-commas/#errors)
   → Incompatible with `black`
 - [`D100`: Missing docstring in public module](http://www.pydocstyle.org/en/5.0.2/error_codes.html#grouping)
+- [`RST`: Ignore rst format related warnings.](https://github.com/peterjc/flake8-rst-docstrings)
+  → Incompatible with `**kwargs` gets confused with `**title` in rst format. Removing this warning has no effect since we are using markdown.
 
 ### docstring style
 

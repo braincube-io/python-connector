@@ -83,7 +83,26 @@ The type of variable is obtained with the function `get_type`
 var_desc.get_type()
 ```
 
+## Get variable data
 
+A memory base can also request the data for a set of variable ids:
+```python
+data = mb.get_data(["2000001", "2000034"])
+```
+
+The output format is a dictionary in which the keys are the variable bcIds and the value a list of data. This allows an easy conversion to a pandas dataframe:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame(data)
+```
+
+**Note:** By default the dates are not parsed to `datetime` objects in order to speed up the `get_data` function but it is possible to enable the parsing:
+```python
+from py_client import parameters
+parameters.set_parameter({"parse_date": True})
+```
 ### JobDescription
 
 The job desciption are also linked to a memory base.
@@ -98,6 +117,19 @@ For multiple job descriptions:
 mb.get_job_list(page=0)
 ```
 **Note:** Similarly to `get_variable_list`, providing no argument to `get_job_list` retrieves all job descriptions available in the memory base.
+
+## Library parameters
+The library parameters can be set to custom values:
+
+```python
+from py_client import parameters
+
+# Change the request pagination size to 10 
+parameters.set_parameter({"page_size": 10})
+
+# Parse dates to datetime objects
+parameters.set_parameter({"parse_date": True})
+```
 
 ## Configuration
 

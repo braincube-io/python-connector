@@ -27,3 +27,16 @@ class VariableDescription(base_entity.BaseEntity):
             The type of the variable.
         """
         return self._metadata["type"]
+
+
+def expand_var_id(long_mb_id: str, var_id: str) -> str:
+    """Extend a variable name to include its memory base id.
+
+    Args:
+        long_mb_id: Memory base bcId extended with the 'mb' keyword.
+        var_id: Varaible bcId.
+
+    Returns:
+        An extended variable id '<long_mb_id>/d<var_id>'.
+    """
+    return "{mb}/d{var}".format(mb=long_mb_id, var=var_id)

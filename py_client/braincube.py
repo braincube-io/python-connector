@@ -3,7 +3,6 @@
 from typing import Dict, Any, List
 
 from py_client import tools
-from py_client import constants
 from py_client import base_entity
 from py_client import client
 from py_client import memory_base
@@ -31,25 +30,22 @@ class Braincube(base_entity.BaseEntity):
         Returns:
             The selected MemoryBase object.
         """
-        mb_path = tools.join_path([self._path, "braincube/mb/{bcid}".format(bcid=mb_bcid)])
+        mb_path = tools.join_path([self._path, "{webservice}/mb/{bcid}".replace("{bcid}", mb_bcid)])
         request_path = tools.join_path([mb_path, "summary"])
         return memory_base.MemoryBase.create_one_from_path(request_path, mb_path)
 
-    def get_memory_base_list(
-        self, page: int = -1, page_size: int = constants.DEFAULT_PAGE_SIZE
-    ) -> List[memory_base.MemoryBase]:
+    def get_memory_base_list(self, page: int = -1) -> List[memory_base.MemoryBase]:
         """Get a list of the memory bases available in the braincube.
 
         Args:
             page: Index of page to return, all pages are return if page=-1
-            page_size: Number of elements on a page.
 
         Returns:
             A list of the MemoryBase objects.
         """
         mb_path = tools.join_path([self._path, "{webservice}/mb/{bcid}"])
         request_path = tools.join_path([self._path, "{webservice}/mb/all/summary"])
-        return memory_base.MemoryBase.create_many_from_path(request_path, mb_path, page, page_size)
+        return memory_base.MemoryBase.create_many_from_path(request_path, mb_path, page)
 
 
 def get_braincube(name: str) -> Braincube:

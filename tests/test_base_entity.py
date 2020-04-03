@@ -6,6 +6,7 @@ import re
 import responses
 
 from py_client import base_entity
+from py_client import parameters
 from tests.mock import base_obj, entity_obj, mock_client
 
 
@@ -69,8 +70,9 @@ def test_create_many_from_path(
         return {"items": items[params["offset"] : (params["offset"] + params["size"])]}
 
     rpatch = mocker.patch("py_client.client.request_ws", side_effect=mock_request_ws)
+    parameters.set_parameter({"page_size": page_size})
     entities = base_entity.BaseEntity.create_many_from_path(
-        "{webservice}/path/all/summary", "{webservice}/path/{bcid}", page=page, page_size=page_size
+        "{webservice}/path/all/summary", "{webservice}/path/{bcid}", page=page
     )
 
     calls = [

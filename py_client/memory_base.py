@@ -2,8 +2,8 @@
 
 from typing import Dict, List, Any
 
+from py_client import data
 from py_client import base_entity
-from py_client import constants
 from py_client import tools
 from py_client import variable
 from py_client import job
@@ -36,14 +36,12 @@ class MemoryBase(base_entity.BaseEntity):
         request_path = tools.join_path([var_path, "extended"])
         return variable.VariableDescription.create_one_from_path(request_path, var_path)
 
-    def get_variable_list(
-        self, page: int = -1, page_size: int = constants.DEFAULT_PAGE_SIZE
-    ) -> List[variable.VariableDescription]:
+    def get_variable_list(self, page: int = -1, **kwargs) -> List[variable.VariableDescription]:
         """Get a list a of variable descriptions from a list of ids.
 
         Args:
-            page: Index of page to return, all pages are return if page=-1
-            page_size: Number of elements on a page.
+            page: Index of page to return, all pages are return if page=-1.
+            **kwargs: Optional page_size passed to `base_entity.BaseEntity.create_many_from_path`.
 
         Returns:
             A list of Variables description.
@@ -51,7 +49,7 @@ class MemoryBase(base_entity.BaseEntity):
         var_path = tools.join_path([self._path, "variables/{bcid}"])
         request_path = tools.join_path([self._path, "variables/summary"])
         return variable.VariableDescription.create_many_from_path(
-            request_path, var_path, page, page_size
+            request_path, var_path, page, **kwargs
         )
 
     def get_job(self, job_bcid: str) -> job.JobDescription:
@@ -67,18 +65,31 @@ class MemoryBase(base_entity.BaseEntity):
         request_path = tools.join_path([job_path, "extended"])
         return job.JobDescription.create_one_from_path(request_path, job_path)
 
-    def get_job_list(
-        self, page: int = -1, page_size: int = constants.DEFAULT_PAGE_SIZE
-    ) -> List[job.JobDescription]:
+    def get_job_list(self, page: int = -1, **kwargs) -> List[job.JobDescription]:
         """Get a list a of job descriptions from a list of ids.
 
         Args:
-            page: Index of page to return, all pages are return if page=-1
-            page_size: Number of elements on a page.
+            page: Index of page to return, all pages are return if page=-1.
+            **kwargs: Optional page_size passed to `base_entity.BaseEntity.create_many_from_path`.
 
         Returns:
             A list of Jobs description.
         """
         job_path = tools.join_path([self._path, "jobs/{bcid}"])
         request_path = tools.join_path([self._path, "jobs/all/summary"])
-        return job.JobDescription.create_many_from_path(request_path, job_path, page, page_size)
+        return job.JobDescription.create_many_from_path(request_path, job_path, page, **kwargs)
+
+    def get_data(
+        self, var_ids: "List[str]", filters: "List[Dict[str, Any]]" = None
+    ) -> Dict[str, Any]:
+        """Get data from the memory base.
+
+        Args:
+            var_ids: bcIds of variables for which the data are collected.
+            filters: List of fileter to apply to the request.
+
+        Returns:
+            A dictionary of data list.
+        """
+        bc_path = (self._path.split("{webservice}"))[0]
+        return data.collect_data(var_ids, bc_path, self._metadata, filters)

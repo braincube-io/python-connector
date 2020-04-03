@@ -1,7 +1,5 @@
 # Documentation
 
-## modules
-
 ### base
 ::: py_client.base
 
@@ -10,6 +8,12 @@
 
 ### instances
 ::: py_client.instances
+
+### parameters
+::: py_client.parameters
+
+### data
+::: py_client.data
 
 ### client
 ::: py_client.client
@@ -26,5 +30,5 @@
 ### job
 ::: py_client.job
 
-## tools
+### tools
 ::: py_client.tools

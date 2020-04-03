@@ -50,7 +50,7 @@ class Client(base.Base):
         self,
         path: str,
         headers: Dict[str, Any] = None,
-        body_data: Dict[str, Any] = None,
+        body_data: Any = None,
         rtype: str = "GET",
         api: bool = True,
     ) -> Dict[str, Any]:
@@ -98,10 +98,21 @@ class Client(base.Base):
             "sso-server/rest/session/openWithToken", headers=headers, api=False
         )
         braincube_instance_infos = {
-            bc["product"]["name"]: (bc["product"]["productId"], bc["product"]["name"], bc)
-            for bc in access_data["accessList"]
+            bc["product"]["name"]: _extract_braincube_param(bc) for bc in access_data["accessList"]
         }
         return access_data["token"], braincube_instance_infos
+
+
+def _extract_braincube_param(metadata: Dict[str, Any]) -> "Tuple[str, str, Dict[str, str]]":
+    """Extract the data needed by Braincube.__init__ from a json.
+
+    Args:
+        metadata: A braincube metadata.
+
+    Returns:
+        A braincube id, a braincube name, and a braincube metadata.
+    """
+    return (metadata["product"]["productId"], metadata["product"]["name"], metadata)
 
 
 def get_instance(config_file: str = "") -> Client:
@@ -121,7 +132,7 @@ def get_instance(config_file: str = "") -> Client:
 def request_ws(
     path: str,
     headers: Dict[str, Any] = None,
-    body_data: Dict[str, Any] = None,
+    body_data: Any = None,
     rtype: str = "GET",
     api: bool = True,
 ) -> Dict[str, Any]:
