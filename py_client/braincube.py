@@ -3,9 +3,9 @@
 from typing import Dict, Any, List
 
 from py_client import tools
-from py_client import base_entity
+from py_client.bases import base_entity
 from py_client import client
-from py_client import memory_base
+from py_client.memory_base import memory_base
 
 
 class Braincube(base_entity.BaseEntity):
@@ -25,7 +25,7 @@ class Braincube(base_entity.BaseEntity):
         """Get a MemoryBase object from its id.
 
         Args:
-            mb_bcid: Memory base bcid.
+            mb_bcid: Memory bases bcid.
 
         Returns:
             The selected MemoryBase object.

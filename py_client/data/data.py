@@ -5,7 +5,7 @@
 from typing import Dict, List, Any
 
 from py_client import client
-from py_client import variable
+from py_client.memory_base.nested_resources import variable
 from py_client import tools
 from py_client import parameters
 
@@ -79,12 +79,12 @@ def collect_data(
     mb_metadata: Dict[str, str],
     filters: List[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """Get data from the memory base.
+    """Get data from the memory bases.
 
     Args:
         variable_ids: bcIds of variables for which the data are collected.
         braincube_path: path of the braincube.
-        mb_metadata: metadata of the memory base.
+        mb_metadata: metadata of the memory bases.
         filters: List of fileter to apply to the request.
 
     Returns:

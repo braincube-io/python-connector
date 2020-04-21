@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Tests for the memory_base module."""
+"""Tests for the variable module."""
 
+from py_client.memory_base.nested_resources import variable
 from tests.mock import var_obj
-
-from py_client import variable
 
 
 def test_get_type(var_obj):

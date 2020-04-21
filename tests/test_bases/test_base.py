@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-"""Tests for the base module."""
+"""Tests for the bases module."""
+
+from tests.mock import base_obj
 
 import re
 
-from tests.mock import base_obj, base_entity, mock_client
 
 BASE_STR = "Base(name=abcd)"
 LOAD_URL = "https://api.a.b/path"

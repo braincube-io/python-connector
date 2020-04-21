@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
-"""Tests for the base module."""
+"""Tests for the bases module."""
 
 import re
 import responses
 
-from py_client import base_entity
 from py_client import parameters
-from tests.mock import base_obj, entity_obj, mock_client
-
-
+from py_client.bases import base_entity
+from tests.mock import entity_obj, mock_client, base_obj
 import pytest
 
 

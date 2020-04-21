@@ -3,7 +3,7 @@
 """Tests for the data module."""
 
 from py_client import parameters
-from py_client import data
+from py_client.data import data
 
 import pytest
 import datetime

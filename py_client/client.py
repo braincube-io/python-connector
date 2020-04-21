@@ -5,7 +5,7 @@
 from typing import Dict, Tuple, Any
 
 from py_client import tools
-from py_client import base
+from py_client.bases import base
 from py_client import instances
 
 import requests

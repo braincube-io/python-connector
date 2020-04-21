@@ -6,7 +6,7 @@ import os
 import json
 
 from py_client import client
-from py_client import base
+from py_client.bases import base
 from py_client import constants
 from tests.mock import mock_client
 
@@ -15,7 +15,7 @@ import pytest
 import responses
 from requests.exceptions import HTTPError
 
-from tests.test_base import LOAD_URL
+from tests.test_bases.test_base import LOAD_URL
 
 
 @responses.activate

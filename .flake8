@@ -3,6 +3,7 @@ max-line-length = 100
 max-complexity = 10
 max-arguments = 10
 max-module-members = 10
+max-methods = 11
 ignore = I002, DAR401, WPS326, C812, C815, D100, RST
 docstring-convention = google
 inline-quotes = "

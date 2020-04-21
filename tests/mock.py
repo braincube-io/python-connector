@@ -4,14 +4,11 @@
 
 import pytest
 
-from py_client import constants
-from py_client import base
-from py_client import base_entity
-from py_client import client
 from py_client import braincube
-from py_client import memory_base
-from py_client import variable
-from py_client import job
+from py_client.bases import base, base_entity
+from py_client import client
+from py_client.memory_base import memory_base
+from py_client.memory_base.nested_resources import variable, job, mb_child
 
 
 @pytest.fixture
@@ -39,7 +36,7 @@ def mock_client(mocker):
 
 @pytest.fixture
 def base_obj():
-    """Create a mock of the base object."""
+    """Create a mock of the bases object."""
     obj = base.Base("abcd")
     return obj
 
@@ -73,16 +70,26 @@ def bc_obj():
 def mb_obj():
     """Create a mock of the MemoryBase object."""
     obj = memory_base.MemoryBase(
-        bcid="1", name="mb1", metadata={"meta": 1}, path="braincube/bcname/braincube/mb/1"
+        bcid="1", name="mb1", metadata={"meta": 1}, path="braincube/bcname/{webservice}/mb/1"
     )
     return obj
+
+
+@pytest.fixture
+def mbchild_obj():
+    child = mb_child.MbChild("id1", "child", {"metadata": []}, "path/mb/10/child/id1", "MB_obj")
+    return child
 
 
 @pytest.fixture
 def var_obj():
     """Create a mock of the VariableDescription object."""
     obj = variable.VariableDescription(
-        bcid="100001", name="var1", metadata={"type": "TYPE"}, path="path"
+        bcid="100001",
+        name="var1",
+        metadata={"type": "TYPE"},
+        path="path/mb/1/variables/1",
+        memory_base="MB_obj",
     )
     return obj
 
@@ -90,5 +97,11 @@ def var_obj():
 @pytest.fixture
 def job_obj():
     """Create a mock of the JobDescription object."""
-    obj = job.JobDescription(bcid="100001", name="job1", metadata={"type": "TYPE"}, path="path")
+    obj = job.JobDescription(
+        bcid="100001",
+        name="job1",
+        metadata={"type": "TYPE"},
+        path="path/mb/1/variables/1",
+        memory_base="MB_obj",
+    )
     return obj
