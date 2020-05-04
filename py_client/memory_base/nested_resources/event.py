@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*
 
-from py_client.memory_base.nested_resources import mb_child
+from py_client.memory_base.nested_resources import condition_container, mb_child
 
 
-class Event(mb_child.MbChild):
+class Event(mb_child.MbChild, condition_container.ConditionContainer):
     """Event object that stores a set of variables."""
 
     entity_path = "events/{bcid}"

@@ -110,6 +110,14 @@ class BaseEntity(base.Base):
         """
         return self._metadata
 
+    def get_bcid(self) -> str:
+        """Get the entity's bcId.
+
+        Returns:
+            The bcId of the object.
+        """
+        return self._bcid
+
     def initialize(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
         """Initialize BaseEntity.
 

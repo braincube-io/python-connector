@@ -9,6 +9,7 @@ class VariableDescription(mb_child.MbChild):
     name_key = "standard"
     entity_path = "variables/{bcid}"
     request_one_path = "extended"
+
     request_many_path = "variables/extended"
 
     def get_type(self) -> str:
@@ -19,15 +20,10 @@ class VariableDescription(mb_child.MbChild):
         """
         return self._metadata["type"]
 
+    def get_long_id(self) -> str:
+        """Get the extended id of a variable.
 
-def expand_var_id(long_mb_id: str, var_id: str) -> str:
-    """Extend a variable name to include its memory bases id.
-
-    Args:
-        long_mb_id: Memory bases bcId extended with the 'mb' keyword.
-        var_id: Varaible bcId.
-
-    Returns:
-        An extended variable id 'long_mb_id/dvar_id'.
-    """
-    return "{mb}/d{var}".format(mb=long_mb_id, var=var_id)
+        Returns:
+            An extended variable id 'long_mb_id/dvar_id'.
+        """
+        return "mb{mb}/d{var}".format(mb=self._memory_base.get_bcid(), var=self._bcid)

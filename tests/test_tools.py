@@ -4,10 +4,10 @@
 
 import json
 import builtins
+from datetime import datetime, timezone
 
 from py_client import tools
 from py_client import constants
-
 import pytest
 
 OAUTH2 = "oauth2_token"
@@ -110,3 +110,14 @@ def test_check_config_file_no_file(mocker):
     mock_exists = check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=False))
     with pytest.raises(FileNotFoundError, match=constants.NO_CONFIG_MSG):
         tools.check_config_file("config.json")
+
+
+@pytest.mark.parametrize(
+    "timestamp,output",
+    [
+        (datetime(2020, 4, 22, 10, 45, tzinfo=timezone.utc).timestamp() * 1000, "20200422_104500"),
+        (None, None),
+    ],
+)
+def test_to_datetime_str(timestamp, output):
+    assert tools.to_datetime_str(timestamp) == output

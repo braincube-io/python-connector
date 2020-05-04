@@ -82,26 +82,12 @@ def mbchild_obj():
 
 
 @pytest.fixture
-def var_obj():
-    """Create a mock of the VariableDescription object."""
-    obj = variable.VariableDescription(
-        bcid="100001",
-        name="var1",
-        metadata={"type": "TYPE"},
-        path="path/mb/1/variables/1",
-        memory_base="MB_obj",
-    )
-    return obj
+def create_mock_var(mocker):
+    def create_mock(bcid="1", name="", type="NUMERIC", mb=None):
+        name = name if name else "var{0}".format(bcid)
+        var = variable.VariableDescription(
+            bcid=bcid, name=name, metadata={"type": type}, path="path", memory_base=mb
+        )
+        return var
 
-
-@pytest.fixture
-def job_obj():
-    """Create a mock of the JobDescription object."""
-    obj = job.JobDescription(
-        bcid="100001",
-        name="job1",
-        metadata={"type": "TYPE"},
-        path="path/mb/1/variables/1",
-        memory_base="MB_obj",
-    )
-    return obj
+    return create_mock

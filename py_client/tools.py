@@ -4,7 +4,8 @@
 
 import os
 import json
-from typing import Dict, List
+from typing import Dict, List, Optional
+from datetime import datetime, timezone
 
 from py_client import constants
 
@@ -118,3 +119,17 @@ def check_config_file(config_path: str = "") -> str:
         return config_path
 
     raise FileNotFoundError(constants.NO_CONFIG_MSG)
+
+
+def to_datetime_str(timestamp: Optional[float]) -> Optional[str]:
+    """Convert a braincube timestamp to a formatted datetime string.
+
+    Args:
+        timestamp: timestamp (in ms) to convert.
+
+    Returns:
+        A braincube formatted datatime string.
+    """
+    if not timestamp:
+        return None
+    return datetime.fromtimestamp(timestamp / 1000, tz=timezone.utc).strftime("%Y%m%d_%H%M%S")

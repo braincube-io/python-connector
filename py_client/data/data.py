@@ -5,33 +5,29 @@
 from typing import Dict, List, Any
 
 from py_client import client
-from py_client.memory_base.nested_resources import variable
 from py_client import tools
+from py_client.data import conditions
+
 from py_client import parameters
 
 import json
 import datetime
 
-
 DATA_PATH = "braindata/{mb_id}/LF"
 DATACOL = "data"
 
 
-def _combine_filters(filters: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Nest multiple filters in a series of AND gates.
+def _expand_var_id(long_mb_id: str, var_id: str) -> str:
+    """Extend a variable name to include its memory bases id.
 
     Args:
-        filters: Filters to combine together.
+        long_mb_id: Memory bases bcId extended with the 'mb' keyword.
+        var_id: Variable bcId.
 
     Returns:
-        A list of string of the combine filters.
+        An extended variable id 'long_mb_id/dvar_id'.
     """
-    if len(filters) == 1:
-        return filters[0]
-    elif len(filters) == 2:
-        return {"AND": [filters[0], filters[1]]}
-    first_and = {"AND": [filters[0], filters[1]]}
-    return _combine_filters([first_and] + filters[2:])
+    return "{mb}/d{var}".format(mb=long_mb_id, var=var_id)
 
 
 def _to_datetime(date: "str") -> Any:
@@ -91,14 +87,16 @@ def collect_data(
         A dictionary of data list.
     """
     long_mb_id = "mb{bcid}".format(bcid=mb_metadata["bcId"])
-    variable_ids = [variable.expand_var_id(long_mb_id, vv) for vv in variable_ids]
+    variable_ids = [_expand_var_id(long_mb_id, vv) for vv in variable_ids]
     data_path = tools.join_path([braincube_path, DATA_PATH.format(mb_id=long_mb_id)])
     body_data = {
-        "order": variable.expand_var_id(long_mb_id, mb_metadata["referenceDate"]),
+        "order": _expand_var_id(long_mb_id, mb_metadata["referenceDate"]),
         "definitions": variable_ids,
         "context": {"dataSource": long_mb_id},
     }
-    if filters:
-        body_data["context"]["filter"] = _combine_filters(filters)  # type: ignore
-    variable_data = client.request_ws(data_path, body_data=json.dumps(body_data), rtype="POST")
-    return _extract_format_data(variable_data)
+    filters = conditions.combine_filters(filters)  # Merge filters in one filter
+    if len(filters) == 1:
+        body_data["context"]["filter"] = filters[0]  # type: ignore
+    return _extract_format_data(
+        client.request_ws(data_path, body_data=json.dumps(body_data), rtype="POST")
+    )

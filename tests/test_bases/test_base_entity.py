@@ -18,6 +18,10 @@ def test_create_base_entity(entity_obj):
     assert entity_obj._path == "path/id123"
 
 
+def test_get_bcid(entity_obj):
+    assert entity_obj.get_bcid() == "id123"
+
+
 def test_entity_repr(entity_obj):
     assert re.search(r"<BaseEntity\(name=entity, id=id123\) at .*?>", repr(entity_obj),)
 

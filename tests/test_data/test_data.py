@@ -34,19 +34,8 @@ def body_data():
     return data
 
 
-@pytest.mark.parametrize(
-    "filter_list, combined_filters",
-    [
-        (["condA"], "condA"),
-        (["condA", "condB"], {"AND": ["condA", "condB"]}),
-        (
-            ["condA", "condB", "condC", "condD"],
-            {"AND": [{"AND": [{"AND": ["condA", "condB"]}, "condC"]}, "condD"]},
-        ),
-    ],
-)
-def test_combine_filtes(filter_list, combined_filters):
-    assert data._combine_filters(filter_list) == combined_filters
+def test_expand_var_id():
+    assert data._expand_var_id("mb20", "2001") == "mb20/d2001"
 
 
 def test_to_datetime():
