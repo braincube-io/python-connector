@@ -8,7 +8,7 @@ from py_client import braincube
 from py_client.bases import base, base_entity
 from py_client import client
 from py_client.memory_base import memory_base
-from py_client.memory_base.nested_resources import variable, job, mb_child
+from py_client.memory_base.nested_resources import variable, job, mb_child, datagroup, event
 
 
 @pytest.fixture
@@ -82,12 +82,79 @@ def mbchild_obj():
 
 
 @pytest.fixture
-def create_mock_var(mocker):
+def create_mock_var():
     def create_mock(bcid="1", name="", type="NUMERIC", mb=None):
         name = name if name else "var{0}".format(bcid)
         var = variable.VariableDescription(
             bcid=bcid, name=name, metadata={"type": type}, path="path", memory_base=mb
         )
         return var
+
+    return create_mock
+
+
+@pytest.fixture
+def create_mock_datagroup():
+    def create_mock(bcid="1", name="", variables=[], mb=None):
+        name = name if name else "datagroup{0}".format(bcid)
+        metadata = {"variables": [{"bcId": var} for var in variables]}
+        dgroup = datagroup.DataGroup(bcid, name, metadata, "path", mb)
+        return dgroup
+
+    return create_mock
+
+
+@pytest.fixture
+def create_mock_event():
+    def create_mock(bcid="1", name="", variables=[], mb=None):
+        name = name if name else "event{0}".format(bcid)
+        metadata = {
+            "conditions": [
+                {"variable": {"bcId": var_id}, "minimum": 0, "maximum": 1} for var_id in variables
+            ]
+        }
+        return event.Event(bcid, name, metadata, "path", mb)
+
+    return create_mock
+
+
+@pytest.fixture
+def create_mock_job():
+    def create_mock(
+        bcid="1", name="", events={}, datagroups=[], conditions=[], modelEntries=[], mb=None
+    ):
+        metadata = {}
+        if modelEntries:
+            entries = {
+                "modelEntries": [
+                    {"conditions": [{"variable": {"bcId": var_id}, "minimum": 0, "maximum": 1}]}
+                    for var_id in modelEntries
+                ]
+                + [{"conditions": []}]
+            }
+            metadata.update(entries)
+        if conditions:
+            conditions = {
+                "conditions": [
+                    {"variable": {"bcId": var_id}, "minimum": 0, "maximum": 1}
+                    for var_id in conditions
+                ]
+            }
+            metadata.update(conditions)
+        if events:
+            pos, neg = events["positive"], events["negative"]
+            events = {
+                "events": {
+                    "positiveEvents": [{"bcId": eid} for eid in pos],
+                    "negativeEvents": [{"bcId": eid} for eid in neg],
+                }
+            }
+            metadata.update(events)
+        if datagroups:
+            datagroups = {"dataGroups": [{"bcId": did} for did in datagroups]}
+            metadata.update(datagroups)
+        name = name if name else "job{0}".format(bcid)
+        job_obj = job.JobDescription(bcid, name, metadata, "path", mb)
+        return job_obj
 
     return create_mock

@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from py_client.memory_base.nested_resources import condition_container, mb_child
+from py_client.data import conditions
+from typing import Dict, Any, List
+
+BCID = "bcId"
+VARIABLE = "variable"
+POSITIVE_EVENTS = "positiveEvents"
+NEGATIVE_EVENTS = "negativeEvents"
 
 
 class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
@@ -9,3 +16,70 @@ class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
     entity_path = "jobs/{bcid}"
     request_one_path = "extended"
     request_many_path = "jobs/all/extended"
+
+    def get_data(self, filters: "List[Dict[str, Any]]" = None) -> Dict[str, Any]:
+        """Get the filtered data used in the job.
+
+        Args:
+            filters: List of filters to apply to the request.
+
+        Returns:
+            A dictionary of filtered data list.
+        """
+        if not filters:
+            filters = []
+        filters = filters + self.get_conditions(combine=True, include_events=True)
+        variables = self.get_variable_ids()
+        return self._memory_base.get_data(variables, filters)
+
+    def get_conditions(self, combine=False, include_events=False) -> "List[Dict[str, Any]]":
+        """Get the job conditions.
+
+        Args:
+            combine: Combine the conditions under a single condition.
+            include_events: If True, it also includes the event conditions.
+
+        Returns:
+            A List of conditions.
+        """
+        filters: List[Dict[str, Any]] = []
+        if include_events:
+            events = self.get_events()
+            for negative_event in events[NEGATIVE_EVENTS]:
+                filters = filters + [
+                    {"NOT": conditions.combine_filters(negative_event.get_conditions())}
+                ]
+            for positive_event in events[POSITIVE_EVENTS]:
+                filters = filters + positive_event.get_conditions()
+        filters = super().get_conditions() + filters
+        return conditions.combine_filters(filters) if combine else filters
+
+    def get_variable_ids(self) -> List[str]:
+        """Get a list a of the variable bcIds used by the job.
+
+        The list of variable includes the actual job variables and the condition variables.
+
+        Returns:
+            A list of variables bcIds.
+        """
+        variables: List[str] = []
+        for entry in self._metadata["modelEntries"]:
+            variables = variables + [
+                cond[VARIABLE][BCID] for cond in entry["conditions"] if VARIABLE in cond
+            ]
+        for group in self._metadata["dataGroups"]:
+            variables = variables + self._memory_base.get_datagroup(group[BCID]).get_variable_ids()
+        return list(set(variables))
+
+    def get_events(self) -> "Dict[str, List[Event]]":  # type: ignore  # noqa
+        """Get the events used in the job.
+
+        Returns:
+            A list of events.
+        """
+        events: Dict[str, Any] = {POSITIVE_EVENTS: [], NEGATIVE_EVENTS: []}
+        for positive_event in self._metadata["events"][POSITIVE_EVENTS]:
+            events[POSITIVE_EVENTS].append(self._memory_base.get_event(positive_event["bcId"]))
+        for negative_event in self._metadata["events"][NEGATIVE_EVENTS]:
+            events[NEGATIVE_EVENTS].append(self._memory_base.get_event(negative_event["bcId"]))
+        return events
