@@ -20,6 +20,11 @@ class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
     def get_data(self, filters: "List[Dict[str, Any]]" = None) -> Dict[str, Any]:
         """Get the filtered data used in the job.
 
+        Warning: As for now the webservice does not have access to the actual job data. This
+        function accesses the data from the memory base with the same filters as when the job data
+        were created but might return different data if the actual data have been updated in the
+        memory base but not in the job.
+
         Args:
             filters: List of filters to apply to the request.
 
