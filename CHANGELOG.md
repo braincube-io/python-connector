@@ -11,3 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add get_data function to fetch the data
 - Add the Event, DataGroups
 - Generate request filters from event and job conditions
+- Add job methods to get events, conditions, variables, categories, and data

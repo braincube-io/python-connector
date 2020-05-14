@@ -88,3 +88,11 @@ class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
         for negative_event in self._metadata["events"][NEGATIVE_EVENTS]:
             events[NEGATIVE_EVENTS].append(self._memory_base.get_event(negative_event["bcId"]))
         return events
+
+    def get_categories(self) -> List[Dict[str, Any]]:
+        """Get categories defined for the job (e.g. good or bad).
+
+        Returns:
+            A list of category conditions.
+        """
+        return self._metadata["modelEntries"]

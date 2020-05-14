@@ -68,3 +68,11 @@ def test_get_data(mocker, create_mock_job):
     job.get_data(filters)
     calls = [mocker.call(variables, conditions), mocker.call(variables, filters + conditions)]
     mock_mb.get_data.assert_has_calls(calls)
+
+
+def test_get_categories(create_mock_job):
+    cond_variable_id = "1"
+    job = create_mock_job(modelEntries=[cond_variable_id])
+    assert job.get_categories() == [
+        {"conditions": [{"variable": {"bcId": cond_variable_id}, "minimum": 0, "maximum": 1}]}
+    ]

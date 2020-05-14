@@ -14,7 +14,7 @@ from py_client.memory_base.nested_resources import variable, job, mb_child, data
 @pytest.fixture
 def mock_client(mocker):
     """Create a mock client to test its methods."""
-    m = mocker.patch.object(client.Client, "__init__", lambda x: None)
+    mocker.patch.object(client.Client, "__init__", lambda x: None)
     instance = client.Client()
     instance._domain = "a.b"
     instance._oauth2_token = "abcd"
@@ -130,7 +130,6 @@ def create_mock_job():
                     {"conditions": [{"variable": {"bcId": var_id}, "minimum": 0, "maximum": 1}]}
                     for var_id in modelEntries
                 ]
-                + [{"conditions": []}]
             }
             metadata.update(entries)
         if conditions:

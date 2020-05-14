@@ -140,6 +140,11 @@ The properties are acced with the following methods:
   ```python
   job_desc.get_events()
   ```
+- **get_categories:**  
+  Gets a list of conditions used to categorise a job's data as *good* or *bad*. You may have a *middle* category, it's an old categorisation which will not be used anymore.
+  ```python
+  job_desc.get_categories()
+  ```
 
 - **get_data:**  
   When a job is created on braincube, a separate copy of the data is made. As for now this copy is not available from the webservices. However the `get_data` method collects the job's data from the memory base using the same filters as when the job was created. Be aware that these data might be different from the job's data if the memory base has been updated since the job creation.  
@@ -149,6 +154,7 @@ The properties are acced with the following methods:
   ```python
   job_desc.get_data()
   ```
+
 
 ### Get variable data
 
