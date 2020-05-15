@@ -9,7 +9,7 @@ class DataGroup(mb_child.MbChild):
 
     entity_path = "dataGroups/{bcid}"
     request_one_path = "extended"
-    request_many_path = "dataGroups/extended"
+    request_many_path = "dataGroups/summary"
 
     def get_variable_ids(self) -> List[str]:
         """Get the bcIds for the variables in the group.

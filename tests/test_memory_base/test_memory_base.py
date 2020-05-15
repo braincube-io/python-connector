@@ -39,7 +39,7 @@ def test_get_variable_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     var_list = mb_obj.get_variable_list(page=0)
     assert var_list[0]._name == "name0"
 
-    request_path = "braincube/bcname/braincube/mb/1/variables/extended?offset=0&size=2"
+    request_path = "braincube/bcname/braincube/mb/1/variables/summary?offset=0&size=2"
     mock_request_entity.assert_called_with(request_path)
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
@@ -60,7 +60,7 @@ def test_get_job_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     parameters.set_parameter({"page_size": 2})
     job_list = mb_obj.get_job_list(page=0)
     assert job_list[0]._name == "name0"
-    request_path = "braincube/bcname/braincube/mb/1/jobs/all/extended?offset=0&size=2"
+    request_path = "braincube/bcname/braincube/mb/1/jobs/all/summary?offset=0&size=2"
     mock_request_entity.assert_called_with(request_path)
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
@@ -81,7 +81,7 @@ def test_get_datagroup_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     parameters.set_parameter({"page_size": 2})
     group_list = mb_obj.get_datagroup_list(page=0)
     assert group_list[0]._name == "name0"
-    request_path = "braincube/bcname/braincube/mb/1/dataGroups/extended?offset=0&size=2"
+    request_path = "braincube/bcname/braincube/mb/1/dataGroups/summary?offset=0&size=2"
     mock_request_entity.assert_called_with(request_path)
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
@@ -108,22 +108,6 @@ def test_get_events_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     parameters.set_parameter({"page_size": 4})
     event_list = mb_obj.get_event_list(page=0, page_size=2)
     mock_request_entity.assert_called_with(request_path)
-
-
-@pytest.mark.parametrize(
-    "request_list, expected_req_path",
-    [(False, "memorybase/entity/extended"), (True, "memorybase/extended")],
-)
-def test_generate_path(request_list, expected_req_path):
-    mb_path = "memorybase"
-    entity_path = "entity"
-    pre_request_path = "extended"
-    expected_entity_path = "memorybase/entity"
-    returned_req_path, returned_entity_path = memory_base.generate_path(
-        mb_path, entity_path, pre_request_path, request_list
-    )
-    assert expected_entity_path == returned_entity_path
-    assert expected_req_path == returned_req_path
 
 
 def test_get_data(mocker, mb_obj):

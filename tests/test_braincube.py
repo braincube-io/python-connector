@@ -7,7 +7,7 @@ import responses
 from py_client import parameters, braincube
 from tests.mock import bc_obj, mock_client, mock_request_entity
 
-MB_URL = "https://api.a.b/braincube/bcname/braincube/mb/{bcid}/summary"
+MB_URL = "https://api.a.b/braincube/bcname/braincube/mb/{bcid}/extended"
 MB_JSON = {"bcId": "1", "name": "abcd"}
 NAME = "bcname1"
 

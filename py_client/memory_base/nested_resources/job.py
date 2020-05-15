@@ -15,7 +15,7 @@ class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
 
     entity_path = "jobs/{bcid}"
     request_one_path = "extended"
-    request_many_path = "jobs/all/extended"
+    request_many_path = "jobs/all/summary"
 
     def get_data(self, filters: "List[Dict[str, Any]]" = None) -> Dict[str, Any]:
         """Get the filtered data used in the job.

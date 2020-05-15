@@ -9,8 +9,7 @@ class VariableDescription(mb_child.MbChild):
     name_key = "standard"
     entity_path = "variables/{bcid}"
     request_one_path = "extended"
-
-    request_many_path = "variables/extended"
+    request_many_path = "variables/summary"
 
     def get_type(self) -> str:
         """Get the type of the variable.

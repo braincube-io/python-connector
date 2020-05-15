@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from typing import Dict, Any, List
-
-from py_client import tools
 from py_client.bases import base_entity
 from py_client import client
 from py_client.memory_base import memory_base
+from py_client.bases import resource_getter
 
 
-class Braincube(base_entity.BaseEntity):
+class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):
     """Braincube object that handles the feature of a braincube."""
 
     def __init__(self, bcid: str, name: str, metadata: Dict[str, Any]):
@@ -30,22 +29,18 @@ class Braincube(base_entity.BaseEntity):
         Returns:
             The selected MemoryBase object.
         """
-        mb_path = tools.join_path([self._path, "{webservice}/mb/{bcid}".replace("{bcid}", mb_bcid)])
-        request_path = tools.join_path([mb_path, "summary"])
-        return memory_base.MemoryBase.create_one_from_path(request_path, mb_path)
+        return self._get_resource(memory_base.MemoryBase, mb_bcid)
 
-    def get_memory_base_list(self, page: int = -1) -> List[memory_base.MemoryBase]:
+    def get_memory_base_list(self, **kwargs) -> List[memory_base.MemoryBase]:
         """Get a list of the memory bases available in the braincube.
 
         Args:
-            page: Index of page to return, all pages are return if page=-1
+            **kwargs: Optional page and page_size.
 
         Returns:
             A list of the MemoryBase objects.
         """
-        mb_path = tools.join_path([self._path, "{webservice}/mb/{bcid}"])
-        request_path = tools.join_path([self._path, "{webservice}/mb/all/summary"])
-        return memory_base.MemoryBase.create_many_from_path(request_path, mb_path, page)
+        return self._get_resource_list(memory_base.MemoryBase, **kwargs)
 
 
 def get_braincube(name: str) -> Braincube:
