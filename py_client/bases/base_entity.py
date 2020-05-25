@@ -51,7 +51,7 @@ class BaseEntity(base.Base):
         return entity
 
     @classmethod
-    def create_one_from_path(cls, request_path: str, entity_path: str, **kwargs) -> Any:
+    def create_singleton_from_path(cls, request_path: str, entity_path: str, **kwargs) -> Any:
         """Create an entity from a request path.
 
         Args:
@@ -66,7 +66,7 @@ class BaseEntity(base.Base):
         return cls.create_from_json(json_data, entity_path, **kwargs)
 
     @classmethod
-    def create_many_from_path(
+    def create_collection_from_path(
         cls, request_path: str, entity_path: str, page: int = -1, page_size: int = -1, **kwargs,
     ) -> List[Any]:
         """Create many memory_base from a request path.

@@ -1,7 +1,6 @@
 # Documentation
 
-### base
-::: py_client.bases.base
+
 
 ### instances
 ::: py_client.instances
@@ -18,8 +17,14 @@
 ### client
 ::: py_client.client
 
+### base
+::: py_client.bases.base
+
 ### base_entity
 ::: py_client.bases.base_entity
+
+### resource_getter
+::: py_client.bases.resource_getter
 
 ### braincube
 ::: py_client.braincube
@@ -44,6 +49,9 @@
 
 ### datagroup
 ::: py_client.memory_base.nested_resources.datagroup
+
+### rules
+::: py_client.memory_base.nested_resources.rule
 
 ### tools
 ::: py_client.tools

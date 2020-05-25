@@ -40,13 +40,13 @@ def test_generate_path(request_list, expected_req_path):
 
 def test_get_resource(mock_entity_class, resource_parent):
     resource_parent._get_resource(mock_entity_class, bcid="1")
-    mock_entity_class.create_one_from_path.assert_called_once_with(
+    mock_entity_class.create_singleton_from_path.assert_called_once_with(
         "parent_path/entity/1/extended", "parent_path/entity/1"
     )
 
 
 def test_get_resource_list(mock_entity_class, resource_parent):
     resource_parent._get_resource_list(mock_entity_class)
-    mock_entity_class.create_many_from_path.assert_called_once_with(
+    mock_entity_class.create_collection_from_path.assert_called_once_with(
         "parent_path/entity/all/extended", "parent_path/entity/{bcid}"
     )

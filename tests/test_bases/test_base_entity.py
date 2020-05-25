@@ -40,10 +40,10 @@ def test_create_from_json():
 
 
 @responses.activate
-def test_create_one_from_path(mock_client):
+def test_create_singleton_from_path(mock_client):
     json_data = {"name": "abcd", "bcId": "1"}
     responses.add(responses.GET, "https://api.a.b/braincube/path", json=json_data, status=200)
-    entity = base_entity.BaseEntity.create_one_from_path(
+    entity = base_entity.BaseEntity.create_singleton_from_path(
         "{webservice}/path", "{webservice}/path/{bcid}"
     )
     assert entity._name == "abcd"
@@ -59,10 +59,10 @@ def test_create_one_from_path(mock_client):
         (-1, 2, 4, "name3", ["?offset=0&size=2", "?offset=2&size=2", "?offset=4&size=2"]),
     ],
 )
-def test_create_many_from_path(
+def test_create_collection_from_path(
     mock_client, monkeypatch, mocker, page, page_size, length, entity_name, call_params
 ):
-    """Test create_many_from_path for different pagination settings"""
+    """Test create_collection_from_path for different pagination settings"""
     items = [{"name": "name{}".format(i), "bcId": str(i)} for i in range(4)]
 
     def mock_request_ws(path):
@@ -73,7 +73,7 @@ def test_create_many_from_path(
 
     rpatch = mocker.patch("py_client.client.request_ws", side_effect=mock_request_ws)
     parameters.set_parameter({"page_size": page_size})
-    entities = base_entity.BaseEntity.create_many_from_path(
+    entities = base_entity.BaseEntity.create_collection_from_path(
         "{webservice}/path/all/summary", "{webservice}/path/{bcid}", page=page
     )
 

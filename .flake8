@@ -7,3 +7,5 @@ max-methods = 11
 ignore = I002, DAR401, WPS326, C812, C815, D100, RST
 docstring-convention = google
 inline-quotes = "
+per-file-ignores =
+  py_client/memory_base/memory_base.py:WPS214

@@ -4,7 +4,7 @@ from typing import Dict, List, Any
 
 from py_client.bases import base_entity, resource_getter
 from py_client.data import data
-from py_client.memory_base.nested_resources import variable, event, datagroup, job
+from py_client.memory_base.nested_resources import variable, event, datagroup, job, rule
 
 
 class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
@@ -32,7 +32,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
             **kwargs: Optional page and page_size.
 
         Returns:
-            A list of Variables description.
+            A list of Variable descriptions.
         """
         return self._get_resource_list(variable.VariableDescription, **kwargs)
 
@@ -54,7 +54,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
             **kwargs: Optional page and page_size.
 
         Returns:
-            A list of Jobs description.
+            A list of Job descriptions.
         """
         return self._get_resource_list(job.JobDescription, **kwargs)
 
@@ -101,6 +101,30 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
             A list of events.
         """
         return self._get_resource_list(event.Event, **kwargs)
+
+    def get_rule(self, bcid: str) -> rule.RuleDescription:
+        """Get a variable description from its bcId.
+
+        Args:
+            bcid: Rule bcid.
+
+        Returns:
+            A Rule description.
+        """
+        return self._get_resource(rule.RuleDescription, bcid)
+
+    def get_rule_list(self, **kwargs) -> rule.RuleDescription:
+        """Get a list a of rule descriptions from a list of ids.
+
+        Args:
+            **kwargs: Optional page and page_size.
+
+        Returns:
+            A list of Rule descriptions.
+        """
+        return self._get_resource_list(
+            rule.RuleDescription, collection_path="rules/all/selector", **kwargs
+        )
 
     def get_data(
         self, var_ids: "List[str]", filters: "List[Dict[str, Any]]" = None

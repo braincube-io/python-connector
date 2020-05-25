@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - client to the braincube WS API
-- Add Braincube, MemoryBase, VariableDescription, JobDescription objects
-- Add get_data function to fetch the data
-- Add the Event, DataGroups
+- Add Braincube, MemoryBase, VariableDescription, JobDescription, Event, DataGroups, RuleDescription objects
+- Add methods to get a VariableDescription, JobDescription, Event, DataGroups, or RuleDescription object from a memory_base
+- Add get_data functions to fetch the data from a memory_base
 - Generate request filters from event and job conditions
-- Add job methods to get events, conditions, variables, categories, and data
+- Add job methods to get events, conditions, variables, categories, data, and rules

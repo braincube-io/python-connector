@@ -13,13 +13,12 @@ VD_URL = "https://api.a.b/braincube/bcname/braincube/mb/1/variables/{var_id}/ext
 JOB_URL = "https://api.a.b/braincube/bcname/braincube/mb/1/jobs/{job_id}/extended"
 DG_URL = "https://api.a.b/braincube/bcname/braincube/mb/1/dataGroups/{group_id}/extended"
 EVENT_URL = "https://api.a.b/braincube/bcname/braincube/mb/1/events/{event_id}/extended"
+RULE_URL = "https://api.a.b/braincube/bcname/braincube/mb/1/rules/{event_id}/summary"
 
 ID1 = "1"
 NAME = "abcd"
 VD_JSON = {"bcId": ID1, "standard": NAME}
-JOB_JSON = {"bcId": ID1, "name": NAME}
-DG_JSON = {"bcId": ID1, "name": NAME}
-EVENT_JSON = {"bcId": ID1, "name": NAME}
+BASIC_JSON = {"bcId": ID1, "name": NAME}
 
 
 @responses.activate
@@ -49,7 +48,7 @@ def test_get_variable_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 
 @responses.activate
 def test_get_job(mb_obj, mock_client):
-    responses.add(responses.GET, JOB_URL.format(job_id=ID1), json=JOB_JSON, status=200)
+    responses.add(responses.GET, JOB_URL.format(job_id=ID1), json=BASIC_JSON, status=200)
     job = mb_obj.get_job(ID1)
     assert job._name == NAME
     assert job._path == "braincube/bcname/{webservice}/mb/1/jobs/1"
@@ -70,7 +69,7 @@ def test_get_job_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 
 @responses.activate
 def test_get_datagroup(mb_obj, mock_client):
-    responses.add(responses.GET, DG_URL.format(group_id=ID1), json=DG_JSON, status=200)
+    responses.add(responses.GET, DG_URL.format(group_id=ID1), json=BASIC_JSON, status=200)
     group = mb_obj.get_datagroup(ID1)
     assert group._name == NAME
     assert group._path == "braincube/bcname/{webservice}/mb/1/dataGroups/1"
@@ -91,10 +90,10 @@ def test_get_datagroup_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 
 @responses.activate
 def test_get_event(mb_obj, mock_client):
-    responses.add(responses.GET, EVENT_URL.format(event_id=ID1), json=EVENT_JSON, status=200)
-    group = mb_obj.get_event(ID1)
-    assert group._name == NAME
-    assert group._path == "braincube/bcname/{webservice}/mb/1/events/1"
+    responses.add(responses.GET, EVENT_URL.format(event_id=ID1), json=BASIC_JSON, status=200)
+    event = mb_obj.get_event(ID1)
+    assert event._name == NAME
+    assert event._path == "braincube/bcname/{webservice}/mb/1/events/1"
 
 
 @responses.activate
@@ -107,6 +106,27 @@ def test_get_events_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     event_list = mb_obj.get_event_list(page=0, page_size=2)
+    mock_request_entity.assert_called_with(request_path)
+
+
+@responses.activate
+def test_rule_event(mb_obj, mock_client):
+    responses.add(responses.GET, RULE_URL.format(event_id=ID1), json=BASIC_JSON, status=200)
+    rule = mb_obj.get_rule(ID1)
+    assert rule._name == NAME
+    assert rule._path == "braincube/bcname/{webservice}/mb/1/rules/1"
+
+
+@responses.activate
+def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
+    parameters.set_parameter({"page_size": 2})
+    rule_list = mb_obj.get_rule_list(page=0)
+    assert rule_list[0]._name == "name0"
+    request_path = "braincube/bcname/braincube/mb/1/rules/all/selector?offset=0&size=2"
+    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.reset_mock()
+    parameters.set_parameter({"page_size": 4})
+    rule_list = mb_obj.get_rule_list(page=0, page_size=2)
     mock_request_entity.assert_called_with(request_path)
 
 

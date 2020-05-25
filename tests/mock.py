@@ -121,7 +121,14 @@ def create_mock_event():
 @pytest.fixture
 def create_mock_job():
     def create_mock(
-        bcid="1", name="", events={}, datagroups=[], conditions=[], modelEntries=[], mb=None
+        bcid="1",
+        name="",
+        events={},
+        datagroups=[],
+        conditions=[],
+        modelEntries=[],
+        mb=None,
+        path="path",
     ):
         metadata = {}
         if modelEntries:
@@ -153,7 +160,7 @@ def create_mock_job():
             datagroups = {"dataGroups": [{"bcId": did} for did in datagroups]}
             metadata.update(datagroups)
         name = name if name else "job{0}".format(bcid)
-        job_obj = job.JobDescription(bcid, name, metadata, "path", mb)
+        job_obj = job.JobDescription(bcid, name, metadata, path, mb)
         return job_obj
 
     return create_mock

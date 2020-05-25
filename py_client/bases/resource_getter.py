@@ -11,41 +11,43 @@ class ResourceGetter(object):
         """Initialize ResourceGetter."""
         self._path = ""
 
-    def _get_resource(self, resource_class: Any, bcid: str, **kwargs):
+    def _get_resource(self, resource_class: Any, bcid: str, singleton_path: str = "", **kwargs):
         """Get a resource from its bcId.
 
         Args:
             resource_class: Class of the resource to get.
             bcid: Event bcid.
+            singleton_path: Path to request. Default: resource_class.request_one_path.
             **kwargs: Optional parent (e.g. memory_base).
 
         Returns:
             A resource description.
         """
-        return resource_class.create_one_from_path(
+        return resource_class.create_singleton_from_path(
             *generate_path(
                 self._path,
                 resource_class.entity_path.replace("{bcid}", bcid),
-                resource_class.request_one_path,
+                resource_class.request_one_path if not singleton_path else singleton_path,
             ),
             **kwargs
         )
 
-    def _get_resource_list(self, resource_class: Any, **kwargs):
+    def _get_resource_list(self, resource_class: Any, collection_path: str = "", **kwargs):
         """Get a list a of resources from a list of ids.
 
         Args:
             resource_class: Class of the resources to get.
+            collection_path: Path to request. Default: resource_class.request_many_path.
             **kwargs: Optional page and page_size or parent (memory_base).
 
         Returns:
             A list of resources.
         """
-        return resource_class.create_many_from_path(
+        return resource_class.create_collection_from_path(
             *generate_path(
                 self._path,
                 resource_class.entity_path,
-                resource_class.request_many_path,
+                resource_class.request_many_path if not collection_path else collection_path,
                 request_list=True,
             ),
             **kwargs

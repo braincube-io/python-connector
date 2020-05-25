@@ -155,6 +155,19 @@ The properties are acced with the following methods:
   job_desc.get_data()
   ```
 
+### Job rules
+The job rule descriptions are obtained with the methods `get_rule` or `get_rule_list` either from a job or a memory base. The only difference being that in the case of a memory base `get_rule_list` gets all the rules existing in the memory base whereas for a job, it gets the rules specific to the job under consideration.
+
+```python
+rule = job.get_rule(bcid="200")
+rule_list = job.get_rule_list()
+```
+
+To access a `RuleDescription` object's metadata, you can calle the `get_metadata` function
+```python
+rule.get_metadata()
+```
+
 
 ### Get variable data
 

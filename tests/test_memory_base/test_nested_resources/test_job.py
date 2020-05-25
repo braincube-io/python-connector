@@ -76,3 +76,22 @@ def test_get_categories(create_mock_job):
     assert job.get_categories() == [
         {"conditions": [{"variable": {"bcId": cond_variable_id}, "minimum": 0, "maximum": 1}]}
     ]
+
+
+def test_get_rule(mocker, create_mock_job):
+    mock_mb = mocker.Mock()
+    job = create_mock_job(mb=mock_mb)
+    job.get_rule("12")
+    mock_mb.get_rule.assert_called_once_with("12")
+
+
+def test_get_rule_list(mocker, create_mock_job):
+    job = create_mock_job(path="job_path")
+    gen_path = mocker.patch("py_client.bases.resource_getter.generate_path")
+    mocker.patch(
+        "py_client.memory_base.nested_resources.rule.RuleDescription.create_collection_from_path"
+    )
+    job.get_rule_list()
+    gen_path.assert_called_once_with(
+        "job_path", "rules/{bcid}", "rules/all/summary", request_list=True
+    )

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from py_client.memory_base.nested_resources import condition_container, mb_child
+from py_client.memory_base.nested_resources import condition_container, mb_child, rule
+from py_client.bases import resource_getter
 from py_client.data import conditions
 from typing import Dict, Any, List
 
@@ -10,7 +11,9 @@ POSITIVE_EVENTS = "positiveEvents"
 NEGATIVE_EVENTS = "negativeEvents"
 
 
-class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
+class JobDescription(
+    mb_child.MbChild, condition_container.ConditionContainer, resource_getter.ResourceGetter
+):
     """JobDescription object that stores the description of a job."""
 
     entity_path = "jobs/{bcid}"
@@ -96,3 +99,27 @@ class JobDescription(mb_child.MbChild, condition_container.ConditionContainer):
             A list of category conditions.
         """
         return self._metadata["modelEntries"]
+
+    def get_rule(self, bcid: str) -> rule.RuleDescription:
+        """Get a rule description from its bcId.
+
+        Args:
+            bcid: Rule bcid.
+
+        Returns:
+            A Rule description.
+        """
+        return self._memory_base.get_rule(bcid)
+
+    def get_rule_list(self, **kwargs) -> rule.RuleDescription:
+        """Get a list a of rule descriptions from a list of ids.
+
+        Args:
+            **kwargs: Optional page and page_size.
+
+        Returns:
+            A list of Rule descriptions.
+        """
+        return self._get_resource_list(
+            rule.RuleDescription, **kwargs, memory_base=self._memory_base
+        )
