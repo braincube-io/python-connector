@@ -4,11 +4,11 @@
 
 from typing import Dict, List, Any
 
-from py_client import client
-from py_client import tools
-from py_client.data import conditions
+from braincube_connector import client
+from braincube_connector import tools
+from braincube_connector.data import conditions
 
-from py_client import parameters
+from braincube_connector import parameters
 
 import json
 import datetime

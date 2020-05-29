@@ -5,9 +5,9 @@
 import os
 import json
 
-from py_client import client
-from py_client.bases import base
-from py_client import constants
+from braincube_connector import client
+from braincube_connector.bases import base
+from braincube_connector import constants
 from tests.mock import mock_client
 
 import pytest

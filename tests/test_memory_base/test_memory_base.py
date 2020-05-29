@@ -2,8 +2,8 @@
 """Tests for the memory_base module."""
 
 import responses
-from py_client import parameters
-from py_client.memory_base import memory_base
+from braincube_connector import parameters
+from braincube_connector.memory_base import memory_base
 
 from tests.mock import mb_obj, mock_client, mock_request_entity
 
@@ -131,7 +131,7 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 
 
 def test_get_data(mocker, mb_obj):
-    mock_collect = mocker.patch("py_client.data.data.collect_data")
+    mock_collect = mocker.patch("braincube_connector.data.data.collect_data")
     var_ids = ["1", "2"]
     filters = ["A"]
     mb_obj.get_data(var_ids, filters)

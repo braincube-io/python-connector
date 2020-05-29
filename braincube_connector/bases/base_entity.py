@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from py_client import parameters
-from py_client.bases import base
-from py_client import client
+from braincube_connector import parameters
+from braincube_connector.bases import base
+from braincube_connector import client
 from typing import Dict, List, Any
 
 

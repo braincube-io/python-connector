@@ -1,12 +1,12 @@
 # Contributing
 
-To contribute to the `py_client` project, please make use of the following tools.
+To contribute to the `braincube_connector` project, please make use of the following tools.
 
 ## Install
 
 The project uses [poetry](https://github.com/python-poetry/poetry) to manage the configuration and the package building.
 
-To install `py_client` run
+To install `braincube_connector` run
 
 ```bash
 poetry install
@@ -34,13 +34,13 @@ poetry run pre-commit install
 The code style is fixed with the [black](https://github.com/psf/black) library:
 
 ```bash
-black py_client
+black braincube_connector
 ```
 
 The overall quality is checked with the `flake8` and several extensions provided by the [`wemake-python-styleguide`](https://wemake-python-stylegui.de/en/latest/pages/usage/violations/index.html#external-plugins) package.  
 
 ```bash
-flake8 py_client
+flake8 braincube_connector
 ```
 
 `flake8` has a few parameters set: `max-line-length = 100`, `inline-quotes = "`
@@ -59,7 +59,7 @@ A few violations could not be fixed and were ignored in the `.flake8` file:
 
 ### docstring style
 
-The `py_client` project uses the google docstring styles:
+The `braincube_connector` project uses the google docstring styles:
 
 ```python
 def function(val: int) -> int:
@@ -81,7 +81,7 @@ Since python 3.5, there is the possibility to use the type hints on the function
 The consistence of the type hints is checked with  [mypy](http://mypy-lang.org/):
 
 ```
-mypy py_client/
+mypy braincube_connector/
 ```
 
 ## Test
@@ -99,7 +99,7 @@ poetry run pytest tests/*
 To test the test suite coverage, use the [coverage](https://github.com/nedbat/coveragepy/blob/coverage-5.0.3/doc/index.rst) package.
 
 ```bash
-poetry run coverage run --source=py_client -m pytest tests/*
+poetry run coverage run --source=braincube_connector -m pytest tests/*
 ```
 Then generate the report:
 

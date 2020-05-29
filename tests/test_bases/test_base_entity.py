@@ -5,8 +5,8 @@
 import re
 import responses
 
-from py_client import parameters
-from py_client.bases import base_entity
+from braincube_connector import parameters
+from braincube_connector.bases import base_entity
 from tests.mock import entity_obj, mock_client, base_obj
 import pytest
 
@@ -71,7 +71,7 @@ def test_create_collection_from_path(
         assert path == "braincube/path/all/summary"
         return {"items": items[params["offset"] : (params["offset"] + params["size"])]}
 
-    rpatch = mocker.patch("py_client.client.request_ws", side_effect=mock_request_ws)
+    rpatch = mocker.patch("braincube_connector.client.request_ws", side_effect=mock_request_ws)
     parameters.set_parameter({"page_size": page_size})
     entities = base_entity.BaseEntity.create_collection_from_path(
         "{webservice}/path/all/summary", "{webservice}/path/{bcid}", page=page

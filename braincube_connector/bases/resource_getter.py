@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Tuple, Any
-from py_client import tools
+from braincube_connector import tools
 
 
 class ResourceGetter(object):

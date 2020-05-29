@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py_client.bases import base_entity
+from braincube_connector.bases import base_entity
 
 
 class MbChild(base_entity.BaseEntity):

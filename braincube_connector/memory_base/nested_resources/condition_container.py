@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 
 
-from py_client.data import conditions
+from braincube_connector.data import conditions
 from typing import Dict, List, Any
 
 

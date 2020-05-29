@@ -1,6 +1,6 @@
-site_name: 'py_client'
-repo_url: 'https://gitlab.ipleanware.com/braincube/core/python/py_client'
-site_url: 'https://braincube.pages.ipleanware.com/core/python/py_client/site/'
+site_name: 'braincube_connector'
+repo_url: 'https://gitlab.ipleanware.com/braincube/core/python/braincube_connector'
+site_url: 'https://braincube.pages.ipleanware.com/core/python/braincube_connector/site/'
 theme: 
   name: 'material'
   custom_dir: 'custom_theme'

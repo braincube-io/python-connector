@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from typing import Dict, Any, List
-from py_client.bases import base_entity
-from py_client import client
-from py_client.memory_base import memory_base
-from py_client.bases import resource_getter
+from braincube_connector.bases import base_entity
+from braincube_connector import client
+from braincube_connector.memory_base import memory_base
+from braincube_connector.bases import resource_getter
 
 
 class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):

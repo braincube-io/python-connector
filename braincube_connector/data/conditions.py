@@ -4,7 +4,7 @@
 
 from typing import Dict, List, Any, Optional
 
-from py_client import tools
+from braincube_connector import tools
 
 BCID = "bcId"
 VAR_KEY = "variable"

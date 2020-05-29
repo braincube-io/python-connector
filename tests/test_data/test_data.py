@@ -2,8 +2,8 @@
 
 """Tests for the data module."""
 
-from py_client import parameters
-from py_client.data import data
+from braincube_connector import parameters
+from braincube_connector.data import data
 
 import pytest
 import datetime
@@ -64,7 +64,7 @@ def test_extract_format_data_no_parse():
 
 @pytest.mark.parametrize("filters", [None, [{"AND": ["A", "B"]}]])
 def test_collect_data(mocker, filters, body_data):
-    rpatch = mocker.patch("py_client.client.request_ws", return_value=DATASET)
+    rpatch = mocker.patch("braincube_connector.client.request_ws", return_value=DATASET)
     received_data = data.collect_data(
         ["1", "2", "3", "4", "5"], "braincube/bcname", {"bcId": "1", "referenceDate": "4"}, filters
     )

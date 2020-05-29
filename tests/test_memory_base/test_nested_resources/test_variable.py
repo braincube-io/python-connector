@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for the variable module."""
 
-from py_client.memory_base.nested_resources import variable
+from braincube_connector.memory_base.nested_resources import variable
 from tests.mock import create_mock_var
 
 

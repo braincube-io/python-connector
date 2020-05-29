@@ -7,7 +7,7 @@ import json
 from typing import Dict, List, Optional
 from datetime import datetime, timezone
 
-from py_client import constants
+from braincube_connector import constants
 
 
 def read_config(path: str) -> Dict[str, str]:

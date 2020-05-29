@@ -3,55 +3,55 @@
 
 
 ### instances
-::: py_client.instances
+::: braincube_connector.instances
 
 ### parameters
-::: py_client.parameters
+::: braincube_connector.parameters
 
 ### data
-::: py_client.data.data
+::: braincube_connector.data.data
 
 ### data
-::: py_client.data.conditions
+::: braincube_connector.data.conditions
 
 ### client
-::: py_client.client
+::: braincube_connector.client
 
 ### base
-::: py_client.bases.base
+::: braincube_connector.bases.base
 
 ### base_entity
-::: py_client.bases.base_entity
+::: braincube_connector.bases.base_entity
 
 ### resource_getter
-::: py_client.bases.resource_getter
+::: braincube_connector.bases.resource_getter
 
 ### braincube
-::: py_client.braincube
+::: braincube_connector.braincube
 
 ### memory_base
-::: py_client.memory_base.memory_base
+::: braincube_connector.memory_base.memory_base
 
 ### mb_child
-::: py_client.memory_base.nested_resources.mb_child
+::: braincube_connector.memory_base.nested_resources.mb_child
 
 ### condition_container
-::: py_client.memory_base.nested_resources.condition_container
+::: braincube_connector.memory_base.nested_resources.condition_container
 
 ### variable
-::: py_client.memory_base.nested_resources.variable
+::: braincube_connector.memory_base.nested_resources.variable
 
 ### job
-::: py_client.memory_base.nested_resources.job
+::: braincube_connector.memory_base.nested_resources.job
 
 ### event
-::: py_client.memory_base.nested_resources.event
+::: braincube_connector.memory_base.nested_resources.event
 
 ### datagroup
-::: py_client.memory_base.nested_resources.datagroup
+::: braincube_connector.memory_base.nested_resources.datagroup
 
 ### rules
-::: py_client.memory_base.nested_resources.rule
+::: braincube_connector.memory_base.nested_resources.rule
 
 ### tools
-::: py_client.tools
+::: braincube_connector.tools

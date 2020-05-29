@@ -2,7 +2,7 @@
 
 """Tests for the mb_child module."""
 
-from py_client.memory_base.nested_resources import condition_container
+from braincube_connector.memory_base.nested_resources import condition_container
 from tests.mock import create_mock_var
 
 

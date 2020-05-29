@@ -5,6 +5,11 @@ stages:
   - test
   - documentation
   - pages
+  - publish
+
+variables:
+  TEST_PYPI_REPO_URL: "https://test.pypi.org/legacy/"
+  PROD_PYPI_REPO_URL: "https://upload.pypi.org/legacy/"
 
 setup:
   stage: setup
@@ -15,26 +20,26 @@ setup:
     paths:
       - .venv/
     expire_in: 60 mins
-  
+
 mypy:
   stage: test
   script:
-    - poetry run mypy py_client
+    - poetry run mypy braincube_connector
 
 black:
   stage: test
   script:
-    - poetry run black --check --diff py_client tests 
+    - poetry run black --check --diff braincube_connector tests
 
 lint:
   stage: test
   script:
-    - poetry run flake8 py_client
-    
+    - poetry run flake8 braincube_connector
+
 unittest:
   stage: test
   script:
-    - poetry run coverage run --source=py_client -m pytest tests/*
+    - poetry run coverage run --source=braincube_connector -m pytest tests/*
     - poetry run coverage report
     - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
   artifacts:
@@ -70,3 +75,22 @@ pages:
       - public
   only:
       - master
+
+testpypi:
+  stage: publish
+  script:
+    - poetry build
+    - poetry config repositories.test $TEST_PYPI_REPO_URL
+    - poetry publish -r test -u $PYPI_STAGING_USERNAME -p $PYPI_STAGING_PASSWORD
+  only:
+    - master
+  when: manual
+
+pypi:
+  stage: publish
+  script:
+    - poetry build
+    - poetry config repositories.prod $PROD_PYPI_REPO_URL
+    - poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
+  only:
+    - tags

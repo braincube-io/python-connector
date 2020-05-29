@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from py_client.memory_base.nested_resources import condition_container, mb_child, rule
-from py_client.bases import resource_getter
-from py_client.data import conditions
+from braincube_connector.memory_base.nested_resources import condition_container, mb_child, rule
+from braincube_connector.bases import resource_getter
+from braincube_connector.data import conditions
 from typing import Dict, Any, List
 
 BCID = "bcId"

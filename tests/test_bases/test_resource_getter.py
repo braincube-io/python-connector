@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for the resource_getter module."""
 
-from py_client.bases import resource_getter, base_entity
+from braincube_connector.bases import resource_getter, base_entity
 
 import pytest
 

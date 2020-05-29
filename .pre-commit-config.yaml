@@ -15,11 +15,11 @@ repos:
         types: [python]
     -   id: flake8
         name: Run linter
-        entry: poetry run flake8 py_client
+        entry: poetry run flake8 braincube_connector
         language: system
         verbose: true
         types: [python]
-        files: '^py_client/'
+        files: '^braincube_connector/'
     -   id: pytest
         name: Run tests
         entry: poetry run pytest tests

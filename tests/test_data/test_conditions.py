@@ -2,8 +2,8 @@
 
 """Tests for the conditions module."""
 
-from py_client.data import conditions
-from py_client.memory_base.nested_resources import mb_child
+from braincube_connector.data import conditions
+from braincube_connector.memory_base.nested_resources import mb_child
 from datetime import datetime, timezone
 import pytest
 
@@ -81,5 +81,5 @@ def test_mini_maxi_filter(mocker, create_mock_var, var_cond, var_type, filter):
 )
 def test_build_condition_filter(mocker, create_mock_var, type, to_patch, patch, positive, output):
     mock_var = create_mock_var("1", type)
-    mocker.patch("py_client.data.conditions.{0}".format(to_patch), return_value=patch)
+    mocker.patch("braincube_connector.data.conditions.{0}".format(to_patch), return_value=patch)
     assert conditions.build_condition_filter(mock_var, {"positive": positive}) == output

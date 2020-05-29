@@ -6,8 +6,8 @@ import json
 import builtins
 from datetime import datetime, timezone
 
-from py_client import tools
-from py_client import constants
+from braincube_connector import tools
+from braincube_connector import constants
 import pytest
 
 OAUTH2 = "oauth2_token"

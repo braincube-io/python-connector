@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from py_client.memory_base.nested_resources import mb_child
+from braincube_connector.memory_base.nested_resources import mb_child
 from typing import Dict, List, Any
 
 

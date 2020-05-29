@@ -2,9 +2,9 @@
 
 from typing import Dict, List, Any
 
-from py_client.bases import base_entity, resource_getter
-from py_client.data import data
-from py_client.memory_base.nested_resources import variable, event, datagroup, job, rule
+from braincube_connector.bases import base_entity, resource_getter
+from braincube_connector.data import data
+from braincube_connector.memory_base.nested_resources import variable, event, datagroup, job, rule
 
 
 class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):

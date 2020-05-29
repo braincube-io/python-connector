@@ -4,11 +4,17 @@
 
 import pytest
 
-from py_client import braincube
-from py_client.bases import base, base_entity
-from py_client import client
-from py_client.memory_base import memory_base
-from py_client.memory_base.nested_resources import variable, job, mb_child, datagroup, event
+from braincube_connector import braincube
+from braincube_connector.bases import base, base_entity
+from braincube_connector import client
+from braincube_connector.memory_base import memory_base
+from braincube_connector.memory_base.nested_resources import (
+    variable,
+    job,
+    mb_child,
+    datagroup,
+    event,
+)
 
 
 @pytest.fixture
@@ -30,7 +36,7 @@ def mock_client(mocker):
         "bcname1": ("bc1", "bcname1", {"data": 1}),
         "bcname2": ("bc2", "bcname2", {"data": 2}),
     }
-    mocker.patch("py_client.client.get_instance", mocker.Mock(return_value=instance))
+    mocker.patch("braincube_connector.client.get_instance", mocker.Mock(return_value=instance))
     return instance
 
 
@@ -53,7 +59,7 @@ def entity_obj(base_obj):
 @pytest.fixture
 def mock_request_entity(mocker, monkeypatch):
     mock_request = mocker.patch(
-        "py_client.client.request_ws",
+        "braincube_connector.client.request_ws",
         return_value={"items": [{"name": "name{}".format(i), "bcId": str(i)} for i in range(2)]},
     )
     return mock_request

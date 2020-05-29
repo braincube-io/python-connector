@@ -2,8 +2,8 @@
 
 """Customizable parameters used by the client."""
 
-from py_client import constants
-from py_client import instances
+from braincube_connector import constants
+from braincube_connector import instances
 from typing import Dict, Any
 
 _default_parameters = {
@@ -13,7 +13,7 @@ _default_parameters = {
 
 
 def set_parameter(param_dict: Dict[str, Any]):
-    """Set a py_client parameter to a new value.
+    """Set a braincube_connector parameter to a new value.
 
     Args:
         param_dict: dictionary of parameters to be updated {param_key: new_value}.
@@ -23,7 +23,7 @@ def set_parameter(param_dict: Dict[str, Any]):
 
 
 def get_parameter(param_key: str) -> Any:
-    """Get the value of a py_client parameter.
+    """Get the value of a braincube_connector parameter.
 
     Args:
         param_key: Name of the parameter to update.

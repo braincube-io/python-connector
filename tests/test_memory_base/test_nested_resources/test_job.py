@@ -27,7 +27,7 @@ def test_get_conditions(mocker, create_mock_job, create_mock_var, create_mock_ev
     mock_mb.get_event.side_effect = lambda e_id: events[e_id]
 
     mocker.patch(
-        "py_client.data.conditions.build_condition_filter",
+        "braincube_connector.data.conditions.build_condition_filter",
         side_effect=lambda var, cond: "cond{}".format(var.get_bcid()),
     )
 
@@ -87,9 +87,9 @@ def test_get_rule(mocker, create_mock_job):
 
 def test_get_rule_list(mocker, create_mock_job):
     job = create_mock_job(path="job_path")
-    gen_path = mocker.patch("py_client.bases.resource_getter.generate_path")
+    gen_path = mocker.patch("braincube_connector.bases.resource_getter.generate_path")
     mocker.patch(
-        "py_client.memory_base.nested_resources.rule.RuleDescription.create_collection_from_path"
+        "braincube_connector.memory_base.nested_resources.rule.RuleDescription.create_collection_from_path"
     )
     job.get_rule_list()
     gen_path.assert_called_once_with(

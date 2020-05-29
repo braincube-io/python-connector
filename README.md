@@ -1,18 +1,15 @@
-# py_client: a python client for Braincube
+# braincube_connector: a python client for Braincube
 
 ## Description
 
-The python package `py_client` provides a tool for datascientists to access their data on Braincube directly from python.
+The python package `braincube_connector` provides a tool for datascientists to access their data on Braincube directly from python.
 
 ## Installation
 
-Clone the [git repository]()
-
-And install the dependencies with [poetry](https://python-poetry.org/):
+Install with pip:
 
 ```bash
-cd py_client
-poetry install
+pip install braincube_connector
 ```
 
 ## Usage
@@ -22,7 +19,7 @@ poetry install
 A client can be inialized manually from a custom configuration file.
 
 ```python
-from py_client import client
+from braincube_connector import client
 
 client.get_instance(config_file="pathto/config.json")
 ```
@@ -34,7 +31,7 @@ client.get_instance(config_file="pathto/config.json")
 
 To obtain a list of all the available `Braincube` entities with a client:
 ```python
-from py_client import braincube
+from braincube_connector import braincube
 
 braincube.get_braincube_list()
 ```
@@ -186,7 +183,7 @@ df = pd.DataFrame(data)
 
 **Note:** By default the dates are not parsed to `datetime` objects in order to speed up the `get_data` function but it is possible to enable the parsing:
 ```python
-from py_client import parameters
+from braincube_connector import parameters
 parameters.set_parameter({"parse_date": True})
 ```
 
@@ -261,7 +258,7 @@ Here is a selection of the most common types of filters:
 The library parameters can be set to custom values:
 
 ```python
-from py_client import parameters
+from braincube_connector import parameters
 
 # Change the request pagination size to 10
 parameters.set_parameter({"page_size": 10})
@@ -273,7 +270,7 @@ parameters.set_parameter({"parse_date": True})
 
 ## Configuration
 
-In order to connect to the web service, the client needs a Oauth2 token saved in a configuration file. For simplicity it is recommended to use a helper [script](https://gitlab.ipleanware.com/braincube/core/python/braincube_token_getter) to get the token and to setup the configuration file as follows:
+In order to connect to the web service, the client needs a Oauth2 token saved in a configuration file. For simplicity it is recommended to use a helper [braincube-token-getter](https://pypi.org/project/braincube-token-getter/) to get the token and to setup the configuration file as follows:
 
 `config.json`
 

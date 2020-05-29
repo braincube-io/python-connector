@@ -4,9 +4,9 @@
 
 from typing import Dict, Tuple, Any
 
-from py_client import tools
-from py_client.bases import base
-from py_client import instances
+from braincube_connector import tools
+from braincube_connector.bases import base
+from braincube_connector import instances
 
 import requests
 

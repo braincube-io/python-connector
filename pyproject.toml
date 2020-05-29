@@ -1,11 +1,20 @@
 [tool.poetry]
-name = "py_client"
-version = "0.0.0"
+version = "2.0.0"
+name = "braincube-connector"
 description = "python client to the braincube web services"
 authors = ["Braincube <io@braincube.com>"]
 license = "MIT"
-repository = "https://gitlab.ipleanware.com/braincube/core/python/py_client"
-homepage = "https://gitlab.ipleanware.com/braincube/core/python/py_client"
+packages = [
+	{ include = "braincube_connector" },
+]
+classifiers = [
+		"Programming Language :: Python :: 3.8",
+		"Programming Language :: Python :: 3.7",
+		"Programming Language :: Python :: 3.6",
+    "Operating System :: OS Independent"
+]
+keywords = ["bc_connector", "API", "braincube"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -35,4 +44,3 @@ exclude_lines = [
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-
