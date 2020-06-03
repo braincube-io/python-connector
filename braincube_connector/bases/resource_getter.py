@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Tuple, Any
+from typing import Tuple, Any, Union
 from braincube_connector import tools
 
 
@@ -11,7 +11,9 @@ class ResourceGetter(object):
         """Initialize ResourceGetter."""
         self._path = ""
 
-    def _get_resource(self, resource_class: Any, bcid: str, singleton_path: str = "", **kwargs):
+    def _get_resource(
+        self, resource_class: Any, bcid: Union[str, int], singleton_path: str = "", **kwargs,
+    ):
         """Get a resource from its bcId.
 
         Args:
@@ -26,10 +28,10 @@ class ResourceGetter(object):
         return resource_class.create_singleton_from_path(
             *generate_path(
                 self._path,
-                resource_class.entity_path.replace("{bcid}", bcid),
+                resource_class.entity_path.replace("{bcid}", str(bcid)),
                 resource_class.request_one_path if not singleton_path else singleton_path,
             ),
-            **kwargs
+            **kwargs,
         )
 
     def _get_resource_list(self, resource_class: Any, collection_path: str = "", **kwargs):
@@ -50,7 +52,7 @@ class ResourceGetter(object):
                 resource_class.request_many_path if not collection_path else collection_path,
                 request_list=True,
             ),
-            **kwargs
+            **kwargs,
         )
 
 

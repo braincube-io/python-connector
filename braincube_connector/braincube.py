@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 from braincube_connector.bases import base_entity
 from braincube_connector import client
 from braincube_connector.memory_base import memory_base
@@ -20,7 +20,7 @@ class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):
         """
         super().__init__(bcid, name, metadata, "braincube/{bc_name}".format(bc_name=name))
 
-    def get_memory_base(self, mb_bcid: str) -> memory_base.MemoryBase:
+    def get_memory_base(self, mb_bcid: Union[str, int]) -> memory_base.MemoryBase:
         """Get a MemoryBase object from its id.
 
         Args:

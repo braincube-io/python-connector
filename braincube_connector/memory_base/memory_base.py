@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 
 from braincube_connector.bases import base_entity, resource_getter
 from braincube_connector.data import data
@@ -14,7 +14,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
     request_one_path = "extended"
     request_many_path = "{webservice}/mb/all/summary"
 
-    def get_variable(self, bcid: str) -> variable.VariableDescription:
+    def get_variable(self, bcid: Union[str, int]) -> variable.VariableDescription:
         """Get a variable description from its bcId.
 
         Args:
@@ -36,7 +36,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         """
         return self._get_resource_list(variable.VariableDescription, **kwargs)
 
-    def get_job(self, bcid: str) -> job.JobDescription:
+    def get_job(self, bcid: Union[str, int]) -> job.JobDescription:
         """Get a job description from its bcId.
 
         Args:
@@ -58,7 +58,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         """
         return self._get_resource_list(job.JobDescription, **kwargs)
 
-    def get_datagroup(self, bcid: str) -> datagroup.DataGroup:
+    def get_datagroup(self, bcid: Union[str, int]) -> datagroup.DataGroup:
         """Get a DataGroup from its bcId.
 
         Args:
@@ -80,7 +80,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         """
         return self._get_resource_list(datagroup.DataGroup, **kwargs)
 
-    def get_event(self, bcid: str) -> event.Event:
+    def get_event(self, bcid: Union[str, int]) -> event.Event:
         """Get a Event from its bcId.
 
         Args:
@@ -102,7 +102,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         """
         return self._get_resource_list(event.Event, **kwargs)
 
-    def get_rule(self, bcid: str) -> rule.RuleDescription:
+    def get_rule(self, bcid: Union[str, int]) -> rule.RuleDescription:
         """Get a variable description from its bcId.
 
         Args:
@@ -141,7 +141,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         bc_path = (self._path.split("{webservice}"))[0]
         return data.collect_data(var_ids, bc_path, self._metadata, filters)
 
-    def _get_resource(self, resource_class: Any, bcid: str):  # type: ignore
+    def _get_resource(self, resource_class: Any, bcid: Union[str, int]):  # type: ignore
         """Get a resource from its bcId.
 
         Args:

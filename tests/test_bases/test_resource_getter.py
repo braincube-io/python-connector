@@ -38,8 +38,11 @@ def test_generate_path(request_list, expected_req_path):
     assert expected_req_path == returned_req_path
 
 
-def test_get_resource(mock_entity_class, resource_parent):
-    resource_parent._get_resource(mock_entity_class, bcid="1")
+@pytest.mark.parametrize(
+    "bcid", [1, "1"],
+)
+def test_get_resource(mock_entity_class, resource_parent, bcid):
+    resource_parent._get_resource(mock_entity_class, bcid=bcid)
     mock_entity_class.create_singleton_from_path.assert_called_once_with(
         "parent_path/entity/1/extended", "parent_path/entity/1"
     )
