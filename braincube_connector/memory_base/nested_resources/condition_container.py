@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*
 
 
+from typing import Any, Dict, List
+
 from braincube_connector.data import conditions
-from typing import Dict, List, Any
 
 
 class ConditionContainer(object):

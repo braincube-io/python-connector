@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import Tuple, Any, Union
+from typing import Any, Tuple, Union
+
 from braincube_connector import tools
 
 

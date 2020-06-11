@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from typing import Any, Dict, List
+
 from braincube_connector.memory_base.nested_resources import mb_child
-from typing import Dict, List, Any
 
 
 class DataGroup(mb_child.MbChild):

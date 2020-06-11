@@ -2,9 +2,9 @@
 
 """Customizable parameters used by the client."""
 
-from braincube_connector import constants
-from braincube_connector import instances
-from typing import Dict, Any
+from typing import Any, Dict
+
+from braincube_connector import constants, instances
 
 _default_parameters = {
     "page_size": constants.DEFAULT_PAGE_SIZE,

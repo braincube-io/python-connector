@@ -4,7 +4,7 @@
 
 import responses
 
-from braincube_connector import parameters, braincube
+from braincube_connector import braincube, parameters
 from tests.mock import bc_obj, mock_client, mock_request_entity
 
 MB_URL = "https://api.a.b/braincube/bcname/braincube/mb/{bcid}/extended"

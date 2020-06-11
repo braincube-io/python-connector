@@ -2,13 +2,12 @@
 
 """This module manages the user identity and to perform the requests to the API web services."""
 
-from typing import Dict, Tuple, Any
-
-from braincube_connector import tools
-from braincube_connector.bases import base
-from braincube_connector import instances
+from typing import Any, Dict, Tuple
 
 import requests
+
+from braincube_connector import instances, tools
+from braincube_connector.bases import base
 
 INSTANCE_KEY = "client"
 

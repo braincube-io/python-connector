@@ -4,16 +4,15 @@
 
 import pytest
 
-from braincube_connector import braincube
+from braincube_connector import braincube, client
 from braincube_connector.bases import base, base_entity
-from braincube_connector import client
 from braincube_connector.memory_base import memory_base
 from braincube_connector.memory_base.nested_resources import (
-    variable,
-    job,
-    mb_child,
     datagroup,
     event,
+    job,
+    mb_child,
+    variable,
 )
 
 

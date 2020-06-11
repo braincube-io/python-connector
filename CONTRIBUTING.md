@@ -47,6 +47,8 @@ flake8 braincube_connector
 
 A few violations could not be fixed and were ignored in the `.flake8` file:  
 
+- [`I001` isort found an import in the wrong position](https://pypi.org/project/flake8-isort/)
+  → Incompatible with `WPS318`, `WPS319`, and `black`.
 - [`I002`: no configuration found (.isort.cfg or [isort] in configs)](https://github.com/gforcada/flake8-isort#error-codes)
 - [`DAR401`: Missing exception(s) in Raises section: -r KeyError](https://github.com/terrencepreilly/darglint#error-codes)
 - [`WPS326`: Found implicit string concatenation](https://wemake-python-stylegui.de/en/latest/pages/usage/violations/consistency.html#wemake_python_styleguide.violations.consistency.ImplicitStringConcatenationViolation)
@@ -64,10 +66,10 @@ The `braincube_connector` project uses the google docstring styles:
 ```python
 def function(val: int) -> int:
 	""" Description of the functions.
-	
+
 	Args:
 		val: val parameter.
-	
+
 	Return:
 		a multiplication of val.
 	"""
@@ -94,7 +96,7 @@ To run the tests, simply run the following command:
 poetry run pytest tests/*
 ```
 
-### coverage 
+### coverage
 
 To test the test suite coverage, use the [coverage](https://github.com/nedbat/coveragepy/blob/coverage-5.0.3/doc/index.rst) package.
 
@@ -112,11 +114,11 @@ poetry run coverage report # for a report in the shell
 
 The documentation is built with [mkdocs](https://www.mkdocs.org/) using the [material](https://squidfunk.github.io/mkdocs-material/) theme, modified to match braincube's commons.
 
-To get the braincube modification on the style, run the following commands: 
+To get the braincube modification on the style, run the following commands:
 
 ```bash
 git clone https://gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
-cp -r gitlabci-commons/braincube-pages/docs/* docs/ 
+cp -r gitlabci-commons/braincube-pages/docs/* docs/
 cp -r gitlabci-commons/braincube-pages/custom_theme .
 ```
 
@@ -124,7 +126,7 @@ cp -r gitlabci-commons/braincube-pages/custom_theme .
 
 Additional files can be added to the doc by creating a markdown file within the `docs/` directory and creating referencing to it under the *nav* section in the `mkdocs.yml` file.
 
-*mkdocs* uses `mkdocstrings` to parse the docstrings with a module. This is done automatically when the symbole `::: modulename` is found in one of the markdown source files. 
+*mkdocs* uses `mkdocstrings` to parse the docstrings with a module. This is done automatically when the symbole `::: modulename` is found in one of the markdown source files.
 
 Finally compile the documentation with mkdocs:
 
@@ -146,7 +148,7 @@ bash docs/build_doc.sh serve
 
 At every push on the project the  CI executes a set of action defined in the `.gitlab-ci.yml` script.
 
-- Check the style (with `flake8`) 
+- Check the style (with `flake8`)
 - Check the type hint consistency (with `mypy`)
 - Run the test suite (with `pytest`)
 - Evaluate the test coverage (with `coverage`)

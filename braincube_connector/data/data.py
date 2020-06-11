@@ -2,16 +2,12 @@
 
 """Module used to collect data from braindata."""
 
-from typing import Dict, List, Any
-
-from braincube_connector import client
-from braincube_connector import tools
-from braincube_connector.data import conditions
-
-from braincube_connector import parameters
-
-import json
 import datetime
+import json
+from typing import Any, Dict, List
+
+from braincube_connector import client, parameters, tools
+from braincube_connector.data import conditions
 
 DATA_PATH = "braindata/{mb_id}/LF"
 DATACOL = "data"

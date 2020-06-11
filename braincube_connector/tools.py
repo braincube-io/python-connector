@@ -2,10 +2,10 @@
 
 """A set of tools to automate tasks for the python client."""
 
-import os
 import json
-from typing import Dict, List, Optional
+import os
 from datetime import datetime, timezone
+from typing import Dict, List, Optional
 
 from braincube_connector import constants
 

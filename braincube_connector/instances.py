@@ -2,7 +2,7 @@
 
 """The modules contains the singleton instances of the package in a dictionary."""
 
-from typing import Dict, Any
+from typing import Any, Dict
 
 instances: Dict[str, Any] = {"parameter_set": {}}
 

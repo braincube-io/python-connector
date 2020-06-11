@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from braincube_connector import parameters
+from typing import Any, Dict, List
+
+from braincube_connector import client, parameters
 from braincube_connector.bases import base
-from braincube_connector import client
-from typing import Dict, List, Any
 
 
 class BaseEntity(base.Base):

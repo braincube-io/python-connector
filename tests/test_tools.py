@@ -2,13 +2,13 @@
 
 """Tests for the common tools."""
 
-import json
 import builtins
+import json
 from datetime import datetime, timezone
 
-from braincube_connector import tools
-from braincube_connector import constants
 import pytest
+
+from braincube_connector import constants, tools
 
 OAUTH2 = "oauth2_token"
 CONF_PATH = "~/mock/path/config.json"

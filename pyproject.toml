@@ -1,5 +1,5 @@
 [tool.poetry]
-version = "2.0.1"
+version = "2.0.2"
 name = "braincube-connector"
 description = "python client to the braincube web services"
 authors = ["Braincube <io@braincube.com>"]
@@ -18,6 +18,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6"
+requests = "^2.23.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.761"
@@ -25,7 +26,7 @@ responses = "^0.10.9"
 coverage = "^5.0.3"
 black = "^19.10b0"
 wemake-python-styleguide = "^0.13.4"
-pytest = "^5.3.5"
+pytest = "^5.4.3"
 pytest_mock = "^2.0.0"
 pre-commit = "^2.0.1"
 mkdocs = "^1.0.4"

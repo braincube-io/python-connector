@@ -2,8 +2,7 @@
 
 """Tests for the data module."""
 
-from braincube_connector import parameters
-from braincube_connector import instances
+from braincube_connector import instances, parameters
 
 
 def test_set_parameters(mocker):

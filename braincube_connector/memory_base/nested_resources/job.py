@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from braincube_connector.memory_base.nested_resources import condition_container, mb_child, rule
+from typing import Any, Dict, List
+
 from braincube_connector.bases import resource_getter
 from braincube_connector.data import conditions
-from typing import Dict, Any, List
+from braincube_connector.memory_base.nested_resources import condition_container, mb_child, rule
 
 BCID = "bcId"
 VARIABLE = "variable"

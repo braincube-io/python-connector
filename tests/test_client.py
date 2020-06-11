@@ -2,19 +2,16 @@
 
 """Tests for the client module."""
 
-import os
 import json
-
-from braincube_connector import client
-from braincube_connector.bases import base
-from braincube_connector import constants
-from tests.mock import mock_client
+import os
 
 import pytest
-
 import responses
 from requests.exceptions import HTTPError
 
+from braincube_connector import client, constants
+from braincube_connector.bases import base
+from tests.mock import mock_client
 from tests.test_bases.test_base import LOAD_URL
 
 
