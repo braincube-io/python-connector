@@ -65,28 +65,44 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[str, Any]:
     return formatted_dataset
 
 
+def get_braindata_memory_base_info(braincube_path: str, memory_base_bcid: str) -> Dict[str, str]:
+    """Get the memory base informations from the braindata.
+
+    Args:
+        braincube_path: Path of the memory base's parent braincube.
+        memory_base_bcid: memory base's bcid.
+
+    Returns:
+        Json dictionary with the memory base informations.
+    """
+    long_mb_id = "mb{bcid}".format(bcid=memory_base_bcid)
+    braindata_info_path = "braindata/{mb_id}/simple".format(mb_id=long_mb_id)
+    data_path = tools.join_path([braincube_path, braindata_info_path.format()])
+    return client.request_ws(data_path)
+
+
 def collect_data(
     variable_ids: List[str],
-    braincube_path: str,
-    mb_metadata: Dict[str, str],
+    memory_base: "MemoryBase",  # type: ignore  # noqa
     filters: List[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Get data from the memory bases.
 
     Args:
         variable_ids: bcIds of variables for which the data are collected.
-        braincube_path: path of the braincube.
-        mb_metadata: metadata of the memory bases.
+        memory_base: A memory base on which to collect the data.
         filters: List of fileter to apply to the request.
 
     Returns:
         A dictionary of data list.
     """
-    long_mb_id = "mb{bcid}".format(bcid=mb_metadata["bcId"])
+    long_mb_id = "mb{bcid}".format(bcid=memory_base.get_bcid())
     variable_ids = [_expand_var_id(long_mb_id, vv) for vv in variable_ids]
-    data_path = tools.join_path([braincube_path, DATA_PATH.format(mb_id=long_mb_id)])
+    data_path = tools.join_path(
+        [memory_base.get_braincube_path(), DATA_PATH.format(mb_id=long_mb_id)]
+    )
     body_data = {
-        "order": _expand_var_id(long_mb_id, mb_metadata["referenceDate"]),
+        "order": memory_base.get_order_variable_long_id(),
         "definitions": variable_ids,
         "context": {"dataSource": long_mb_id},
     }

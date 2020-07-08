@@ -12,6 +12,14 @@ class ResourceGetter(object):
         """Initialize ResourceGetter."""
         self._path = ""
 
+    def get_braincube_path(self) -> str:
+        """Get an object's parent braincube path.
+
+        Returns:
+            A braincube path.
+        """
+        return (self._path.split("{webservice}"))[0]
+
     def _get_resource(
         self, resource_class: Any, bcid: Union[str, int], singleton_path: str = "", **kwargs,
     ):

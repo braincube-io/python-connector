@@ -138,8 +138,20 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         Returns:
             A dictionary of data list.
         """
-        bc_path = (self._path.split("{webservice}"))[0]
-        return data.collect_data(var_ids, bc_path, self._metadata, filters)
+        return data.collect_data(var_ids, self, filters)
+
+    def get_order_variable_long_id(self) -> str:
+        """Get the long id of the memory base order variable.
+
+        Returns:
+            A variable long id.
+        """
+        infos = data.get_braindata_memory_base_info(self.get_braincube_path(), self._bcid)
+        for order_key in ("reference", "order"):
+            order_id = infos.get(order_key)
+            if order_id:
+                return order_id
+        raise KeyError("The memory base contains neither a reference nor a order key.")
 
     def _get_resource(self, resource_class: Any, bcid: Union[str, int]):  # type: ignore
         """Get a resource from its bcId.

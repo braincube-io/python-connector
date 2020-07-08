@@ -4,7 +4,6 @@
 
 from braincube_connector import parameters
 from braincube_connector.data import data
-
 import pytest
 import datetime
 import json
@@ -64,12 +63,24 @@ def test_extract_format_data_no_parse():
 
 @pytest.mark.parametrize("filters", [None, [{"AND": ["A", "B"]}]])
 def test_collect_data(mocker, filters, body_data):
+    mb_obj = mocker.Mock()
+    mb_obj.get_bcid.return_value = "1"
+    mb_obj.get_order_variable_long_id.return_value = "mb1/d4"
+    mb_obj.get_braincube_path.return_value = "braincube/bcname"
+
     rpatch = mocker.patch("braincube_connector.client.request_ws", return_value=DATASET)
-    received_data = data.collect_data(
-        ["1", "2", "3", "4", "5"], "braincube/bcname", {"bcId": "1", "referenceDate": "4"}, filters
-    )
+    received_data = data.collect_data(["1", "2", "3", "4", "5"], mb_obj, filters)
     if filters:
         body_data["context"]["filter"] = filters[0]
     rpatch.assert_called_with(
         "braincube/bcname/braindata/mb1/LF", body_data=json.dumps(body_data), rtype="POST"
     )
+
+
+def test_get_braindata_memory_base_info(mocker):
+    mb_id = 1
+    bc_path = "braincube/name"
+    expected_endpoint = "{bc_path}/braindata/mb{mb_id}/simple".format(bc_path=bc_path, mb_id=mb_id)
+    request_patch = mocker.patch("braincube_connector.client.request_ws")
+    data.get_braindata_memory_base_info(bc_path, mb_id)
+    request_patch.assert_called_once_with(expected_endpoint)

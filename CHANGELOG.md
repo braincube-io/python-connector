@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0 - 2020-07-08](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.2...2.1.0)
+
+### FIXED
+ - possibility to use other memory base references than dates.
+
+### Added
+ - a get_order_variable_long_id method to memory_bases, get_braindata_memory_base_info to the data library
+
+### Modified
+ - the data's function collect_data now takes a memory_base instead of its metadata as a parameter.
+
 ## [2.0.2 - 2020-06-11](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.1...2.0.2)
 
 ### FIXED

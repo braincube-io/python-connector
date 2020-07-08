@@ -53,3 +53,10 @@ def test_get_resource_list(mock_entity_class, resource_parent):
     mock_entity_class.create_collection_from_path.assert_called_once_with(
         "parent_path/entity/all/extended", "parent_path/entity/{bcid}"
     )
+
+
+def test_get_braincube_path(mock_entity_class):
+    path_part1 = "braincube/name/"
+    path_part2 = "/path_end"
+    mock_entity_class._path = path_part1 + "{webservice}" + path_part2
+    mock_entity_class.get_braincube_path() == path_part1

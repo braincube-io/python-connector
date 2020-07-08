@@ -135,5 +135,21 @@ def test_get_data(mocker, mb_obj):
     var_ids = ["1", "2"]
     filters = ["A"]
     mb_obj.get_data(var_ids, filters)
-    mock_collect.assert_called_with(var_ids, "braincube/bcname/", mb_obj._metadata, filters)
-    NotImplemented
+    mock_collect.assert_called_with(var_ids, mb_obj, filters)
+
+
+@pytest.mark.parametrize(
+    "mb_infos,order_id",
+    [({"reference": "id1"}, "id1"), ({"order": "id2"}, "id2"), ({"DataDefs": {}}, "ERROR")],
+)
+def test_get_order_variable_long_id(mocker, mb_obj, mb_infos, order_id):
+    mocker.patch(
+        "braincube_connector.data.data.get_braindata_memory_base_info", return_value=mb_infos
+    )
+    if order_id == "ERROR":
+        with pytest.raises(
+            KeyError, match="The memory base contains neither a reference nor a order key."
+        ):
+            mb_obj.get_order_variable_long_id()
+    else:
+        assert mb_obj.get_order_variable_long_id() == order_id
