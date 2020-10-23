@@ -9,7 +9,7 @@ stages:
   - test
   - documentation
   - pages
-  - publish
+  - deploy
 
 variables:
   TEST_PYPI_REPO_URL: "https://test.pypi.org/legacy/"
@@ -81,7 +81,7 @@ pages:
       - master
 
 testpypi:
-  stage: publish
+  stage: deploy
   script:
     - poetry build
     - poetry config repositories.test $TEST_PYPI_REPO_URL
@@ -91,7 +91,7 @@ testpypi:
   when: manual
 
 pypi:
-  stage: publish
+  stage: deploy
   script:
     - poetry build
     - poetry config repositories.prod $PROD_PYPI_REPO_URL
@@ -100,5 +100,4 @@ pypi:
     - tags
 
 notification:
-  stage: publish
   extends: .send_changelog

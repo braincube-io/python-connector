@@ -23,29 +23,31 @@ def read_config(path: str) -> Dict[str, str]:
 
     try:
         with open(config_path, "r") as fconf:
-            config = json.loads(fconf.readline())
+            return json.loads(fconf.readline())
     except FileNotFoundError:
         raise FileNotFoundError("Token file {cpath} not found".format(cpath=config_path))
-    for key in ("domain", "oauth2_token"):
-        if key not in config:
-            raise KeyError("The configuration file needs a {key} key.".format(key=key))
-    return config
 
 
 def generate_header(
-    sso_token: str, content_type: str = "application/json", accept: str = "application/json",
+    authentication: Dict[str, str],
+    content_type: str = "application/json",
+    accept: str = "application/json",
 ) -> Dict[str, str]:
     """Generate a header for the requests.
 
     Args:
-        sso_token: a sso token.
+        authentication: The authentication part of the header.
         content_type: file format of the content.
         accept: file format accept
 
     Returns:
         A ready to use header.
     """
-    return {"Content-Type": content_type, "Accept": accept, "IPLSSOTOKEN": sso_token}
+    if len(authentication) > 1:
+        raise KeyError("Authentication should use only one method.")
+    header = dict(authentication)
+    header.update({"Content-Type": content_type, "Accept": accept})
+    return header
 
 
 def strip_path(path: str) -> str:
@@ -101,22 +103,29 @@ def generate_url(domain: str, path: str) -> str:
     return "https://{domain}/{path}".format(domain=domain, path=path)
 
 
-def check_config_file(config_path: str = "") -> str:
+def check_config(
+    config_dict: Optional[Dict[str, str]] = None, config_file: Optional[str] = None
+) -> Dict[str, str]:
     """Choose the configuration according the preset rules.
 
     Args:
-        config_path: Provided path to the configuration.
+        config_file: A path to a configuration file.
+        config_dict: A configuration dictionary.
 
     Returns:
         Path to the first valid configuration file found.
     """
-    if config_path == "":
-        if os.path.exists(constants.DEFAULT_CONFIG):
-            return constants.DEFAULT_CONFIG
-        elif os.path.exists(constants.DEFAULT_HOME_CONFIG):
-            return constants.DEFAULT_HOME_CONFIG
-    elif os.path.exists(config_path):
-        return config_path
+    if config_dict:
+        return config_dict
+
+    if config_file is not None and os.path.exists(config_file):
+        return read_config(config_file)
+
+    if os.path.exists(constants.DEFAULT_CONFIG):
+        return read_config(constants.DEFAULT_CONFIG)
+
+    if os.path.exists(constants.DEFAULT_HOME_CONFIG):
+        return read_config(constants.DEFAULT_HOME_CONFIG)
 
     raise FileNotFoundError(constants.NO_CONFIG_MSG)
 

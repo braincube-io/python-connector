@@ -4,7 +4,7 @@
 
 import pytest
 
-from braincube_connector import braincube, client
+from braincube_connector import braincube, client, constants
 from braincube_connector.bases import base, base_entity
 from braincube_connector.memory_base import memory_base
 from braincube_connector.memory_base.nested_resources import (
@@ -22,14 +22,13 @@ def mock_client(mocker):
     mocker.patch.object(client.Client, "__init__", lambda x: None)
     instance = client.Client()
     instance._domain = "a.b"
-    instance._oauth2_token = "abcd"
-    instance._sso_token = "efgh"
+    instance._pa_token = "abcd"
     instance._timeout = 60
     instance._verify = True
     instance._headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "IPLSSOTOKEN": instance._sso_token,
+        constants.PAT_KEY: instance._pa_token,
     }
     instance._braincube_infos = {
         "bcname1": ("bc1", "bcname1", {"data": 1}),

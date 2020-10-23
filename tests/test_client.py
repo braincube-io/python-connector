@@ -9,7 +9,7 @@ import pytest
 import responses
 from requests.exceptions import HTTPError
 
-from braincube_connector import client, constants
+from braincube_connector import client, constants, instances
 from braincube_connector.bases import base
 from tests.mock import mock_client
 from tests.test_bases.test_base import LOAD_URL
@@ -30,9 +30,12 @@ def test_request_ws_succes_get(mock_client):
     data = mock_client.request_ws("path", body_data={"data": 2})
     assert data["val"] == 1
     assert responses.calls[0].request.body == "data=2"
-    assert responses.calls[0].request.headers["IPLSSOTOKEN"] == mock_client._headers["IPLSSOTOKEN"]
-    data = mock_client.request_ws("path", headers={"IPLSSOTOKEN": "ijkl"})
-    assert responses.calls[1].request.headers["IPLSSOTOKEN"] == "ijkl"
+    assert (
+        responses.calls[0].request.headers[constants.PAT_KEY]
+        == mock_client._headers[constants.PAT_KEY]
+    )
+    data = mock_client.request_ws("path", headers={constants.PAT_KEY: "ijkl"})
+    assert responses.calls[1].request.headers[constants.PAT_KEY] == "ijkl"
 
 
 @responses.activate
@@ -44,23 +47,34 @@ def test_request_ws_succes_post(mock_client):
 
 
 @responses.activate
-def test_request_access(mock_client):
-    """Test the _request_sso_token method"""
-    path = "sso-server/rest/session/openWithToken"
+def test_request_braincubes(mock_client):
+    """Test the _request_braincubes method"""
+    path = "sso-server/ws/user/me"
     mock_url = "https://a.b/" + path
-    sso_token = "efgh"
     returned_json = {
-        "token": sso_token,
         "accessList": [{"product": {"productId": "id1234", "name": "testbraincube",}}],
     }
+    mock_client._authentication = {"token": "abcd"}
     responses.add(responses.GET, mock_url, json=returned_json, status=200)
-    sso_token, braincubes = mock_client._request_access()
-    assert sso_token == sso_token
-    assert responses.calls[0].request.headers["Authorization"] == "Bearer {}".format(
-        mock_client._oauth2_token
-    )
+    braincubes = mock_client._request_braincubes()
+    assert responses.calls[0].request.headers["token"] == "abcd"
     assert len(braincubes) == 1
     assert "testbraincube" in braincubes
+
+
+@responses.activate
+def test_build_authentication_oauth2(mock_client):
+    """Test the build authentication function for an oauth2 token."""
+    mock_url = "https://a.b/sso-server/rest/session/openWithToken"
+    responses.add(responses.GET, mock_url, status=200, json={"token": "abcd"})
+    header = mock_client._build_authentication({constants.OAUTH2_KEY: "efgh"})
+    assert header == {constants.SSO_TOKEN_KEY: "abcd"}
+
+
+def test_build_authentication_pat(mock_client):
+    """Test the build authentication function for an personal access token."""
+    header = mock_client._build_authentication({constants.API_KEY: "abcd"})
+    assert header == {constants.PAT_KEY: "abcd"}
 
 
 def test_create_client_no_config(mocker):
@@ -76,28 +90,29 @@ def test_str(mock_client):
 
 def test_create_client(mocker):
     """Test the Client initialization."""
-    mopen = mocker.mock_open(read_data=json.dumps({"oauth2_token": "abcd", "domain": "mock.com"}))
-    p_mock = mocker.patch("builtins.open", mopen, create=True)
-    check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=True))
+    check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=False))
     sso_mock = mocker.patch.object(
-        client.Client, "_request_access", lambda x: ("efgh", [base.Base("test")])
+        client.Client, "_request_braincubes", lambda x: [base.Base("test")]
     )
-    test_client = client.get_instance(config_file="conf.json")
-
+    mock_add_instance = mocker.patch(
+        "braincube_connector.client.instances.add_instance", side_effect=instances.add_instance
+    )
+    test_client = client.get_instance(
+        config_dict={constants.API_KEY: "abcd", constants.DOMAIN_KEY: "mock.com"}
+    )
     assert test_client._domain == "mock.com"
-    assert test_client._oauth2_token == "abcd"
-    assert test_client._sso_token == "efgh"
+    assert test_client._authentication == {constants.PAT_KEY: "abcd"}
     assert test_client._timeout == 60
     assert test_client._verify == True
     assert test_client._headers == {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "IPLSSOTOKEN": "efgh",
+        constants.PAT_KEY: "abcd",
     }
 
     test_client2 = client.get_instance()
     assert test_client is test_client2
-    assert mopen.call_count == 1
+    assert mock_add_instance.call_count == 1
 
     with pytest.raises(Exception, match="A client has already been inialized."):
         client.Client()

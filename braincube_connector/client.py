@@ -6,7 +6,7 @@ from typing import Any, Dict, Tuple
 
 import requests
 
-from braincube_connector import instances, tools
+from braincube_connector import instances, tools, constants
 from braincube_connector.bases import base
 
 INSTANCE_KEY = "client"
@@ -15,27 +15,32 @@ INSTANCE_KEY = "client"
 class Client(base.Base):
     """A Client handles html requests."""
 
-    def __init__(self, config_file: str = "", timeout: int = 60, verify_cert: bool = True) -> None:
+    def __init__(
+        self,
+        config_file: str = None,
+        config_dict: Dict[str, str] = None,
+        timeout: int = 60,
+        verify_cert: bool = True,
+    ) -> None:
         """Initialize Client.
 
         Args:
-            config_file: Path of the configuration file.
+            config_file: A path to a configuration file.
+            config_dict: A configuration dictionary.
             timeout: Combined connect and read timeout for HTTP requests, in seconds.
             verify_cert: Verify SSL certificate.
         """
         if instances.get_instance(INSTANCE_KEY) is not None:
             raise Exception("A client has already been inialized.")
         else:
-            config_file = tools.check_config_file(config_file)
-            config = tools.read_config(config_file)
-            self._domain = tools.strip_domain(config["domain"])
+            config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
+            self._domain = tools.strip_domain(config_dict[constants.DOMAIN_KEY])
             self._verify = verify_cert
-            self._oauth2_token = config["oauth2_token"]
-            token, available_braincube_infos = self._request_access()
-            self._sso_token = token
+            self._authentication = self._build_authentication(config_dict)
+            available_braincube_infos = self._request_braincubes()
             self._braincube_infos = available_braincube_infos
             self._timeout = timeout
-            self._headers = tools.generate_header(sso_token=self._sso_token)
+            self._headers = tools.generate_header(authentication=self._authentication)
 
     def __str__(self) -> str:
         """Produce informal representation of the Client object.
@@ -86,20 +91,44 @@ class Client(base.Base):
         """
         return self._braincube_infos
 
-    def _request_access(self) -> Tuple[str, Dict[str, Any]]:
-        """Request a sso token access and a list of available braincubes.
+    def _request_braincubes(self) -> Dict[str, Any]:
+        """Request the accessible braincube to the sso server.
 
         Returns:
-            a sso token and a list of available braincubes.
+            a list of available braincubes.
         """
-        headers = {"Authorization": "Bearer {oauth2}".format(oauth2=self._oauth2_token)}
-        access_data = self.request_ws(
-            "sso-server/rest/session/openWithToken", headers=headers, api=False
-        )
-        braincube_instance_infos = {
+        headers = self._authentication
+        access_data = self.request_ws("sso-server/ws/user/me", headers=headers, api=False)
+        return {
             bc["product"]["name"]: _extract_braincube_param(bc) for bc in access_data["accessList"]
         }
-        return access_data["token"], braincube_instance_infos
+
+    def _build_authentication(self, config_dict: Dict[str, str]):
+        """Automatically identify the authentication method and build the authentication header.
+
+        Args:
+            config_dict: a configuration dictionary.
+
+        Returns:
+            a dictionary containing an authentication header.
+        """
+        if constants.API_KEY in config_dict:
+            return {constants.PAT_KEY: config_dict.get(constants.API_KEY)}
+        elif constants.OAUTH2_KEY in config_dict:
+            headers = {
+                "Authorization": "Bearer {oauth2}".format(
+                    oauth2=config_dict.get(constants.OAUTH2_KEY)
+                )
+            }
+            access_data = self.request_ws(
+                "sso-server/rest/session/openWithToken", headers=headers, api=False
+            )
+            return {constants.SSO_TOKEN_KEY: access_data["token"]}
+        raise KeyError(
+            "The configuration file needs a {0}  or a {1} token.".format(
+                constants.OAUTH2_KEY, constants.PAT_KEY
+            )
+        )
 
 
 def _extract_braincube_param(metadata: Dict[str, Any]) -> "Tuple[str, str, Dict[str, str]]":
@@ -114,17 +143,20 @@ def _extract_braincube_param(metadata: Dict[str, Any]) -> "Tuple[str, str, Dict[
     return (metadata["product"]["productId"], metadata["product"]["name"], metadata)
 
 
-def get_instance(config_file: str = "") -> Client:
+def get_instance(config_file: str = None, config_dict: Dict[str, str] = None) -> Client:
     """Static method to get the client.
 
     Args:
-        config_file: Path of the configuration file.
+        config_file: A path to a configuration file.
+        config_dict: A configuration dictionary.
 
     Returns:
         A client object.
     """
     if instances.get_instance(INSTANCE_KEY) is None:
-        instances.add_instance(INSTANCE_KEY, Client(config_file))
+        instances.add_instance(
+            INSTANCE_KEY, Client(config_file=config_file, config_dict=config_dict)
+        )
     return instances.get_instance(INSTANCE_KEY)
 
 

@@ -10,30 +10,19 @@ import pytest
 
 from braincube_connector import constants, tools
 
-OAUTH2 = "oauth2_token"
 CONF_PATH = "~/mock/path/config.json"
+DUMMY_CONFIG = {constants.PAT_KEY: "abcd", constants.DOMAIN_KEY: "https://mock.com"}
 
 
 def test_read_config(mocker):
-    """Test the read_oauth_token function."""
-    mopen = mocker.mock_open(read_data=json.dumps({OAUTH2: "abcd", "domain": "mock.com"}))
+    """Test the read_read_config function."""
+    mopen = mocker.mock_open(read_data=json.dumps(DUMMY_CONFIG))
     p_mock = mocker.patch("builtins.open", mopen, create=True)
     config = tools.read_config(CONF_PATH)
     p_mock.assert_called_once()
-    assert config[OAUTH2] == "abcd"
-    assert config["domain"] == "mock.com"
+    assert config[constants.PAT_KEY] == "abcd"
+    assert config[constants.DOMAIN_KEY] == "https://mock.com"
     p_mock.assert_called_once_with(CONF_PATH, "r")
-
-
-@pytest.mark.parametrize("config_key", [OAUTH2, "domain"])
-def test_read_config_missing_key(mocker, config_key):
-    """Test the read_oauth_token function."""
-    config = {OAUTH2: "abcd", "domain": "mock.com"}
-    config.pop(config_key)
-    mopen = mocker.mock_open(read_data=json.dumps(config))
-    p_mock = mocker.patch("builtins.open", mopen, create=True)
-    with pytest.raises(KeyError):
-        KeyErrorconfig = tools.read_config(CONF_PATH)
 
 
 def test_read_config_file_not_found(mocker):
@@ -46,15 +35,23 @@ def test_read_config_file_not_found(mocker):
 
 
 def test_generate_header():
-    """Test the generation of a headers for for the requests."""
-    header1 = tools.generate_header(sso_token="a", content_type="b", accept="c")
-    assert header1 == {"Content-Type": "b", "Accept": "c", "IPLSSOTOKEN": "a"}
-    header2 = tools.generate_header(sso_token="abc")
+    """Test the generation of a headers for the requests."""
+    header1 = tools.generate_header(authentication={"token": "a"}, content_type="b", accept="c")
+    assert header1 == {"Content-Type": "b", "Accept": "c", "token": "a"}
+    header2 = tools.generate_header(authentication={"token": "abc"})
     assert header2 == {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "IPLSSOTOKEN": "abc",
+        "token": "abc",
     }
+
+
+def test_generate_header_multiple_token():
+    """Test raising an error when authentication contains multiple tokens."""
+    with pytest.raises(KeyError):
+        tools.generate_header(
+            authentication={"token1": "a", "token2": "b"}, content_type="b", accept="c"
+        )
 
 
 @pytest.mark.parametrize(
@@ -86,30 +83,43 @@ def test_generate_url(path, url):
 
 
 @pytest.mark.parametrize(
-    "passed_path, existing_files, selected_file",
+    "passed_param, existing_files, expected_dict",
     [
         (
-            "myconfig.json",
-            ["myconfig.json", constants.DEFAULT_CONFIG, constants.DEFAULT_HOME_CONFIG],
-            "myconfig.json",
+            {"config_dict": DUMMY_CONFIG},
+            [constants.DEFAULT_CONFIG, constants.DEFAULT_HOME_CONFIG],
+            DUMMY_CONFIG,
         ),
         (
-            "",
-            ["myconfig.json", constants.DEFAULT_CONFIG, constants.DEFAULT_HOME_CONFIG],
-            constants.DEFAULT_CONFIG,
+            {"config_file": "custom_file"},
+            ["custom_file", constants.DEFAULT_HOME_CONFIG, constants.DEFAULT_CONFIG],
+            {**DUMMY_CONFIG, "read_file": constants.DEFAULT_CONFIG},
         ),
-        ("", ["myconfig.json", constants.DEFAULT_HOME_CONFIG], constants.DEFAULT_HOME_CONFIG),
+        (
+            {},
+            [constants.DEFAULT_HOME_CONFIG, constants.DEFAULT_CONFIG],
+            {**DUMMY_CONFIG, "read_file": constants.DEFAULT_CONFIG},
+        ),
+        (
+            {},
+            [constants.DEFAULT_HOME_CONFIG],
+            {**DUMMY_CONFIG, "read_file": constants.DEFAULT_HOME_CONFIG},
+        ),
     ],
 )
-def test_check_config_file(mocker, passed_path, existing_files, selected_file):
-    mock_exists = mocker.patch("os.path.exists", lambda x: x in existing_files)
-    assert tools.check_config_file(passed_path) == selected_file
+def test_check_config_file(mocker, passed_param, existing_files, expected_dict):
+    mocker.patch("os.path.exists", side_effect=lambda x: x == expected_dict.get("read_file"))
+    mock_read_data = mocker.patch(
+        "braincube_connector.tools.read_config",
+        side_effect=lambda x: {**DUMMY_CONFIG, "read_file": x},
+    )
+    assert tools.check_config(**passed_param) == expected_dict
 
 
 def test_check_config_file_no_file(mocker):
     mock_exists = check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=False))
     with pytest.raises(FileNotFoundError, match=constants.NO_CONFIG_MSG):
-        tools.check_config_file("config.json")
+        tools.check_config()
 
 
 @pytest.mark.parametrize(

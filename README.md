@@ -12,6 +12,56 @@ Install with pip:
 pip install braincube_connector
 ```
 
+## Authentication
+
+Since version `2.2.0`, the authentication uses a personal access token (PAT).
+
+In order to create a PAT, you need to go in your braincube personal `menu > Account > Access tokens > +/Add`
+
+The scopes of the token should include `BRAINCUBE` and `SSO_READ`.
+
+Then two options exist to pass the PAT to the braincube_connector:
+ 1. Using a configuration dictionary when creating a client:
+```python
+from braincube_connector import client
+
+client.get_instance(config_dict={"api_key":"<my_personal_access_token>", "domain":"mybraincube.com"})
+```
+ 2. Using a configuration file:
+ ```python
+ from braincube_connector import client
+
+ client.get_instance("config_file"="myfile.json")
+ ```
+ *myfile.json*
+ ```json
+ {"X-api-key":"<my_personal_access_token>", "domain":"mybraincube.com"}
+ ```
+
+### Authentication with an Oauth2 token.
+
+The *braincube_connector* used to support only this type of authentication. This is not the method we encourage
+the most since the PAT is available, because the Oauth2 is obtained with the [braincube-token-getter](https://pypi.org/project/braincube-token-getter/) that is not under active development.
+However if you still want to use this method, you need to setup the configuration file (or dictionary) as follows:
+`config.json`
+
+```json
+{
+    "client_id": "app id",
+    "client_secret": "app key",
+    "domain": "mybraincube.com",
+    "verify": true,
+    "oauth2_token": "token value"
+}
+```
+
+By default the connector searches for a PAT and uses the oauth2_token when the PAT is not present in the dictionary.
+
+### Note:
+If the client is not initialized manually or if no configuration is passed to `get_instance`, the package creates a client instance from one of these two files `./config.json`  or `~/.braincube/config.json` (in this priority order) when they exist.
+
+
+
 ## Usage
 
 ### Client
@@ -266,21 +316,3 @@ parameters.set_parameter({"page_size": 10})
 # Parse dates to datetime objects
 parameters.set_parameter({"parse_date": True})
 ```
-
-
-## Configuration
-
-In order to connect to the web service, the client needs a Oauth2 token saved in a configuration file. For simplicity it is recommended to use a helper [braincube-token-getter](https://pypi.org/project/braincube-token-getter/) to get the token and to setup the configuration file as follows:
-
-`config.json`
-
-```json
-{
-    "client_id": "app id",
-    "client_secret": "app key",
-    "domain": "mybraincube.com",
-    "verify": true,
-    "oauth2_token": "token value"
-}
-```
-The `token-getter` script saves the configuration in the `~/.braincube/config.json` file by default.
