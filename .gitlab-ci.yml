@@ -1,5 +1,9 @@
 image: renovate/poetry
 
+include:
+  - project: 'braincube/misc/gitlabci-commons'
+    file: 'gitlab-ci-send-changelog.yml'
+
 stages:
   - setup
   - test
@@ -94,3 +98,7 @@ pypi:
     - poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
   only:
     - tags
+
+notification:
+  stage: publish
+  extends: .send_changelog
