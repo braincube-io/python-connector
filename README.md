@@ -35,7 +35,7 @@ client.get_instance(config_dict={"api_key":"<my_personal_access_token>", "domain
  ```
  *myfile.json*
  ```json
- {"X-api-key":"<my_personal_access_token>", "domain":"mybraincube.com"}
+ {"api_key":"<my_personal_access_token>", "domain":"mybraincube.com"}
  ```
 
 ### Authentication with an Oauth2 token.
@@ -294,7 +294,7 @@ Here is a selection of the most common types of filters:
   ```
   **Notes:**  
     - A `AND` filter can only host two conditions. In order to join more than two filters multiple `AND` conditions should be nested one into another.
-    - When multiple filters are provided in the `get_data`'s `filters` parmeters, they are joined together within the function using `AND` gates.  
+    - When multiple filters are provided in the `get_data`'s `filters` parameters, they are joined together within the function using `AND` gates.  
 
 - **Or gate:**  
   Similar to `AND` but uses a `OR` gate.
@@ -303,6 +303,24 @@ Here is a selection of the most common types of filters:
     "OR": [{"filter1":...}, {"filter2":...}]
   }
   ```
+## Advanced Usage
+
+The *braincube_connector* provides a simple interface for the most common features of the *braincube web-services* or *braindata* but it is not extensive.
+
+If you need to access an endpoint of [*braincube webservices*](https://braincube.io/ws-doc/?urls.primaryName=Braincube%20WS) or [*braindata*](https://braincube.io/ws-doc/?urls.primaryName=Braindata%20WS), the `request_ws` function of the library can help you. The function uses the configuration passed to the client creation to manage the authentication.
+
+```python
+from braincube_connector import client
+
+client.add_instance(config_dict={...})
+json_result = client.request_ws("braincube/demo/braindata/mb20/simple")
+```
+
+Most braincube requests return a json, but for a few of them it might be better to deactivate the parsing by setting the `response_as_json` parameter to `False`. In the latter case, `request_ws` returns the response object.
+
+```python
+json_result = client.request_ws("braincube/demo/braindata/mb20/simple", response_as_json=False)
+```
 
 ## Library parameters
 The library parameters can be set to custom values:

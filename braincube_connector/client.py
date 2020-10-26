@@ -57,6 +57,7 @@ class Client(base.Base):
         body_data: Any = None,
         rtype: str = "GET",
         api: bool = True,
+        response_as_json: bool = True,
     ) -> Dict[str, Any]:
         """Make a request at a given path on the client's domain.
 
@@ -66,9 +67,10 @@ class Client(base.Base):
             body_data: Data to associate to the request.
             rtype: Request type (GET, POST).
             api: Requests the API server on the domain.
+            response_as_json: parse a json output to a python dictionary.
 
         Returns:
-            The request's json output.
+            The request's json output or the full response.
         """
         domain = self._domain
         if api:
@@ -81,7 +83,9 @@ class Client(base.Base):
             url, headers=headers, data=body_data, verify=self._verify
         )
         request_result.raise_for_status()
-        return request_result.json()
+        if response_as_json:
+            return request_result.json()
+        return request_result
 
     def get_braincube_infos(self) -> Dict[str, Any]:
         """Get the information about the braincubes available to the client.
@@ -166,6 +170,7 @@ def request_ws(
     body_data: Any = None,
     rtype: str = "GET",
     api: bool = True,
+    response_as_json: bool = True,
 ) -> Dict[str, Any]:
     """Make a request at a given path on the client's domain.
 
@@ -175,9 +180,10 @@ def request_ws(
         body_data: Data to associate to the request.
         rtype: Request type (GET, POST).
         api: Requests the API server on the domain.
+        response_as_json: parse a json output to a python dictionary.
 
     Returns:
-        The request's json output.
+        The request's json output or the full response.
     """
     cli = get_instance()
-    return cli.request_ws(path, headers, body_data, rtype, api)
+    return cli.request_ws(path, headers, body_data, rtype, api, response_as_json)

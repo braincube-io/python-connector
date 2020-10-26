@@ -7,6 +7,7 @@ import os
 
 import pytest
 import responses
+import requests
 from requests.exceptions import HTTPError
 
 from braincube_connector import client, constants, instances
@@ -44,6 +45,16 @@ def test_request_ws_succes_post(mock_client):
     responses.add(responses.POST, LOAD_URL, json={"val": 1}, status=200)
     mock_client.request_ws("path", body_data={"data": 2}, rtype="POST")
     assert responses.calls[0].request.method == "POST"
+
+
+@responses.activate
+def test_request_ws_succes_no_json(mock_client):
+    """Test whether request_ws can run without parsing the output."""
+    responses.add(responses.GET, LOAD_URL, json={"val": 1}, status=200)
+    result = mock_client.request_ws(
+        "path", body_data={"data": 2}, rtype="GET", response_as_json=False
+    )
+    assert type(result) == requests.models.Response
 
 
 @responses.activate

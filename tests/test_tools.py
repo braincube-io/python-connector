@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from braincube_connector import constants, tools
+from braincube_connector import constants, tools, instances
 
 CONF_PATH = "~/mock/path/config.json"
 DUMMY_CONFIG = {constants.PAT_KEY: "abcd", constants.DOMAIN_KEY: "https://mock.com"}
