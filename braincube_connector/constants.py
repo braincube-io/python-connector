@@ -14,3 +14,4 @@ PAT_KEY = "X-api-key"
 DOMAIN_KEY = "domain"
 OAUTH2_KEY = "oauth2_token"
 SSO_TOKEN_KEY = "IPLSSOTOKEN"  # noqa: S105
+VERIFY_CERT = "verify"

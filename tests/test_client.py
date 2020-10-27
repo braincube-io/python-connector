@@ -16,6 +16,12 @@ from tests.mock import mock_client
 from tests.test_bases.test_base import LOAD_URL
 
 
+@pytest.fixture
+def clean_client_instances():
+    if client.INSTANCE_KEY in instances.instances:
+        del instances.instances[client.INSTANCE_KEY]
+
+
 @responses.activate
 def test_request_ws_error(mock_client):
     """Test whether request_ws throws a HTTPError."""
@@ -99,7 +105,7 @@ def test_str(mock_client):
     assert str(mock_client) == "Client(domain=a.b)"
 
 
-def test_create_client(mocker):
+def test_create_client(mocker, clean_client_instances):
     """Test the Client initialization."""
     check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=False))
     sso_mock = mocker.patch.object(
@@ -127,3 +133,21 @@ def test_create_client(mocker):
 
     with pytest.raises(Exception, match="A client has already been inialized."):
         client.Client()
+
+
+@pytest.mark.parametrize(
+    "verify_cert_config, expected_verify", [(False, False), (None, True), (True, True)],
+)
+def test_client_verify(mocker, verify_cert_config, expected_verify, clean_client_instances):
+    """Test the setting of the verify SSL certificate parameter."""
+    sso_mock = mocker.patch.object(
+        client.Client, "_request_braincubes", lambda x: [base.Base("test")]
+    )
+    config_dict = {
+        constants.API_KEY: "abcd",
+        constants.DOMAIN_KEY: "mock.com",
+    }
+    if verify_cert_config is not None:
+        config_dict[constants.VERIFY_CERT] = verify_cert_config
+    test_client = client.get_instance(config_dict=config_dict,)
+    assert test_client._verify == expected_verify

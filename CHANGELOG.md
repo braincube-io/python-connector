@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.2.0 - 2020-10-22](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.1.0...2.2.0)
+## [2.2.0 - 2020-10-27](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.1.0...2.2.0)
  - Add the personal access token option for authentication.
+ - Allow requests without json parsing in `request_ws`.
+ - Fix the setting of the `verify` parameter for the SSL certificate setting.
 
 ## [2.1.0 - 2020-07-08](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.2...2.1.0)
 

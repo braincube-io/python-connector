@@ -16,11 +16,7 @@ class Client(base.Base):
     """A Client handles html requests."""
 
     def __init__(
-        self,
-        config_file: str = None,
-        config_dict: Dict[str, str] = None,
-        timeout: int = 60,
-        verify_cert: bool = True,
+        self, config_file: str = None, config_dict: Dict[str, str] = None, timeout: int = 60,
     ) -> None:
         """Initialize Client.
 
@@ -28,14 +24,13 @@ class Client(base.Base):
             config_file: A path to a configuration file.
             config_dict: A configuration dictionary.
             timeout: Combined connect and read timeout for HTTP requests, in seconds.
-            verify_cert: Verify SSL certificate.
         """
         if instances.get_instance(INSTANCE_KEY) is not None:
             raise Exception("A client has already been inialized.")
         else:
             config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
             self._domain = tools.strip_domain(config_dict[constants.DOMAIN_KEY])
-            self._verify = verify_cert
+            self._verify = config_dict.get(constants.VERIFY_CERT, True)  # noqa: WPS425
             self._authentication = self._build_authentication(config_dict)
             available_braincube_infos = self._request_braincubes()
             self._braincube_infos = available_braincube_infos

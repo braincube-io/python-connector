@@ -12,7 +12,7 @@ Install with pip:
 pip install braincube_connector
 ```
 
-## Authentication
+## Configuration and Authentication
 
 Since version `2.2.0`, the authentication uses a personal access token (PAT).
 
@@ -56,6 +56,19 @@ However if you still want to use this method, you need to setup the configuratio
 ```
 
 By default the connector searches for a PAT and uses the oauth2_token when the PAT is not present in the dictionary.
+
+### Configuration parameters
+
+Here is a list of the settings available in the configuration file:
+
+- `domain`(required): The domain of the braincube to access.
+- `api_key`(optional if `oauth2_token` exists): a personal access token generated in the braincube account configuration.
+- `oauth2_token`(optional if `api_key` exists): an OAuth2 token obtained with the [braincube-token-getter](https://pypi.org/project/braincube-token-getter/). Used only when `api_key` does not exist.
+- `verify`(optional, default is `True`): If `False`, the requests do not verify the SSL certificate.
+
+> Setting `verify` to false must be used with care, it's a security threat (see [requests documentation](https://requests.readthedocs.io/en/latest/api/#requests.Session.verify)
+
+The `client_id`,  `client_secret` from the last section are used only by the *braincube_token_getter* when requesting a new OAuth token.
 
 ### Note:
 If the client is not initialized manually or if no configuration is passed to `get_instance`, the package creates a client instance from one of these two files `./config.json`  or `~/.braincube/config.json` (in this priority order) when they exist.
@@ -312,7 +325,7 @@ If you need to access an endpoint of [*braincube webservices*](https://braincube
 ```python
 from braincube_connector import client
 
-client.add_instance(config_dict={...})
+client.get_instance(config_dict={...})
 json_result = client.request_ws("braincube/demo/braindata/mb20/simple")
 ```
 
