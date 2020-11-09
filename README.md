@@ -253,7 +253,7 @@ parameters.set_parameter({"parse_date": True})
 ### Data filters
 The `get_data` methods have the option to restrict the data that are collected by using a set of filters. The `filters` parameter must be a list conditions (even for a single condition):
 ```python
-object.get_data(filters=[{"BETWEEN",["mb20/d2000002",0,10]},{"BETWEEN",["mb20/d2000003", -1, 1]}])
+object.get_data(filters=[{"BETWEEN": ["mb20/d2000002",0,10]},{"BETWEEN": ["mb20/d2000003", -1, 1]}])
 ```
 
 Here is a selection of the most common types of filters:
