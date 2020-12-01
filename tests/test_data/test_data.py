@@ -4,8 +4,8 @@
 
 from braincube_connector import parameters
 from braincube_connector.data import data
+from datetime import datetime
 import pytest
-import datetime
 import json
 
 DATASET = {
@@ -38,9 +38,9 @@ def test_expand_var_id():
 
 
 def test_to_datetime():
-    date = datetime.datetime(2020, 3, 31, 17, 1, 10)
-    date_str = "20200331_170110"
-    assert data._to_datetime(date_str) == date
+    dates = [datetime(2020, 3, 31, 17, 1, 10), None, datetime(2020, 4, 1, 17, 2, 10)]
+    date_str = ["20200331_170110", "null", "20200401_170210"]
+    assert data._to_datetime(date_str) == dates
 
 
 def test_extract_format_data():
@@ -48,10 +48,11 @@ def test_extract_format_data():
     formated_dataset = data._extract_format_data(DATASET)
     assert sorted(formated_dataset.keys()) == ["1", "2", "3", "4", "5"]
     assert formated_dataset["1"] == [1, 2, 3, 4]
+
     assert type(formated_dataset["1"][0]) is int
     assert type(formated_dataset["2"][0]) is float  # No NaN for int...
     assert type(formated_dataset["3"][0]) is float
-    assert type(formated_dataset["4"][0]) is datetime.datetime
+    assert type(formated_dataset["4"][0]) is datetime
     assert type(formated_dataset["5"][0]) is str
 
 

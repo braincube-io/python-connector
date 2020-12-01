@@ -6,17 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0 - 2020-12-01](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.1...2.2.2)
+
+### Fixed
+ - Fix the parsing of date list containing "null" elements (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2597)
+
+### Changed
+ - Improve list of date parsing using pandas
+
 ## [2.2.1 - 2020-11-09](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.0...2.2.1)
+
+### Fixed
  - Fix typo in documentation (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2547)
 
 ## [2.2.0 - 2020-10-27](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.1.0...2.2.0)
+
+### Added
  - Add the personal access token option for authentication.
  - Allow requests without json parsing in `request_ws`.
+### Fixed
  - Fix the setting of the `verify` parameter for the SSL certificate setting.
 
 ## [2.1.0 - 2020-07-08](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.2...2.1.0)
 
-### FIXED
+### Fixed
  - possibility to use other memory base references than dates.
 
 ### Added

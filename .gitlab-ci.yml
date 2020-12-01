@@ -1,8 +1,12 @@
-image: renovate/poetry
+image: python:3.8.5
 
 include:
   - project: 'braincube/misc/gitlabci-commons'
     file: 'gitlab-ci-send-changelog.yml'
+
+default:
+  before_script:
+    - source $POETRY_HOME/env
 
 stages:
   - setup
@@ -14,21 +18,30 @@ stages:
 variables:
   TEST_PYPI_REPO_URL: "https://test.pypi.org/legacy/"
   PROD_PYPI_REPO_URL: "https://upload.pypi.org/legacy/"
+  POETRY_HOME: ".poetry"
+  POETRY_VERSION: "1.1.4"
 
 setup:
   stage: setup
+  before_script:
+    - echo "Do not use default before_script"
   script:
+    - echo $POETRY_HOME
+    - mkdir $POETRY_HOME
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version $POETRY_VERSION
+    - source $POETRY_HOME/env
     - poetry config virtualenvs.in-project true
     - poetry install
   artifacts:
     paths:
-      - .venv/
+      - .venv
+      - $POETRY_HOME
     expire_in: 60 mins
 
 mypy:
   stage: test
   script:
-    - poetry run mypy braincube_connector
+    - poetry run mypy --ignore-missing-imports braincube_connector
 
 black:
   stage: test
@@ -50,6 +63,11 @@ unittest:
     paths:
       - htmlcov
     expire_in: 60 mins
+
+integration_tests:
+  stage: test
+  script:
+    - poetry run pytest tests_integration/*.py
 
 documentation:
   stage: documentation

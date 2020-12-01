@@ -2,9 +2,10 @@
 
 """Module used to collect data from braindata."""
 
-import datetime
 import json
 from typing import Any, Dict, List
+
+import pandas as pd
 
 from braincube_connector import client, parameters, tools
 from braincube_connector.data import conditions
@@ -26,16 +27,31 @@ def _expand_var_id(long_mb_id: str, var_id: str) -> str:
     return "{mb}/d{var}".format(mb=long_mb_id, var=var_id)
 
 
-def _to_datetime(date: "str") -> Any:
+def _to_datetime(dates: List["str"]):
     """Convert DATE str to a datetime object.
 
     Args:
-        date: A braincube styled date string.
+        dates: A braincube styled date string.
 
     Returns:
         A datetime object.
     """
-    return datetime.datetime.strptime(date, "%Y%m%d_%H%M%S")
+    dates = pd.to_datetime(dates, errors="coerce", format="%Y%m%d_%H%M%S").to_series()
+    return [pandas_timestamp_to_datetime(timestamp) for timestamp in dates]
+
+
+def pandas_timestamp_to_datetime(timestamp):
+    """Convert pandas timestamp to datetime, with NaT handling.
+
+    Args:
+        timestamp: Pandas timestamp to convert to a python datetime.
+
+    Returns:
+        A python datetime object.
+    """
+    if pd.isnull(timestamp):
+        return None
+    return pd.Timestamp.to_pydatetime(timestamp)
 
 
 def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[str, Any]:
@@ -54,7 +70,7 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[str, Any]:
     for col in raw_dataset["datadefs"]:
         col_id = col["id"].split("/d")[1]
         if col["type"] == "DATETIME" and parameters.get_parameter("parse_date"):
-            formatted_dataset[col_id] = list(map(_to_datetime, col[DATACOL]))
+            formatted_dataset[col_id] = _to_datetime(col[DATACOL])
         elif col["type"] == "NUMERIC":
             try:
                 formatted_dataset[col_id] = list(map(int, col[DATACOL]))

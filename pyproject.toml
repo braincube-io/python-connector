@@ -1,5 +1,5 @@
 [tool.poetry]
-version = "2.2.1"
+version = "2.2.2"
 name = "braincube-connector"
 description = "python client to the braincube web services"
 authors = ["Braincube <io@braincube.com>"]
@@ -17,8 +17,9 @@ keywords = ["bc_connector", "API", "braincube"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8.5"
 requests = "^2.23.0"
+pandas = "^1.1.4"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.761"
@@ -33,6 +34,7 @@ mkdocs = "^1.0.4"
 mkdocstrings = "^0.10.3"
 mkdocs-material = "^4.6.3"
 anybadge = "^1.7.0"
+isort = "4.3.20"
 
 [tool.black]
 line-length = 100

@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+
+"""Mock the braindata and braincube webservice server."""
+
+import pytest
+import responses
+
+available_calls = [
+    {
+        "method": "GET",
+        "url": "https://test.com/sso-server/ws/user/me",
+        "status": 200,
+        "json": {
+            "accessList": [
+                {"product": {"name": "demo", "productId": "123"},},
+                {"product": {"name": "other", "productId": "456"},},
+            ]
+        },
+    },
+    {
+        "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/all/summary?offset=0&size=150",
+        "status": 200,
+        "json": {"items": [{"name": "mb1", "bcId": 1,}, {"name": "mb2", "bcId": 2,},]},
+    },
+    {
+        "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/all/summary?offset=150&size=150",
+        "status": 200,
+        "json": {"items": []},
+    },
+    {
+        "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/1/extended",
+        "status": 200,
+        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+    },
+    {
+        "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braindata/mb1/simple",
+        "status": 200,
+        "json": {"name": "mb1", "order": "mb1/d101",},
+    },
+    {
+        "method": "POST",
+        "url": "https://api.test.com/braincube/demo/braindata/mb1/LF",
+        "status": 200,
+        "json": {
+            "datadefs": [
+                {
+                    "data": ["20201127_124000", "20201127_124001", "null", "20201127_124002"],
+                    "id": "mb1/d101",
+                    "type": "DATETIME",
+                },
+                {"data": ["1.1", "1.2", "nan", "1.4"], "id": "mb1/d102", "type": "NUMERIC"},
+                {"data": ["A", "B", "NaN", "D"], "id": "mb1/d103", "type": "NUMERICAL"},
+            ]
+        },
+    },
+]
+
+
+@pytest.fixture
+def patch_endpoints():
+    def func():
+        for kwargs in available_calls:
+            responses.add(**kwargs)
+
+    return func
