@@ -22,6 +22,7 @@ variables:
   POETRY_VERSION: "1.1.4"
 
 setup:
+  interruptible: true
   stage: setup
   before_script:
     - echo "Do not use default before_script"
@@ -39,21 +40,25 @@ setup:
     expire_in: 60 mins
 
 mypy:
+  interruptible: true
   stage: test
   script:
     - poetry run mypy --ignore-missing-imports braincube_connector
 
 black:
+  interruptible: true
   stage: test
   script:
     - poetry run black --check --diff braincube_connector tests
 
 lint:
+  interruptible: true
   stage: test
   script:
     - poetry run flake8 braincube_connector
 
 unittest:
+  interruptible: true
   stage: test
   script:
     - poetry run coverage run --source=braincube_connector -m pytest tests/*
@@ -65,6 +70,7 @@ unittest:
     expire_in: 60 mins
 
 integration_tests:
+  interruptible: true
   stage: test
   script:
     - poetry run pytest tests_integration/*.py
