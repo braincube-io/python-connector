@@ -117,7 +117,7 @@ mb_list = bc.get_memory_base_list()
 To select a unique memory base, go with its bcId:
 
 ```python
-mb_list = bc.get_memory_base(20)
+mb = bc.get_memory_base(20)
 ```
 
 
