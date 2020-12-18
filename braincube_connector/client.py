@@ -71,7 +71,7 @@ class Client(base.Base):
         if api:
             domain = "api.{dom}".format(dom=domain)
         url = tools.generate_url(domain, path)
-
+        ##
         if not headers:
             headers = self._headers
         request_result = getattr(requests, rtype.lower())(

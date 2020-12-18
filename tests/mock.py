@@ -87,10 +87,10 @@ def mbchild_obj():
 
 @pytest.fixture
 def create_mock_var():
-    def create_mock(bcid="1", name="", type="NUMERIC", mb=None):
+    def create_mock(bcid="1", name="", metadata={"type": "NUMERIC"}, mb=None):
         name = name if name else "var{0}".format(bcid)
         var = variable.VariableDescription(
-            bcid=bcid, name=name, metadata={"type": type}, path="path", memory_base=mb
+            bcid=bcid, name=name, metadata=metadata, path="path", memory_base=mb
         )
         return var
 

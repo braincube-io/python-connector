@@ -5,12 +5,12 @@ from typing import Any, Dict, List
 from braincube_connector import client, parameters
 from braincube_connector.bases import base
 
+NAME = "name"
+BCID = "bcid"
+
 
 class BaseEntity(base.Base):
     """Basics components of an entity requested by the connector."""
-
-    bcid_key = "bcId"
-    name_key = "name"
 
     def __init__(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
         """Initialize BaseEntity.
@@ -29,7 +29,7 @@ class BaseEntity(base.Base):
         Returns:
             A detailed description of the BaseEntity object.
         """
-        description = self._get_str(attributes={"name": self._name, "id": self._bcid})
+        description = self._get_str(attributes={NAME: self._name, "id": self._bcid})
         return "<{self_str} at {addr}>".format(self_str=description, addr=hex(id(self)))
 
     @classmethod
@@ -45,8 +45,13 @@ class BaseEntity(base.Base):
             The created entity.
         """
         entity = cls.__new__(cls)
+
         entity.initialize(
-            json_data[cls.bcid_key], json_data[cls.name_key], json_data, entity_path, **kwargs
+            json_data[cls.get_parameter_key(BCID)],
+            json_data[cls.get_parameter_key(NAME)],
+            json_data,
+            entity_path,
+            **kwargs,
         )
         return entity
 
@@ -133,3 +138,27 @@ class BaseEntity(base.Base):
         if "{bcid}" in path:
             path = path.replace("{bcid}", str(self._bcid))
         self._path = path
+
+    @classmethod
+    def get_parameter_key(cls, key) -> str:
+        """Get baseEntity_name_key parameter.and name_bcid parameter.
+
+        Args:
+            key: "name" to get the name key or "bcid" to get the bcid key
+
+        Returns:
+            The name key of the baseEntity or The bcid key of the baseEntity]
+        """
+        parameter_key = parameters.get_parameter("{0}_{1}_key".format(cls.__name__, key))
+
+        return (
+            parameter_key if parameter_key else cls.__base__.get_parameter_key(key)  # type: ignore
+        )
+
+    def get_name(self):
+        """Get the entity's name.
+
+        Returns:
+            The name of the object.
+        """
+        return self.get_parameter_key("name")

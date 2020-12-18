@@ -71,3 +71,14 @@ def test_get_data(patch_endpoints):
                 # If a is Nan: a!=a
                 if val_retreived == val_retreived or val_expected == val_expected:
                     raise err
+
+
+@responses.activate
+def test_variable(patch_endpoints):
+    mb = test_memorybase(patch_endpoints)
+    patch_endpoints()
+
+    var = mb.get_variable("0")
+    assert var.get_parameter_key("name") == "standard"
+    parameters.set_parameter({"VariableDescription_name_key": "tag"})
+    assert var.get_parameter_key("name") == "tag"

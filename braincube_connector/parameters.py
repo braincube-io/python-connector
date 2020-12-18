@@ -9,6 +9,10 @@ from braincube_connector import constants, instances
 _default_parameters = {
     "page_size": constants.DEFAULT_PAGE_SIZE,
     "parse_date": constants.DEFAULT_PARSE_DATE,
+    "VariableDescription_name_key": constants.DEFAULT_VARIABLE_NAME_KEY,
+    "VariableDescription_bcid_key": constants.DEFAULT_VARIABLE_BCID_KEY,
+    "BaseEntity_name_key": constants.DEFAULT_BCID_KEY,
+    "BaseEntity_bcid_key": constants.DEFAULT_NAME_KEY,
 }
 
 
@@ -32,7 +36,7 @@ def get_parameter(param_key: str) -> Any:
         The value of the selected parameter.
     """
     pset = instances.get_instance("parameter_set")
-    return pset.get(param_key, _default_parameters[param_key])
+    return pset.get(param_key, _default_parameters.get(param_key))
 
 
 def reset_parameter():

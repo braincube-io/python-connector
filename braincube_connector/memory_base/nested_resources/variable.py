@@ -6,7 +6,6 @@ from braincube_connector.memory_base.nested_resources import mb_child
 class VariableDescription(mb_child.MbChild):
     """VariableDescription object that stores the description of a variable."""
 
-    name_key = "standard"
     entity_path = "variables/{bcid}"
     request_one_path = "extended"
     request_many_path = "variables/summary"

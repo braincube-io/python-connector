@@ -10,8 +10,12 @@ def test_get_conditions(mocker, create_mock_var):
     mock_mb = mocker.Mock()
     mock_mb.get_bcid.return_value = "1"
     var_mocks = [
-        create_mock_var(bcid=str(var_ind), type=var_type, mb=mock_mb)
-        for var_ind, var_type in [(0, "NUMERIC"), (1, "NUMERIC"), (2, "DISCRETE")]
+        create_mock_var(bcid=str(var_ind), metadata=var_metadata, mb=mock_mb)
+        for var_ind, var_metadata in [
+            (0, {"type": "NUMERIC"}),
+            (1, {"type": "NUMERIC"}),
+            (2, {"type": "DISCRETE"}),
+        ]
     ]
     mock_mb.get_variable.side_effect = lambda bcid: var_mocks[int(bcid)]
     metadata = {

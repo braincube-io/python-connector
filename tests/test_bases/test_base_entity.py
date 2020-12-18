@@ -7,6 +7,7 @@ import responses
 
 from braincube_connector import parameters
 from braincube_connector.bases import base_entity
+from braincube_connector.bases.base_entity import BaseEntity
 from tests.mock import entity_obj, mock_client, base_obj
 import pytest
 
@@ -83,3 +84,18 @@ def test_create_collection_from_path(
     rpatch.assert_has_calls(calls)
     assert len(entities) == length
     entities[-1]._name = entity_name
+
+
+def test_change_variable_name_parameter(mock_client):
+    print(mock_client)
+
+
+def test_get_name(mocker):
+    mocker.patch(
+        "braincube_connector.instances.instances", {"parameter_set": {}}
+    )  # Uses a temporary instance for the test.
+    json_dict = {"bcId": "1", "name": "abcd", "tag": "dcba"}
+    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
+    assert obj.get_name() == "name"
+    parameters.set_parameter({"BaseEntity_name_key": "tag"})
+    assert obj.get_name() == "tag"

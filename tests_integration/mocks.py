@@ -19,6 +19,12 @@ available_calls = [
     },
     {
         "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/0/extended",
+        "status": 200,
+        "json": {"bcId": 0, "tag": "tag_name", "local": "local_name", "standard": "standard_name"},
+    },
+    {
+        "method": "GET",
         "url": "https://api.test.com/braincube/demo/braincube/mb/all/summary?offset=0&size=150",
         "status": 200,
         "json": {"items": [{"name": "mb1", "bcId": 1,}, {"name": "mb2", "bcId": 2,},]},

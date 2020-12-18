@@ -65,7 +65,6 @@ Here is a list of the settings available in the configuration file:
 - `api_key`(optional if `oauth2_token` exists): a personal access token generated in the braincube account configuration.
 - `oauth2_token`(optional if `api_key` exists): an OAuth2 token obtained with the [braincube-token-getter](https://pypi.org/project/braincube-token-getter/). Used only when `api_key` does not exist.
 - `verify`(optional, default is `True`): If `False`, the requests do not verify the SSL certificate.
-
 > Setting `verify` to false must be used with care, it's a security threat (see [requests documentation](https://requests.readthedocs.io/en/latest/api/#requests.Session.verify)
 
 The `client_id`,  `client_secret` from the last section are used only by the *braincube_token_getter* when requesting a new OAuth token.
@@ -89,7 +88,12 @@ client.get_instance(config_file="pathto/config.json")
 
 **Note:** If the client is not initialized manually, the package creates a client instance from one of these two files `./config.json`  or `~/.braincube/config.json` (in this priority order) if they exist.
 
+### Features of the connector entities.
 
+The connector gives access to different entities(described in more details in the following sections) that share multiple methods:
+
+- `<entity>.get_name()`: Returns the name of the entity.
+- `<entity>.get_bcid()`: Returns the bcId identifier of the entity.
 ### Braincube
 
 To obtain a list of all the available `Braincube` entities with a client:
@@ -346,4 +350,8 @@ parameters.set_parameter({"page_size": 10})
 
 # Parse dates to datetime objects
 parameters.set_parameter({"parse_date": True})
+
+# The Braincube database stores multiple names (`tag`, `standard`, or `local`) for a variable
+# By default `standard` id used, but you can change it as follows:
+parameters.set_parameter(({"VariableDescription_name_key": "tag"}))
 ```

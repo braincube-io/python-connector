@@ -153,3 +153,12 @@ def test_get_order_variable_long_id(mocker, mb_obj, mb_infos, order_id):
             mb_obj.get_order_variable_long_id()
     else:
         assert mb_obj.get_order_variable_long_id() == order_id
+
+
+def test_get_name(mocker):
+    mocker.patch(
+        "braincube_connector.instances.instances", {"parameter_set": {}}
+    )  # Uses a temporary instance for the test.
+    # import pdb
+    # pdb.set_trace()
+    assert memory_base.MemoryBase.get_parameter_key("bcid") == "bcId"
