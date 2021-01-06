@@ -161,4 +161,4 @@ class BaseEntity(base.Base):
         Returns:
             The name of the object.
         """
-        return self.get_parameter_key("name")
+        return self._metadata[self.get_parameter_key("name")]

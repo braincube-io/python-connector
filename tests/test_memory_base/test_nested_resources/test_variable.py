@@ -21,6 +21,6 @@ def test_get_name(mocker, create_mock_var):
         "braincube_connector.instances.instances", {"parameter_set": {}}
     )  # Uses a temporary instance for the test.
     var = create_mock_var(name="any", metadata={"standard": "name_standard", "tag": "name_tag"})
-    assert var.get_name() == "standard"
+    assert var.get_name() == "name_standard"
     parameters.set_parameter({"VariableDescription_name_key": "tag"})
-    assert var.get_name() == "tag"
+    assert var.get_name() == "name_tag"

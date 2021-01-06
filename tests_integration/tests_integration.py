@@ -80,5 +80,7 @@ def test_variable(patch_endpoints):
 
     var = mb.get_variable("0")
     assert var.get_parameter_key("name") == "standard"
+    assert var.get_name() == "standard_name"
     parameters.set_parameter({"VariableDescription_name_key": "tag"})
     assert var.get_parameter_key("name") == "tag"
+    assert var.get_name() == "tag_name"

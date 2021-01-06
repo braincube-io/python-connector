@@ -96,6 +96,6 @@ def test_get_name(mocker):
     )  # Uses a temporary instance for the test.
     json_dict = {"bcId": "1", "name": "abcd", "tag": "dcba"}
     obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
-    assert obj.get_name() == "name"
+    assert obj.get_name() == "abcd"
     parameters.set_parameter({"BaseEntity_name_key": "tag"})
-    assert obj.get_name() == "tag"
+    assert obj.get_name() == "dcba"
