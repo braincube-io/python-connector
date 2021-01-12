@@ -2,10 +2,11 @@
 """Tests for the memory_base module."""
 
 import responses
+import pandas as pd
 from braincube_connector import parameters
 from braincube_connector.memory_base import memory_base
 
-from tests.mock import mb_obj, mock_client, mock_request_entity
+from tests.mock import mb_obj, mock_client, mock_request_entity, create_mock_var
 
 import pytest
 
@@ -130,12 +131,52 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     mock_request_entity.assert_called_with(request_path)
 
 
-def test_get_data(mocker, mb_obj):
-    mock_collect = mocker.patch("braincube_connector.data.data.collect_data")
-    var_ids = ["1", "2"]
-    filters = ["A"]
-    mb_obj.get_data(var_ids, filters)
-    mock_collect.assert_called_with(var_ids, mb_obj, filters)
+@pytest.mark.parametrize(
+    "label_type, dataframe, expected_data",
+    [
+        (
+            "bcid",
+            True,
+            pd.DataFrame({"1": ["val1", "val2", "val3"], "2": ["val4", "val5", "val6"]}),
+        ),
+        (
+            "name",
+            True,
+            pd.DataFrame(
+                {
+                    "name_standard_1": ["val1", "val2", "val3"],
+                    "name_standard_2": ["val4", "val5", "val6"],
+                }
+            ),
+        ),
+        (
+            "name",
+            False,
+            {
+                "name_standard_1": ["val1", "val2", "val3"],
+                "name_standard_2": ["val4", "val5", "val6"],
+            },
+        ),
+    ],
+)
+def test_get_data(mocker, mb_obj, create_mock_var, label_type, dataframe, expected_data):
+    mocker.patch(
+        "braincube_connector.memory_base.memory_base.MemoryBase.get_variable",
+        lambda memory_base_object, bcid: create_mock_var(
+            bcid=bcid, metadata={"standard": "name_standard_{0}".format(bcid)}
+        ),
+    )
+
+    mocker.patch(
+        "braincube_connector.data.data.collect_data",
+        return_value={"1": ["val1", "val2", "val3"], "2": ["val4", "val5", "val6"]},
+    )
+
+    obtained_data = mb_obj.get_data(["1", "2"], label_type=label_type, dataframe=dataframe)
+    if type(obtained_data) == pd.DataFrame:
+        assert expected_data.equals(obtained_data)
+    else:
+        assert expected_data == obtained_data
 
 
 @pytest.mark.parametrize(

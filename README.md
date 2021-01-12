@@ -237,16 +237,10 @@ rule.get_metadata()
 
 A memory base can also request the data for a custom set of variable ids. Adding [filters](#data-filters) restricts the returned data to a desired subset of the data. The method is called as follows:
 ```python
-data = mb.get_data(["2000001", "2000034"], filters=my_filters)
+data = mb.get_data(["2000001", "2000034"], filters=my_filters, label_type="name", dataframe=True)
 ```
 
-The output format is a dictionary in which the keys are the variable bcIds and the value a list of data. This allows an easy conversion to a pandas dataframe:
-
-```python
-import pandas as pd
-
-df = pd.DataFrame(data)
-```
+The output format is a dictionary or a pandas DataFrame when the `dataframe` parameter is set to `True`. The keys/column labels are the variable bcIds or names depending on whether `label_type` is set to `"bcid"` or `"name"` respectively.
 
 **Note:** By default the dates are not parsed to `datetime` objects in order to speed up the `get_data` function but it is possible to enable the parsing:
 ```python

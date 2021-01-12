@@ -2,6 +2,8 @@
 
 from typing import Dict, List, Any, Union
 
+import pandas as pd
+
 from braincube_connector.bases import base_entity, resource_getter
 from braincube_connector.data import data
 from braincube_connector.memory_base.nested_resources import variable, event, datagroup, job, rule
@@ -127,18 +129,35 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         )
 
     def get_data(
-        self, var_ids: "List[str]", filters: "List[Dict[str, Any]]" = None
-    ) -> Dict[str, Any]:
+        self,
+        var_ids: "List[str]",
+        filters: "List[Dict[str, Any]]" = None,
+        label_type: "str" = "bcid",
+        dataframe: "bool" = False,
+    ) -> Union[pd.DataFrame, Dict[str, Any]]:
         """Get data from the memory bases.
 
         Args:
             var_ids: bcIds of variables for which the data are collected.
             filters: List of filters to apply to the request.
+            label_type: "bcid" / "name"
+            dataframe: True, return Dataframe; False, return Dict
 
         Returns:
-            A dictionary of data list.
+            A dictionary of data list or a pandas DataFrame.
         """
-        return data.collect_data(var_ids, self, filters)
+        datasource = data.collect_data(var_ids, self, filters)
+
+        if label_type == "name":
+            mapping = {var_id: self.get_variable(var_id).get_name() for var_id in var_ids}
+            datasource = {
+                mapping[data_key]: data_value for data_key, data_value in datasource.items()
+            }
+
+        if dataframe:
+            return pd.DataFrame(datasource)
+
+        return datasource
 
     def get_order_variable_long_id(self) -> str:
         """Get the long id of the memory base order variable.

@@ -107,7 +107,7 @@ def collect_data(
     Args:
         variable_ids: bcIds of variables for which the data are collected.
         memory_base: A memory base on which to collect the data.
-        filters: List of fileter to apply to the request.
+        filters: List of filter to apply to the request.
 
     Returns:
         A dictionary of data list.

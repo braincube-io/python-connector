@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """Mock the braindata and braincube webservice server."""
+import math
+from datetime import datetime
 
 import pytest
 import responses
@@ -64,6 +66,23 @@ available_calls = [
         },
     },
 ]
+
+for bcid in ["101", "102", "103"]:
+    available_calls.append(
+        {
+            "method": "GET",
+            "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/{0}/extended".format(
+                bcid
+            ),
+            "status": 200,
+            "json": {
+                "bcId": bcid,
+                "tag": "tag_{0}".format(bcid),
+                "local": "local_{0}".format(bcid),
+                "standard": "standard_{0}".format(bcid),
+            },
+        }
+    )
 
 
 @pytest.fixture

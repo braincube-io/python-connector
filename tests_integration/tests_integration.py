@@ -52,16 +52,16 @@ def test_get_data(patch_endpoints):
     mb = test_memorybase(patch_endpoints)
     patch_endpoints()
     parameters.set_parameter({"parse_date": True})
-    data = mb.get_data(["101", "102", "103"])
+    data = mb.get_data(["101", "102", "103"], label_type="name")
     expected_data = {
-        "101": [
+        "standard_101": [
             datetime.strptime("20201127_124000", "%Y%m%d_%H%M%S"),
             datetime.strptime("20201127_124001", "%Y%m%d_%H%M%S"),
             None,
             datetime.strptime("20201127_124002", "%Y%m%d_%H%M%S"),
         ],
-        "102": [1.1, 1.2, math.nan, 1.4],
-        "103": ["A", "B", "NaN", "D"],
+        "standard_102": [1.1, 1.2, math.nan, 1.4],
+        "standard_103": ["A", "B", "NaN", "D"],
     }
     for key, values in expected_data.items():
         for val_retreived, val_expected in zip(data[key], values):
