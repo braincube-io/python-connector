@@ -10,15 +10,16 @@ from braincube_connector.memory_base import memory_base
 class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):
     """Braincube object that handles the feature of a braincube."""
 
-    def __init__(self, bcid: str, name: str, metadata: Dict[str, Any]):
+    def __init__(self, product_id: str, name: str, metadata: Dict[str, Any]):
         """Initialize Braincube.
 
         Args:
-            bcid: Braincube unique identifier.
+            product_id: Braincube unique identifier.
             name: Braincube name.
             metadata: Raw metadata associated to the Braincube.
         """
-        super().__init__(bcid, name, metadata, "braincube/{bc_name}".format(bc_name=name))
+        self._product_id = product_id
+        super().__init__(name, name, metadata, "braincube/{bc_name}".format(bc_name=name))
 
     def get_memory_base(self, mb_bcid: Union[str, int]) -> memory_base.MemoryBase:
         """Get a MemoryBase object from its id.
@@ -41,6 +42,14 @@ class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):
             A list of the MemoryBase objects.
         """
         return self._get_resource_list(memory_base.MemoryBase, **kwargs)
+
+    def get_uuid(self):
+        """Get uuid (specific for a braincube entity).
+
+        Returns:
+            The braincube uuid.
+        """
+        return self._product_id
 
 
 def get_braincube(name: str) -> Braincube:

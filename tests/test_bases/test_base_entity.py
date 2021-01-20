@@ -99,3 +99,10 @@ def test_get_name(mocker):
     assert obj.get_name() == "abcd"
     parameters.set_parameter({"BaseEntity_name_key": "tag"})
     assert obj.get_name() == "dcba"
+
+
+def test_get_uuid(mocker):
+    uuid = "myuuid"
+    json_dict = {"bcId": "1", "name": "abcd", "uuid": "{0}_{1}".format("base64", uuid)}
+    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
+    assert obj.get_uuid() == uuid

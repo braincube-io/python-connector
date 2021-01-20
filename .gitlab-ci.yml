@@ -49,7 +49,7 @@ black:
   interruptible: true
   stage: test
   script:
-    - poetry run black --check --diff braincube_connector tests
+    - poetry run black --check --diff .
 
 lint:
   interruptible: true

@@ -3,6 +3,8 @@
 from braincube_connector import parameters
 from tests.mock import create_mock_var
 
+import pytest
+
 
 def test_get_type(create_mock_var):
     var_obj = create_mock_var(metadata={"type": "TYPE"})
@@ -24,3 +26,12 @@ def test_get_name(mocker, create_mock_var):
     assert var.get_name() == "name_standard"
     parameters.set_parameter({"VariableDescription_name_key": "tag"})
     assert var.get_name() == "name_tag"
+
+
+def test_get_uuid(mocker, create_mock_var):
+    mock_mb = mocker.Mock()
+    mock_mb.get_bcid.return_value = "12"
+    mock_var = create_mock_var(bcid="30", mb=mock_mb)
+    with pytest.warns(UserWarning):
+        uuid = mock_var.get_uuid()
+    assert uuid == "mb12/d30"

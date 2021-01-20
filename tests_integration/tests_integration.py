@@ -31,7 +31,8 @@ def test_braincube(patch_endpoints):
         assert type(bc) == braincube.Braincube
     bc = braincube.get_braincube("demo")
     assert bc._name == "demo"
-    assert bc._bcid == "123"
+    assert bc._bcid == "demo"
+    assert bc._product_id == "123"
     return bc
 
 

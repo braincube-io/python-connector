@@ -94,6 +94,7 @@ The connector gives access to different entities(described in more details in th
 
 - `<entity>.get_name()`: Returns the name of the entity.
 - `<entity>.get_bcid()`: Returns the bcId identifier of the entity.
+- `<entity>.get_uuid()`: Returns the braincube unique uuid identifier of the entity.
 ### Braincube
 
 To obtain a list of all the available `Braincube` entities with a client:

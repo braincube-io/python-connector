@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.0 - 2020-12-01](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.1...2.2.2)
 
 ### Added
-- Make `get_name` and `get_bcid` methods available for all BaseEntity objects.
-- provide a selection system for the type of name to use for the objects.
-- Add parameter in MemoryBase get_data() function to change the label_type ("name" or "bcid") 
+- Make `get_name` and `get_bcid` methods available for all BaseEntity objects
+- provide a selection system for the type of name to use for the objects
+- Add parameter in MemoryBase get_data() function to change the label_type ("name" or "bcid")
 - Add parameter in MemoryBase get_data() function to return a pandas DataFrame
+- Entities have a get_uuid method
 
 ### Fixed
  - Fix the parsing of date list containing "null" elements (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2597)

@@ -162,3 +162,11 @@ class BaseEntity(base.Base):
             The name of the object.
         """
         return self._metadata[self.get_parameter_key("name")]
+
+    def get_uuid(self):
+        """Get the uuid of the entity.
+
+        Returns:
+            The uuid of the variable.
+        """
+        return self._metadata["uuid"].split("_")[1]

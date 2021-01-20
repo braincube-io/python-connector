@@ -19,7 +19,8 @@ def test_path(bc_obj):
 def test_get_braincube(mock_client):
     bc = braincube.get_braincube(NAME)
     assert bc._name == NAME
-    assert bc._bcid == "bc1"
+    assert bc._bcid == NAME
+    assert bc._product_id == "bc1"
 
 
 def test_get_braincube_list(mock_client):
@@ -27,7 +28,8 @@ def test_get_braincube_list(mock_client):
     assert len(bc_list) == 2
     for i, bc in enumerate(bc_list):
         assert bc._name == "bcname{}".format(i + 1)
-        assert bc._bcid == "bc{}".format(i + 1)
+        assert bc._bcid == "bcname{}".format(i + 1)
+        assert bc._product_id == "bc{}".format(i + 1)
     bc_list = braincube.get_braincube_list([NAME])
     assert bc_list[0]._name == NAME
 
@@ -50,3 +52,7 @@ def test_get_memory_base_list(mocker, monkeypatch, bc_obj, mock_request_entity):
     mock_request_entity.assert_called_with(
         "braincube/bcname/braincube/mb/all/summary?offset=20&size=2"
     )
+
+
+def test_get_uuid(bc_obj):
+    assert bc_obj.get_uuid() == "id123"  # Id of the mock braincube
