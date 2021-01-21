@@ -41,6 +41,7 @@ pip install braincube_connector -U
 
 ### Table of Contents
 - [Install](#Install)
+- [Diagrams](#diagrams)
 - [Style](#Style)
 	- [Docstring style](#docstring-style)
 	- [Type hint](#Type-hint)
@@ -76,6 +77,15 @@ poetry run pre-commit install -t pre-commit -t pre-push
 You can manually run the configured tests with `poetry run pre-commit run --all-files`
 
 **Note:** pre-commit behavior is configured within the `.pre-commit-config.yaml`
+
+
+### Diagrams
+
+#### Class Diagram
+![title](contributing_img/braincube_connector_diagram.png)
+
+#### Class Diagram with method
+![title](contributing_img/braincube_connector_diagram_method.png)
 
 ### Style
 
