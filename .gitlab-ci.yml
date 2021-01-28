@@ -3,6 +3,9 @@ image: python:3.8.5
 include:
   - project: 'braincube/misc/gitlabci-commons'
     file: 'gitlab-ci-send-changelog.yml'
+  - project: 'braincube/misc/gitlabci-commons'
+    file: 'gitlab-ci-release-notes.yml'
+    ref: 'master'
 
 default:
   before_script:
@@ -20,6 +23,7 @@ variables:
   PROD_PYPI_REPO_URL: "https://upload.pypi.org/legacy/"
   POETRY_HOME: ".poetry"
   POETRY_VERSION: "1.1.4"
+  APP_NAME: "braincube_connector"
 
 setup:
   interruptible: true
@@ -122,6 +126,12 @@ pypi:
     - poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
   only:
     - tags
+
+new_release_note:
+  extends: .create-release-note
+
+deploy_release_note:
+  extends: .publish-release-note
 
 notification:
   extends: .send_changelog
