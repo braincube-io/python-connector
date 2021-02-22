@@ -5,15 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
-## [2.2.0 - 2020-12-01](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.1...2.2.2)
+## [2.3.0 - 2021-02-23](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.2...2.3.0)
 
 ### Added
 - Make `get_name` and `get_bcid` methods available for all BaseEntity objects
-- provide a selection system for the type of name to use for the objects
+- Provide a selection system for the name type to use for the objects
 - Add parameter in MemoryBase get_data() function to change the label_type ("name" or "bcid")
 - Add parameter in MemoryBase get_data() function to return a pandas DataFrame
 - Entities have a get_uuid method
+
+## [2.2.2 - 2020-12-01](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.1...2.2.2)
 
 ### Fixed
  - Fix the parsing of date list containing "null" elements (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2597)
