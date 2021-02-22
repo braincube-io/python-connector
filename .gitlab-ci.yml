@@ -131,6 +131,8 @@ new_release_note:
   extends: .create-release-note
 
 deploy_release_note:
+  before_script:
+    - echo "Do not use default before_script"
   extends: .publish-release-note
 
 notification:
