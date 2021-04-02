@@ -2,7 +2,46 @@
 
 To contribute to the `braincube_connector` project, please make use of the following tools.
 
-## Install
+Contribute to :
+- [The project](#Project-Contribution)
+- [The development](#Development-Contribution)
+
+## Project Contribution:
+
+### Table of Contents
+- [Code of conduct](#Code-of-conduct)
+- [Opening Issues](#Opening-Issues)
+
+### Code of conduct
+
+All contributors are expecting to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+### Opening Issues
+
+- Search existing [issues](https://github.com/braincube-io/python-connector/issues) for your problem.
+- [Update](#Update) your Braincube-Connector.
+- Fill out the provided issue template.
+- Describe your problem, not your solution.
+- Explain how to reproduce the issue.
+
+Finally, if you are up to date, supported, have collected information about the problem, and have the best reproduction instructions you can give, you are ready to [open an issue](https://github.com/braincube-io/python-connector/issues/new/choose).
+
+### Update Version
+
+
+## Development Contribution:
+
+### Table of Contents
+- [Install](#Install)
+- [Style](#Style)
+	- [Docstring style](#docstring-style)
+	- [Type hint](#Type-hint)
+- [Test](#Test)
+	- [Coverage](#coverage)
+- [Build documentation](#Build-documentation)
+- [Continuous integration (CI)](#Continuous-integration-(CI))
+
+### Install
 
 The project uses [poetry](https://github.com/python-poetry/poetry) to manage the configuration and the package building.
 
@@ -29,7 +68,7 @@ poetry run pre-commit install
 
 **Note:** pre-commit behavior is configured within the `.pre-commit-config.yaml`
 
-## Style
+### Style
 
 The code style is fixed with the [black](https://github.com/psf/black) library:
 
@@ -59,7 +98,7 @@ A few violations could not be fixed and were ignored in the `.flake8` file:
 - [`RST`: Ignore rst format related warnings.](https://github.com/peterjc/flake8-rst-docstrings)
   → Incompatible with `**kwargs` gets confused with `**title` in rst format. Removing this warning has no effect since we are using markdown.
 
-### docstring style
+#### docstring style
 
 The `braincube_connector` project uses the google docstring styles:
 
@@ -76,7 +115,7 @@ def function(val: int) -> int:
     return 2*val
 ```
 
-### Type hint
+#### Type hint
 
 Since python 3.5, there is the possibility to use the type hints on the function definitions. It should help detect an important number errors and enforce better practice so we decided to incorporate it in the project.
 
@@ -86,7 +125,7 @@ The consistence of the type hints is checked with  [mypy](http://mypy-lang.org/)
 mypy braincube_connector/
 ```
 
-## Test
+### Test
 
 The test suite rely on the to libraries [pytest](https://docs.pytest.org/en/latest/) and  [pytest_mock](https://github.com/pytest-dev/pytest-mock).
 
@@ -96,7 +135,7 @@ To run the tests, simply run the following command:
 poetry run pytest tests/*
 ```
 
-### coverage
+#### coverage
 
 To test the test suite coverage, use the [coverage](https://github.com/nedbat/coveragepy/blob/coverage-5.0.3/doc/index.rst) package.
 
@@ -110,7 +149,7 @@ poetry run coverage html # for an html report
 poetry run coverage report # for a report in the shell
 ```
 
-## Build documentation
+### Build documentation
 
 The documentation is built with [mkdocs](https://www.mkdocs.org/) using the [material](https://squidfunk.github.io/mkdocs-material/) theme, modified to match braincube's commons.
 
@@ -144,10 +183,11 @@ bash docs/build_doc.sh serve
 
 **Note:** The local building of the documentation is useful for test purposes but otherwise it is handled by the CI
 
-## Continuous integration (CI)
+### Continuous integration (CI)
 
-At every push on the project the  CI executes a set of action defined in the `.gitlab-ci.yml` script.
+At every push on the project the  CI executes a set of action defined in the `.github/workflows/ci.yml` script.
 
+|!| A modifier
 - Check the style (with `flake8`)
 - Check the type hint consistency (with `mypy`)
 - Run the test suite (with `pytest`)
