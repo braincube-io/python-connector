@@ -10,7 +10,6 @@ jobs:
       - run: echo "Do not use default before_script"
       - run: echo .poetry
       - run: mkdir .poetry
-      - run: mkdir .poetry
       - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.1.4
       - run: source .poetry/env
       - run: poetry config virtualenvs.in-project true
