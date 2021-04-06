@@ -28,7 +28,6 @@ jobs:
       - run: poetry run mypy --ignore-missing-imports braincube_connector
 
   black:
-    interruptible: true
     runs-on: ubuntu-latest
     steps:
       - run: poetry run black --check --diff .
