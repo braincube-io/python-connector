@@ -127,5 +127,3 @@ deploy_release_note:
 
 notification:
   extends: .send_changelog
-
-
