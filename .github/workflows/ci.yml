@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Do not use default before_script"
-    steps:
       - run: echo .poetry
       - run: mkdir .poetry
       - run: mkdir .poetry
