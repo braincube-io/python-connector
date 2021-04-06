@@ -1,1 +1,129 @@
-tt
+name: CI-Braincube-Connector
+
+on: [push]
+
+jobs:
+  include:
+    - project: 'braincube/misc/gitlabci-commons'
+      file: 'gitlab-ci-send-changelog.yml'
+    - project: 'braincube/misc/gitlabci-commons'
+      file: 'gitlab-ci-release-notes.yml'
+      ref: 'master'
+
+  variables:
+    TEST_PYPI_REPO_URL: "https://test.pypi.org/legacy/"
+    PROD_PYPI_REPO_URL: "https://upload.pypi.org/legacy/"
+    POETRY_HOME: ".poetry"
+    POETRY_VERSION: "1.1.4"
+    APP_NAME: "braincube_connector"
+
+  setup:
+  runs-on: ubuntu-latest
+    steps:
+      - run: echo "Do not use default before_script"
+    steps:
+      - run: echo $POETRY_HOME
+      - run: mkdir $POETRY_HOME
+      - run: mkdir $POETRY_HOME
+      - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version $POETRY_VERSION
+      - run: source $POETRY_HOME/env
+      - run: poetry config virtualenvs.in-project true
+      - run: poetry install
+
+  artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - run: .venv
+      - run: $POETRY_HOME
+
+mypy:
+  runs-on: ubuntu-latest
+    steps:
+      - run: poetry run mypy --ignore-missing-imports braincube_connector
+
+black:
+  interruptible: true
+  runs-on: ubuntu-latest
+    steps:
+      - run: poetry run black --check --diff .
+
+lint:
+  runs-on: ubuntu-latest
+    steps:
+      - run: poetry run flake8 braincube_connector
+
+unittest:
+  runs-on: ubuntu-latest
+    steps:
+      - run: poetry run coverage run --source=braincube_connector -m pytest tests/*
+      - run: poetry run coverage report
+      - run: if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
+  artifacts:
+    paths:
+      - htmlcov
+    expire_in: 60 mins
+
+integration_tests:
+  interruptible: true
+  stage: test
+  script:
+    - poetry run pytest tests_integration/*.py
+
+documentation:
+  stage: documentation
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
+    - cp -r gitlabci-commons/braincube-pages/docs/* docs
+    - cp -r gitlabci-commons/braincube-pages/custom_theme .
+    - bash docs/build_doc.sh build
+  artifacts:
+    paths:
+      - site
+      - badge_doc.svg
+    expire_in: 60 mins
+  only:
+      - master
+
+pages:
+  stage: pages
+  script:
+    - mkdir public
+    - mkdir public/badges
+    - cp badge*.svg public/badges
+    - cp -r site public/
+    - cp -r htmlcov public/
+  artifacts:
+    paths:²
+      - public
+  only:
+      - master
+
+testpypi:
+  stage: deploy
+  script:
+    - poetry build
+    - poetry config repositories.test $TEST_PYPI_REPO_URL
+    - poetry publish -r test -u $PYPI_STAGING_USERNAME -p $PYPI_STAGING_PASSWORD
+  only:
+    - master
+  when: manual
+
+pypi:
+  stage: deploy
+  script:
+    - poetry build
+    - poetry config repositories.prod $PROD_PYPI_REPO_URL
+    - poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
+  only:
+    - tags
+
+new_release_note:
+  extends: .create-release-note
+
+deploy_release_note:
+  before_script:
+    - echo "Do not use default before_script"
+  extends: .publish-release-note
+
+notification:
+  extends: .send_changelog
