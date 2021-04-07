@@ -2,12 +2,16 @@ name: CI-Braincube-Connector
 
 on: [push]
 
+defaults:
+  run:
+    shell: bash
+    working-directory: .poetry/env
+
 jobs:
 
   setup:
     runs-on: ubuntu-latest
     steps:
-      - run: source .poetry/env
       - run: echo "Do not use default before_script"
       - run: echo .poetry
       - run: mkdir .poetry
