@@ -4,26 +4,32 @@ on: [push]
 
 defaults:
   run:
+    shell: bashdefaults:
+  run:
     shell: bash
+    working-directory: scripts
 
 jobs:
 
   setup:
     runs-on: ubuntu-latest
     steps:
-      - run: echo .poetry
-      - run: mkdir .poetry
-      - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.1.4
-      - run: source .poetry/env
-      - run: poetry config virtualenvs.in-project true
-      - run: poetry install
-
-  artifacts:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - run: .venv
-      - run: .poetry
+      - name: Poetry config
+        run: |
+          echo .poetry
+          mkdir .poetry
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.1.4
+          source .poetry/env
+          poetry config virtualenvs.in-project true
+          poetry install
+      - name: Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Poetry-env
+          path: |
+          .venv
+          .poetry
+          retention-days: 1
 
   mypy:
     runs-on: ubuntu-latest
