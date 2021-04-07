@@ -23,10 +23,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Poetry-env
+          retention-days: 1
           path: |
           .venv
-          .poetry
-          retention-days: 1
+          .poetry          
 
   mypy:
     runs-on: ubuntu-latest
