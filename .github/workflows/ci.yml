@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Poetry config
         env:
-          POETRY_HOME = ".poetry"
-          POETRY_VERSION = "1.1.4"
+          POETRY_HOME: ".poetry"
+          POETRY_VERSION: "1.1.4"
         run: |
           echo $POETRY_HOME
           mkdir $POETRY_HOME
