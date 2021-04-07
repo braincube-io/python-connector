@@ -16,7 +16,7 @@ jobs:
           POETRY_HOME: ".poetry"
           POETRY_VERSION: "1.1.4"
       - uses: actions/checkout@v2
-        run: |
+      - run: |
           echo $POETRY_HOME
           mkdir $POETRY_HOME
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version $POETRY_VERSION
