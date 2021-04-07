@@ -4,10 +4,7 @@ on: [push]
 
 defaults:
   run:
-    shell: bashdefaults:
-  run:
     shell: bash
-    working-directory: scripts
 
 jobs:
 
