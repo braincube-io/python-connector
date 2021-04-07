@@ -19,7 +19,7 @@ jobs:
           echo $POETRY_HOME
           mkdir $POETRY_HOME
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version $POETRY_VERSION
-          source source /$POETRY_HOME/env
+          source /$POETRY_HOME/env
           poetry config virtualenvs.in-project true
           poetry install
       - name: Artifacts
