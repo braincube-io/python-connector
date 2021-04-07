@@ -11,11 +11,12 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Poetry config
         env:
             POETRY_HOME: ".poetry"
             POETRY_VERSION: "1.1.4"
-        uses: actions/checkout@v2
+        
         run: |
           echo $POETRY_HOME
           mkdir $POETRY_HOME
