@@ -63,7 +63,9 @@ jobs:
           ls -la ~
 
       - name: Load poetry
-        run: HOME=~ source $HOME/.poetry/env
+        run: |
+          echo "export PATH="~/.poetry/bin:$PATH" >> ~/.profile
+          source ~/.profile
 
       - name: mypy
         run: |
