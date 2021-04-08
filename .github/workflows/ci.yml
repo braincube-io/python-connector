@@ -21,6 +21,7 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
+          virtualenvs-path: ~/poetry-env
       
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -31,16 +32,14 @@ jobs:
       
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          poetry config virtualenvs.in-project true
-          poetry install
+        run: poetry install
 
   test:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
       - name: Integrate Poetry env
-        run: source .venv
+        run: source ~/poetry-env
 
       - name: mypy
         run: |
