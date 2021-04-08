@@ -63,24 +63,28 @@ jobs:
           poetry run pytest tests_integration/*.py
 
       - name: Documentation
-        run: git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
-        run: cp -r gitlabci-commons/braincube-pages/docs/* docs
-        run: cp -r gitlabci-commons/braincube-pages/custom_theme .
-        run: bash docs/build_doc.sh build
+        run: |
+          git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
+          cp -r gitlabci-commons/braincube-pages/docs/* docs
+          cp -r gitlabci-commons/braincube-pages/custom_theme .
+          bash docs/build_doc.sh build
 
       - name: Pages
-        run: mkdir public
-        run: mkdir public/badges
-        run: cp badge*.svg public/badges
-        run: cp -r site public/
-        run: cp -r htmlcov public/
+        run: |
+          mkdir public
+          mkdir public/badges
+          cp badge*.svg public/badges
+          cp -r site public/
+          cp -r htmlcov public/
 
       - name: Test pypi
-        run: poetry build
-        run: poetry config repositories.test https://test.pypi.org/legacy/
-        run: poetry publish -r test -u $PYPI_STAGING_USERNAME -p $PYPI_STAGING_PASSWORD
+        run: |
+          poetry build
+          poetry config repositories.test https://test.pypi.org/legacy/
+          poetry publish -r test -u $PYPI_STAGING_USERNAME -p $PYPI_STAGING_PASSWORD
 
       - name: pypi
-        run: poetry build
-        run: poetry config repositories.prod https://upload.pypi.org/legacy/
-        run: poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
+        run: |
+          poetry build
+          poetry config repositories.prod https://upload.pypi.org/legacy/
+          poetry publish -r prod -u $PYPI_PROD_USERNAME -p $PYPI_PROD_PASSWORD
