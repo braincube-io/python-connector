@@ -22,7 +22,7 @@ jobs:
         with:
           path: |
             .venv
-            .poetry
+            $HOME/.poetry
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       
       - name: Install Poetry
@@ -49,11 +49,11 @@ jobs:
         with:
           path: |
             .venv
-            .poetry
+            $HOME/.poetry
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Load poetry
-        run: source .poetry/env
+        run: source $HOME/.poetry/env
 
       - name: mypy
         run: |
