@@ -63,7 +63,7 @@ jobs:
           ls -la ~
 
       - name: Load poetry
-        run: source ~/.poetry/env
+        run: source ~/.poetry/bin
 
       - name: mypy
         run: |
