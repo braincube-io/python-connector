@@ -43,7 +43,7 @@ jobs:
       - name: Integrate Poetry env
         run: |
           ls
-          source .poetry/env
+          source {cache-dir}/virtualenvs
 
       - name: mypy
         run: |
