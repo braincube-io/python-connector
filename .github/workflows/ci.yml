@@ -64,8 +64,9 @@ jobs:
 
       - name: Load poetry
         run: |
-          echo "export PATH="~/.poetry/bin:$PATH" >> ~/.profile
+          echo "export PATH=\"~/.poetry/bin:$PATH\"" >> ~/.profile
           source ~/.profile
+          poetry --version
 
       - name: mypy
         run: |
