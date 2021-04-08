@@ -21,7 +21,7 @@ jobs:
           python-version: 3.8.5
       
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.2
+        uses: nok/install-poetry@v1.1.2s
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
@@ -50,8 +50,9 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-          
+
       - run: |
+          source .venv/bin/activate
           poetry run mypy --ignore-missing-imports braincube_connector
       
 
