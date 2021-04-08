@@ -51,8 +51,8 @@ jobs:
       
       - name: Integrate Poetry env
         run: |
-          ls .venv/bin
-          source .venv/bin/.poetry/env
+          ls ./poetry-env
+          source ./poetry-env/.poetry/bin
 
       - name: mypy
         run: |
