@@ -52,6 +52,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
           
       - run: |
+          source .venv/bin/activate
           poetry run mypy --ignore-missing-imports braincube_connector
       
 
