@@ -55,7 +55,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       
       - name: Integrate Poetry env
-        run: source .venv/bin
+        run: source $HOME/.poetry/env
 
       - name: mypy
         run: |
