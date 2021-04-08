@@ -37,12 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
       - name: Integrate Poetry env
         run: |
-          ls $HOME/.venv/virtualenvs
+          ls .venv/virtualenvs
           source .venv/virtualenvs
 
       - name: mypy
