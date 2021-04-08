@@ -11,34 +11,8 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Poetry config
-        env:
-            POETRY_HOME: ".poetry"
-            POETRY_VERSION: "1.1.4"
-          
-        run: |
-            echo $POETRY_HOME
-            mkdir $POETRY_HOME
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version $POETRY_VERSION
-            source $POETRY_HOME/env
-            echo "OK"
-            poetry config --local virtualenvs.in-project true
-            poetry install
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: Poetry-env
-          retention-days: 1
-          path: |
-              .venv
-              .poetry    
-      - name: Archive setup results
-        uses: actions/upload-artifact@v2
-        with:
-          name: setup-report
-          path: output/setup-report.html
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v4
 
   mypy:
     runs-on: ubuntu-latest
