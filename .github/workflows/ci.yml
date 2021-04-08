@@ -43,10 +43,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
       - run: |
-          source $HOME/.venv/bin/activate
-          poetry run mypy --ignore-missing-imports braincube_connector
+          mypy --ignore-missing-imports braincube_connector
       
 
   black:
