@@ -22,7 +22,7 @@ jobs:
         with:
           path: |
             .venv
-            $HOME/.poetry
+            ~/.poetry
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       
       - name: Install Poetry
@@ -35,6 +35,11 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install
+
+      - name: Check folders
+        run: |
+          ls -la .
+          ls -la ~
       
   test:
     runs-on: ubuntu-latest
@@ -49,11 +54,16 @@ jobs:
         with:
           path: |
             .venv
-            $HOME/.poetry
+            ~/.poetry
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
+      - name: Check folders
+        run: |
+          ls -la .
+          ls -la ~
+
       - name: Load poetry
-        run: source $HOME/.poetry/env
+        run: source ~/.poetry/env
 
       - name: mypy
         run: |
