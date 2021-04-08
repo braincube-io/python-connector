@@ -40,8 +40,7 @@ jobs:
     steps:
       - name: Integrate Poetry env
         run: |
-          ls $HOME/poetry-env
-          source $HOME/poetry-env
+          source $HOME/.poetry/bin
 
       - name: mypy
         run: |
