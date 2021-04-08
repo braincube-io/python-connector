@@ -39,9 +39,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-        
+
       - name: Integrate Poetry env
-        run: source $HOME/.poetry/env
+        run: |
+          ls
+          source .poetry/env
 
       - name: mypy
         run: |
