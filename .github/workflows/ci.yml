@@ -3,8 +3,9 @@ name: CI-Braincube-Connector
 on: [push]
 
 defaults:
-  run:
-    shell: bash
+  run: |
+    source .venv/bin/activate
+    
 
 jobs:
 
@@ -39,42 +40,34 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install
 
-  mypy:
+  test:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      - run:
+
+      - name: mypy
+        run: |
           poetry run mypy --ignore-missing-imports braincube_connector
+
+      - name: black
+        run: |
+          poetry run black --check --diff .
+
+      - name: lint
+        run: |
+          poetry run flake8 braincube_connector
+
+      - name: unittest
+        run: |
+          poetry run coverage run --source=braincube_connector -m pytest tests/*
+          poetry run coverage report
+          if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
       
-
-  black:
-    runs-on: ubuntu-latest
-    needs: [mypy]
-    steps:
-      - run: poetry run black --check --diff .
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: [black]
-    steps:
-      - run: poetry run flake8 braincube_connector
-
-  unittest:
-    runs-on: ubuntu-latest
-    needs: [lint]
-    steps:
-      - run: poetry run coverage run --source=braincube_connector -m pytest tests/*
-      - run: poetry run coverage report
-      - run: if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
-
-  integration_tests:
-    runs-on: ubuntu-latest
-    needs: [unittest]
-    steps:
-      - run: poetry run pytest tests_integration/*.py
+      - name: integration_tests
+        run: |
+          poetry run pytest tests_integration/*.py
 
   documentation:
     runs-on: ubuntu-latest
