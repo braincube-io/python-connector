@@ -41,6 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: .venv
       - run: |
           poetry run mypy --ignore-missing-imports braincube_connector
       
