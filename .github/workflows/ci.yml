@@ -39,9 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Integrate Poetry env
         run: source .venv/bin/activate
 
