@@ -1,9 +1,6 @@
 name: CI-Braincube-Connector
 
 on: [push]
-
-defaults:
-  run: source .venv/bin/activate
     
 jobs:
 
@@ -44,6 +41,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Integrate Poetry env
+        run: source .venv/bin/activate
 
       - name: mypy
         run: |
