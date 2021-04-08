@@ -34,11 +34,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install
       - run: source .venv/bin/activate
-      - run: |
-          ls $HOME/work
-          ls $HOME/runners
-          source $HOME/.poetry/env
-          poetry run mypy --ignore-missing-imports braincube_connector
+      
   test:
     runs-on: ubuntu-latest
     needs: [setup]
@@ -55,9 +51,7 @@ jobs:
       
       - name: Integrate Poetry env
         run: |
-          ls $HOME
-          source .venv/bin/activate
-          source $HOME/.poetry/env
+          source .venv
 
       - name: mypy
         run: |
