@@ -69,7 +69,7 @@ jobs:
 
   documentation:
     runs-on: ubuntu-latest
-    needs: [integration_tests]
+    needs: [setup]
     steps:
       - run: git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
       - run: cp -r gitlabci-commons/braincube-pages/docs/* docs
