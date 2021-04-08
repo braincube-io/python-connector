@@ -21,7 +21,6 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
-          virtualenvs-path: ./poetry-env
       
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -51,8 +50,7 @@ jobs:
       
       - name: Integrate Poetry env
         run: |
-          ls ./poetry-env
-          source ./poetry-env/.poetry/bin
+          source $VENV
 
       - name: mypy
         run: |
