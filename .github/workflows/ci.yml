@@ -46,6 +46,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
       
       - name: Load cached venv
         id: cached-poetry-dependencies
