@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Integrate Poetry env
         run: |
-          ls $HOME
+          ls $HOME/runners
           source .venv/virtualenvs
 
       - name: mypy
