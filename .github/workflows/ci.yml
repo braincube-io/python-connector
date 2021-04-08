@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v2
 
       - run: |
-          source $HOME/.poetry/env
+          source $HOME/.venv/bin/activate
           poetry run mypy --ignore-missing-imports braincube_connector
       
 
