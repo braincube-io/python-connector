@@ -35,7 +35,8 @@ jobs:
         run: poetry install
       - run: source .venv/bin/activate
       - run: |
-          ls $HOME
+          ls $HOME/work
+          ls $HOME/runners
           source $HOME/.poetry/env
           poetry run mypy --ignore-missing-imports braincube_connector
   test:
