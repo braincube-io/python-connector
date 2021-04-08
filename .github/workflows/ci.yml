@@ -33,12 +33,8 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install
-      - run: |
-          ls .venv
-          echo test
-          ls .venv/bin
-          echo test
-          source $HOME/.poetry/env
+      - run: source .venv/bin/activate
+      - run: ls $HOME/.poetry
 
   test:
     runs-on: ubuntu-latest
@@ -55,7 +51,9 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       
       - name: Integrate Poetry env
-        run: source $HOME/.poetry/env
+        run: |
+          source .venv/bin/activate
+          source .poetry/env
 
       - name: mypy
         run: |
