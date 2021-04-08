@@ -44,7 +44,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: .venv
+          repository: .venv
       - run: |
           poetry run mypy --ignore-missing-imports braincube_connector
       
