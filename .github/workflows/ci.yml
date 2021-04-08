@@ -64,12 +64,13 @@ jobs:
 
       - name: Load poetry
         run: |
-          echo "export PATH=\"~/.poetry/bin:$PATH\"" >> ~/.profile
-          source ~/.profile
+          source ~/.poetry/env
           poetry --version
 
       - name: mypy
         run: |
+          echo "export PATH=\"~/.poetry/bin:$PATH\"" >> ~/.profile
+          source ~/.profile
           poetry run mypy --ignore-missing-imports braincube_connector
 
       - name: black
