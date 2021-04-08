@@ -51,8 +51,8 @@ jobs:
       
       - name: Integrate Poetry env
         run: |
-          ls .venv/bin
-          source .venv/bin/activate
+          ls .venv/bin/virtualenv
+          source .venv/bin/virtualenv
 
       - name: mypy
         run: |
