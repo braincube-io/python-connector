@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install
-      - run: source $HOME/.poetry/env
+      - run: source .venv/bin/activate
 
   test:
     runs-on: ubuntu-latest
