@@ -188,9 +188,10 @@ bash docs/build_doc.sh serve
 At every push on the project the  CI executes a set of action defined in the `.github/workflows/ci.yml` script.
 
 |!| A modifier
-- Check the style (with `flake8`)
+
+- Setup project environment (with `poetry`)
 - Check the type hint consistency (with `mypy`)
+- Check the style (with `flake8`)
+
 - Run the test suite (with `pytest`)
 - Evaluate the test coverage (with `coverage`)
-- Build the documentation (with `mkdocs`)
-- publish the documentation in gitlab pages
