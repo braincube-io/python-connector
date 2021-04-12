@@ -19,7 +19,7 @@ All contributors are expecting to abide by our [Code of Conduct](./CODE_OF_CONDU
 ### Opening Issues
 
 - Search existing [issues](https://github.com/braincube-io/python-connector/issues) for your problem.
-- [Update](#Update) your Braincube-Connector.
+- [Update](#update-version) your Braincube-Connector.
 - Fill out the provided issue template.
 - Describe your problem, not your solution.
 - Explain how to reproduce the issue.
@@ -37,7 +37,7 @@ Finally, if you are up to date, supported, have collected information about the 
 	- [Docstring style](#docstring-style)
 	- [Type hint](#Type-hint)
 - [Test](#Test)
-- [Continuous integration (CI)](#Continuous-integration-(CI))
+- [Continuous integration (CI)](#continuous-integration-ci)
 
 ### Install
 
