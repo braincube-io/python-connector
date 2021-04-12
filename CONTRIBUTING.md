@@ -137,8 +137,6 @@ poetry run pytest tests/*
 
 At every push on the project the  CI executes a set of action defined in the `.github/workflows/ci.yml` script.
 
-|!| A modifier
-
 - Setup project environment (with `poetry`)
 - Check the type hint consistency (with `mypy`)
 - Fix the code style (with `black`)
