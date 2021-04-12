@@ -11,6 +11,7 @@ Contribute to :
 ### Table of Contents
 - [Code of conduct](#Code-of-conduct)
 - [Opening Issues](#Opening-Issues)
+- [Update Version](#update-version)
 
 ### Code of conduct
 
@@ -28,6 +29,11 @@ Finally, if you are up to date, supported, have collected information about the 
 
 ### Update Version
 
+Update braincube_connector with pip:
+
+```bash
+pip install braincube_connector -U
+```
 
 ## Development Contribution:
 
