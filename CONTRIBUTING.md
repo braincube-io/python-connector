@@ -37,7 +37,7 @@ Finally, if you are up to date, supported, have collected information about the 
 	- [Docstring style](#docstring-style)
 	- [Type hint](#Type-hint)
 - [Test](#Test)
-- [Continuous integration (CI)](#Continuous-integration-(CI))
+- [Continuous integration (CI)](#continuous-integration-ci)
 
 ### Install
 
