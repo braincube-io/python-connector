@@ -17,7 +17,7 @@ def read_config(path: str) -> Dict[str, str]:
         path: Path of the configuration token file.
 
     Returns:
-        A configuration diconary.
+        A configuration dictionary.
     """
     config_path = os.path.join(path)
 
@@ -142,3 +142,39 @@ def to_datetime_str(timestamp: Optional[float]) -> Optional[str]:
     if not timestamp:
         return None
     return datetime.fromtimestamp(timestamp / 1000, tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
+
+
+def get_sso_base_url(config: Dict[str, str]) -> str:
+    """Returns the Braincube SSO API base URL, built using the given configuration dictionary.
+
+    Args:
+        config: A configuration dictionary
+
+    Returns:
+        An URL to the Braincube SSO API
+    """
+    default_base_url = "{protocol}://{domain}".format(
+        protocol=constants.DEFAULT_PROTOCOL, domain=config.get(constants.DOMAIN_KEY),
+    )
+
+    base_url = config.get(constants.SSO_BASE_URL_KEY, default_base_url)
+    return strip_path(base_url)
+
+
+def get_braincube_base_url(config: Dict[str, str]) -> str:
+    """Returns the Braincube API base URL, built using the given configuration dictionary.
+
+    Args:
+        config: A configuration dictionary
+
+    Returns:
+        An URL to the Braincube API
+    """
+    default_base_url = "{protocol}://{api_subdomain}.{domain}".format(
+        protocol=constants.DEFAULT_PROTOCOL,
+        api_subdomain=constants.DEFAULT_API_SUBDOMAIN,
+        domain=config.get(constants.DOMAIN_KEY),
+    )
+
+    base_url = config.get(constants.BRAINCUBE_BASE_URL_KEY, default_base_url)
+    return strip_path(base_url)

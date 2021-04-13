@@ -4,7 +4,7 @@
 
 import pytest
 
-from braincube_connector import braincube, client, constants
+from braincube_connector import braincube, client, constants, parameters
 from braincube_connector.bases import base, base_entity
 from braincube_connector.memory_base import memory_base
 from braincube_connector.memory_base.nested_resources import (
@@ -16,12 +16,13 @@ from braincube_connector.memory_base.nested_resources import (
 )
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def mock_client(mocker):
     """Create a mock client to test its methods."""
     mocker.patch.object(client.Client, "__init__", lambda x: None)
     instance = client.Client()
-    instance._domain = "a.b"
+    instance._sso_url = "https://a.b"
+    instance._braincube_base_url = "https://api.a.b"
     instance._pa_token = "abcd"
     instance._timeout = 60
     instance._verify = True
@@ -38,14 +39,14 @@ def mock_client(mocker):
     return instance
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def base_obj():
     """Create a mock of the bases object."""
     obj = base.Base("abcd")
     return obj
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def entity_obj(base_obj):
     """Create a mock of the Base object."""
     obj = base_entity.BaseEntity(
@@ -54,7 +55,7 @@ def entity_obj(base_obj):
     return obj
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def mock_request_entity(mocker, monkeypatch):
     mock_request = mocker.patch(
         "braincube_connector.client.request_ws",
@@ -63,14 +64,14 @@ def mock_request_entity(mocker, monkeypatch):
     return mock_request
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def bc_obj():
     """Create a mock of the Braincube object."""
     obj = braincube.Braincube(product_id="id123", name="bcname", metadata={"meta": 1},)
     return obj
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def mb_obj():
     """Create a mock of the MemoryBase object."""
     obj = memory_base.MemoryBase(
@@ -79,13 +80,13 @@ def mb_obj():
     return obj
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def mbchild_obj():
     child = mb_child.MbChild("id1", "child", {"metadata": []}, "path/mb/10/child/id1", "MB_obj")
     return child
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def create_mock_var():
     def create_mock(bcid="1", name="", metadata={"type": "NUMERIC"}, mb=None):
         name = name if name else "var{0}".format(bcid)
@@ -97,7 +98,7 @@ def create_mock_var():
     return create_mock
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def create_mock_datagroup():
     def create_mock(bcid="1", name="", variables=[], mb=None):
         name = name if name else "datagroup{0}".format(bcid)
@@ -108,7 +109,7 @@ def create_mock_datagroup():
     return create_mock
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def create_mock_event():
     def create_mock(bcid="1", name="", variables=[], mb=None):
         name = name if name else "event{0}".format(bcid)
@@ -122,7 +123,7 @@ def create_mock_event():
     return create_mock
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def create_mock_job():
     def create_mock(
         bcid="1",

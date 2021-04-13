@@ -3,28 +3,43 @@
 """Tests for the data module."""
 
 import responses
-import requests
+from requests.exceptions import ConnectionError
+import pytest
 from datetime import datetime
 import math
-from tests_integration.mocks import patch_endpoints
+from tests_integration.mocks import patch_endpoints, custom_patch_endpoints
 from braincube_connector import client, braincube, parameters
+
+default_config = {
+    "domain": "test.com",
+    "api_key": "abcd",
+}
+
+
+@pytest.fixture(autouse=True)
+def setup():
+    # Write here any command to execute before each test
+    client.instances.add_instance(client.INSTANCE_KEY, None)
+    parameters.reset_parameter()
+    yield
+    # Write here any command to execute after each test
 
 
 @responses.activate
-def test_client(patch_endpoints):
+def test_client(patch_endpoints, config=None):
+    if config is None:
+        config = default_config
+
     patch_endpoints()
-    config = {
-        "domain": "test.com",
-        "api_key": "abcd",
-    }
+
     cli = client.get_instance(config_dict=config)
     return cli
 
 
 @responses.activate
-def test_braincube(patch_endpoints):
+def test_braincube(patch_endpoints, config=None):
     patch_endpoints()
-    cli = test_client(patch_endpoints)
+    cli = test_client(patch_endpoints, config)
     bc_list = braincube.get_braincube_list()
     assert len(bc_list) == 2
     for bc in bc_list:
@@ -46,6 +61,24 @@ def test_memorybase(patch_endpoints):
     assert mb._name == "mb1"
     assert mb._bcid == 1
     return mb
+
+
+@responses.activate
+def test_memorybase_with_custom_domains(patch_endpoints, custom_patch_endpoints):
+    custom_config = {
+        "sso_base_url": "http://another.plop.com",
+        "braincube_base_url": "http://braincube_api.plop.com",
+        "api_key": "abcd",
+    }
+
+    with pytest.raises(ConnectionError):
+        test_braincube(patch_endpoints, custom_config)
+
+    bc = test_braincube(custom_patch_endpoints, custom_config)
+    custom_patch_endpoints()
+    mb = bc.get_memory_base(1)
+    assert mb._name == "mb1"
+    assert mb._bcid == 1
 
 
 @responses.activate

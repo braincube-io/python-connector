@@ -69,7 +69,7 @@ $ poetry shell
 Next it is recommended to install the git hooks so that several tests are run before each commit:
 
 ```
-poetry run pre-commit install
+poetry run pre-commit install -t pre-commit -t pre-push
 ```
 
 **Note:** pre-commit behavior is configured within the `.pre-commit-config.yaml`

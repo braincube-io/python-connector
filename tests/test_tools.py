@@ -131,3 +131,25 @@ def test_check_config_file_no_file(mocker):
 )
 def test_to_datetime_str(timestamp, output):
     assert tools.to_datetime_str(timestamp) == output
+
+
+@pytest.mark.parametrize(
+    "config, output",
+    [
+        ({"domain": "plop.test"}, "https://plop.test"),
+        ({"sso_base_url": "http://custom.sso.url"}, "http://custom.sso.url"),
+    ],
+)
+def test_get_sso_base_url(config, output):
+    assert tools.get_sso_base_url(config) == output
+
+
+@pytest.mark.parametrize(
+    "config, output",
+    [
+        ({"domain": "plop.test"}, "https://api.plop.test"),
+        ({"braincube_base_url": "http://custom_api.url"}, "http://custom_api.url"),
+    ],
+)
+def test_get_braincube_base_url(config, output):
+    assert tools.get_braincube_base_url(config) == output
