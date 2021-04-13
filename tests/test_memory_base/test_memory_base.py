@@ -134,11 +134,7 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 @pytest.mark.parametrize(
     "label_type, dataframe, expected_data",
     [
-        (
-            "bcid",
-            True,
-            pd.DataFrame({"1": ["val1", "val2", "val3"], "2": ["val4", "val5", "val6"]}),
-        ),
+        ("bcid", True, pd.DataFrame({1: ["val1", "val2", "val3"], 2: ["val4", "val5", "val6"]}),),
         (
             "name",
             True,
@@ -169,14 +165,19 @@ def test_get_data(mocker, mb_obj, create_mock_var, label_type, dataframe, expect
 
     mocker.patch(
         "braincube_connector.data.data.collect_data",
-        return_value={"1": ["val1", "val2", "val3"], "2": ["val4", "val5", "val6"]},
+        return_value={1: ["val1", "val2", "val3"], 2: ["val4", "val5", "val6"]},
     )
+    bcid_list = [1, 2]
+    obtained_data = mb_obj.get_data(bcid_list, label_type=label_type, dataframe=dataframe)
+    bcid_list_str = [str(i) for i in bcid_list]
+    obtained_data_str = mb_obj.get_data(bcid_list, label_type=label_type, dataframe=dataframe)
 
-    obtained_data = mb_obj.get_data(["1", "2"], label_type=label_type, dataframe=dataframe)
     if type(obtained_data) == pd.DataFrame:
         assert expected_data.equals(obtained_data)
+        assert obtained_data.equals(obtained_data_str)
     else:
         assert expected_data == obtained_data
+        assert obtained_data_str == obtained_data
 
 
 @pytest.mark.parametrize(

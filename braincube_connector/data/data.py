@@ -3,7 +3,7 @@
 """Module used to collect data from braindata."""
 
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 
@@ -14,7 +14,7 @@ DATA_PATH = "braindata/{mb_id}/LF"
 DATACOL = "data"
 
 
-def _expand_var_id(long_mb_id: str, var_id: str) -> str:
+def _expand_var_id(long_mb_id: str, var_id: Union[int, str]) -> str:
     """Extend a variable name to include its memory bases id.
 
     Args:
@@ -54,7 +54,7 @@ def pandas_timestamp_to_datetime(timestamp):
     return pd.Timestamp.to_pydatetime(timestamp)
 
 
-def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[str, Any]:
+def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[int, Any]:
     """Extract the requested data from the json.
 
     The function extracts the data keys and types and convert the columns
@@ -68,7 +68,7 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[str, Any]:
     """
     formatted_dataset = {}
     for col in raw_dataset["datadefs"]:
-        col_id = col["id"].split("/d")[1]
+        col_id = int(col["id"].split("/d")[1])
         if col["type"] == "DATETIME" and parameters.get_parameter("parse_date"):
             formatted_dataset[col_id] = _to_datetime(col[DATACOL])
         elif col["type"] == "NUMERIC":
@@ -98,10 +98,10 @@ def get_braindata_memory_base_info(braincube_path: str, memory_base_bcid: str) -
 
 
 def collect_data(
-    variable_ids: List[str],
+    variable_ids: List[int],
     memory_base: "MemoryBase",  # type: ignore  # noqa
     filters: List[Dict[str, Any]] = None,
-) -> Dict[str, Any]:
+) -> Dict[int, Any]:
     """Get data from the memory bases.
 
     Args:
@@ -113,13 +113,13 @@ def collect_data(
         A dictionary of data list.
     """
     long_mb_id = "mb{bcid}".format(bcid=memory_base.get_bcid())
-    variable_ids = [_expand_var_id(long_mb_id, vv) for vv in variable_ids]
+    long_variable_ids = [_expand_var_id(long_mb_id, vv) for vv in variable_ids]
     data_path = tools.join_path(
         [memory_base.get_braincube_path(), DATA_PATH.format(mb_id=long_mb_id)]
     )
     body_data = {
         "order": memory_base.get_order_variable_long_id(),
-        "definitions": variable_ids,
+        "definitions": long_variable_ids,
         "context": {"dataSource": long_mb_id},
     }
     filters = conditions.combine_filters(filters)  # Merge filters in one filter
