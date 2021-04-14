@@ -31,7 +31,7 @@ Finally, if you are up to date, supported, have collected information about the 
 
 ### Update Version
 
-Update braincube_connector with pip:
+Please ensure you use the latest version of the connector before filling an issue. Here is the command to use to update the connector if you installed it with pip:
 
 ```bash
 pip install braincube_connector -U
