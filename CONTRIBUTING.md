@@ -11,7 +11,6 @@ Contribute to :
 ### Table of Contents
 - [Code of conduct](#Code-of-conduct)
 - [Opening Issues](#Opening-Issues)
-- [Update Version](#update-version)
 
 ### Code of conduct
 
