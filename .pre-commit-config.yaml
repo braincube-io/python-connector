@@ -23,7 +23,7 @@ repos:
         files: '^braincube_connector/'
     -   id: pytest
         name: Run tests
-        entry: poetry run pytest tests tests_integration/*py
+        entry: poetry run pytest
         pass_filenames: false
         always_run: true
         language: system
