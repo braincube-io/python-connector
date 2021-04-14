@@ -61,7 +61,9 @@ By default the connector searches for a PAT and uses the oauth2_token when the P
 
 Here is a list of the settings available in the configuration file:
 
-- `domain`(required): The domain of the braincube to access.
+- `domain`(optional if `sso_base_url` and `braincube_base_url` exist): The domain of the braincube to access.
+- `sso_base_url`(optional if `domain` exists): The base URL of the SSO used to check the validity of your access token.
+- `braincube_base_url`(optional if `domain` exists): The base URL of the Braincube API used to fetch data from.
 - `api_key`(optional if `oauth2_token` exists): a personal access token generated in the braincube account configuration.
 - `oauth2_token`(optional if `api_key` exists): an OAuth2 token obtained with the [braincube-token-getter](https://pypi.org/project/braincube-token-getter/). Used only when `api_key` does not exist.
 - `verify`(optional, default is `True`): If `False`, the requests do not verify the SSL certificate.
