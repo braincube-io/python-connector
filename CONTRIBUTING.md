@@ -69,8 +69,11 @@ $ poetry shell
 Next it is recommended to install the git hooks so that several tests are run before each commit:
 
 ```
-poetry run pre-commit install
+poetry run pre-commit install -t pre-commit -t pre-push
 ```
+
+`pre-commit` runs the continuous integration tests before a commit or a push depending on the configuration.  
+You can manually run the configured tests with `poetry run pre-commit run --all-files`
 
 **Note:** pre-commit behavior is configured within the `.pre-commit-config.yaml`
 

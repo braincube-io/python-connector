@@ -1,15 +1,16 @@
+default_stages: [commit]
 repos:
 -   repo: local
     hooks:
     -   id: mypy
         name: Run mypy
-        entry: poetry run mypy
+        entry: poetry run mypy --ignore-missing-imports
         language: system
         verbose: true
         types: [python]
     -   id: black
         name: Run black
-        entry: poetry run black --check --diff
+        entry: poetry run black
         language: system
         verbose: true
         types: [python]
@@ -22,8 +23,10 @@ repos:
         files: '^braincube_connector/'
     -   id: pytest
         name: Run tests
-        entry: poetry run pytest tests
+        entry: poetry run pytest
+        pass_filenames: false
+        always_run: true
         language: system
         verbose: true
         types: [python]
-    
+        stages: [push]

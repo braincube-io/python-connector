@@ -16,7 +16,7 @@ from tests.mock import mock_client
 from tests.test_bases.test_base import LOAD_URL
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def clean_client_instances():
     if client.INSTANCE_KEY in instances.instances:
         del instances.instances[client.INSTANCE_KEY]
@@ -102,7 +102,7 @@ def test_create_client_no_config(mocker):
 
 
 def test_str(mock_client):
-    assert str(mock_client) == "Client(domain=a.b)"
+    assert str(mock_client) == "Client(domain=https://a.b)"
 
 
 def test_create_client(mocker, clean_client_instances):
@@ -117,7 +117,8 @@ def test_create_client(mocker, clean_client_instances):
     test_client = client.get_instance(
         config_dict={constants.API_KEY: "abcd", constants.DOMAIN_KEY: "mock.com"}
     )
-    assert test_client._domain == "mock.com"
+    assert test_client._sso_url == "https://mock.com"
+    assert test_client._braincube_base_url == "https://api.mock.com"
     assert test_client._authentication == {constants.PAT_KEY: "abcd"}
     assert test_client._timeout == 60
     assert test_client._verify == True

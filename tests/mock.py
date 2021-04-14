@@ -4,7 +4,7 @@
 
 import pytest
 
-from braincube_connector import braincube, client, constants
+from braincube_connector import braincube, client, constants, parameters
 from braincube_connector.bases import base, base_entity
 from braincube_connector.memory_base import memory_base
 from braincube_connector.memory_base.nested_resources import (
@@ -21,7 +21,8 @@ def mock_client(mocker):
     """Create a mock client to test its methods."""
     mocker.patch.object(client.Client, "__init__", lambda x: None)
     instance = client.Client()
-    instance._domain = "a.b"
+    instance._sso_url = "https://a.b"
+    instance._braincube_base_url = "https://api.a.b"
     instance._pa_token = "abcd"
     instance._timeout = 60
     instance._verify = True

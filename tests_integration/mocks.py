@@ -67,6 +67,26 @@ available_calls = [
     },
 ]
 
+custom_calls = [
+    {
+        "method": "GET",
+        "url": "http://another.plop.com/sso-server/ws/user/me",
+        "status": 200,
+        "json": {
+            "accessList": [
+                {"product": {"name": "demo", "productId": "123"},},
+                {"product": {"name": "other", "productId": "456"},},
+            ]
+        },
+    },
+    {
+        "method": "GET",
+        "url": "http://braincube_api.plop.com/braincube/demo/braincube/mb/1/extended",
+        "status": 200,
+        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+    },
+]
+
 for bcid in ["101", "102", "103"]:
     available_calls.append(
         {
@@ -89,6 +109,15 @@ for bcid in ["101", "102", "103"]:
 def patch_endpoints():
     def func():
         for kwargs in available_calls:
+            responses.add(**kwargs)
+
+    return func
+
+
+@pytest.fixture
+def custom_patch_endpoints():
+    def func():
+        for kwargs in custom_calls:
             responses.add(**kwargs)
 
     return func

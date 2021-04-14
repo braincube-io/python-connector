@@ -5,6 +5,7 @@
 from typing import Any, Dict, Tuple
 
 import requests
+from urllib.parse import urljoin
 
 from braincube_connector import instances, tools, constants
 from braincube_connector.bases import base
@@ -29,7 +30,8 @@ class Client(base.Base):
             raise Exception("A client has already been inialized.")
         else:
             config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
-            self._domain = tools.strip_domain(config_dict[constants.DOMAIN_KEY])
+            self._sso_url = tools.get_sso_base_url(config_dict)
+            self._braincube_base_url = tools.get_braincube_base_url(config_dict)
             self._verify = config_dict.get(constants.VERIFY_CERT, True)  # noqa: WPS425
             self._authentication = self._build_authentication(config_dict)
             available_braincube_infos = self._request_braincubes()
@@ -43,7 +45,7 @@ class Client(base.Base):
         Returns:
             An informal representation of the Client object.
         """
-        return self._get_str({"domain": self._domain})
+        return self._get_str({"domain": self._sso_url})
 
     def request_ws(
         self,
@@ -67,10 +69,10 @@ class Client(base.Base):
         Returns:
             The request's json output or the full response.
         """
-        domain = self._domain
+        base_url = self._sso_url
         if api:
-            domain = "api.{dom}".format(dom=domain)
-        url = tools.generate_url(domain, path)
+            base_url = self._braincube_base_url
+        url = urljoin(base_url, path)
         ##
         if not headers:
             headers = self._headers
