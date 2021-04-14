@@ -1,0 +1,189 @@
+name: CI-Braincube-Connector
+on: [push]
+    
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+      
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install
+      
+  mypy:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+    
+      - name: run mypy
+        run: |
+          poetry run mypy --ignore-missing-imports braincube_connector
+
+
+  black:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: run black
+        run: |
+          poetry run black --check --diff .
+
+
+  lint :
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: run lint
+        run: |
+          poetry run flake8 braincube_connector
+
+
+  unittest :
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: run unittest
+        run: |
+          poetry run coverage run --source=braincube_connector -m pytest tests/*
+          poetry run coverage report
+          if [ "$CI_COMMIT_REF_NAME" == "master" ]; then poetry run coverage html; fi
+      
+      
+  integration_tests:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: run integration_tests
+        run: |
+          poetry run pytest tests_integration/*.py
