@@ -18,6 +18,8 @@ All contributors are expecting to abide by our [Code of Conduct](./CODE_OF_CONDU
 
 ### Opening Issues
 
+Before opening an issue, please follow those steps:
+
 - Search existing [issues](https://github.com/braincube-io/python-connector/issues) for your problem.
 - [Update](#update-version) your Braincube-Connector.
 - Fill out the provided issue template.
