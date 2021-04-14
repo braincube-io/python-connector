@@ -2,7 +2,52 @@
 
 To contribute to the `braincube_connector` project, please make use of the following tools.
 
-## Install
+Contribute to :
+- [The project](#Project-Contribution)
+- [The development](#Development-Contribution)
+
+## Project Contribution:
+
+### Table of Contents
+- [Code of conduct](#Code-of-conduct)
+- [Opening Issues](#Opening-Issues)
+
+### Code of conduct
+
+All contributors are expecting to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+### Opening Issues
+
+Before opening an issue, please follow those steps:
+
+- Search existing [issues](https://github.com/braincube-io/python-connector/issues) for your problem.
+- [Update](#update-version) your Braincube-Connector.
+
+Finally, if you are up to date, supported, have collected information about the problem, and have the best reproduction instructions you can give, you are ready to [open an issue](https://github.com/braincube-io/python-connector/issues/new/choose):
+
+- Fill out the provided issue template.
+- Describe your problem, not your solution.
+- Explain how to reproduce the issue.
+
+### Update Version
+
+Please ensure you use the latest version of the connector before filling an issue. Here is the command to use to update the connector if you installed it with pip:
+
+```bash
+pip install braincube_connector -U
+```
+
+## Development Contribution:
+
+### Table of Contents
+- [Install](#Install)
+- [Style](#Style)
+	- [Docstring style](#docstring-style)
+	- [Type hint](#Type-hint)
+- [Test](#Test)
+- [Continuous integration (CI)](#continuous-integration-ci)
+
+### Install
 
 The project uses [poetry](https://github.com/python-poetry/poetry) to manage the configuration and the package building.
 
@@ -29,7 +74,7 @@ poetry run pre-commit install
 
 **Note:** pre-commit behavior is configured within the `.pre-commit-config.yaml`
 
-## Style
+### Style
 
 The code style is fixed with the [black](https://github.com/psf/black) library:
 
@@ -59,7 +104,7 @@ A few violations could not be fixed and were ignored in the `.flake8` file:
 - [`RST`: Ignore rst format related warnings.](https://github.com/peterjc/flake8-rst-docstrings)
   → Incompatible with `**kwargs` gets confused with `**title` in rst format. Removing this warning has no effect since we are using markdown.
 
-### docstring style
+#### docstring style
 
 The `braincube_connector` project uses the google docstring styles:
 
@@ -76,7 +121,7 @@ def function(val: int) -> int:
     return 2*val
 ```
 
-### Type hint
+#### Type hint
 
 Since python 3.5, there is the possibility to use the type hints on the function definitions. It should help detect an important number errors and enforce better practice so we decided to incorporate it in the project.
 
@@ -86,7 +131,7 @@ The consistence of the type hints is checked with  [mypy](http://mypy-lang.org/)
 mypy braincube_connector/
 ```
 
-## Test
+### Test
 
 The test suite rely on the to libraries [pytest](https://docs.pytest.org/en/latest/) and  [pytest_mock](https://github.com/pytest-dev/pytest-mock).
 
@@ -96,61 +141,12 @@ To run the tests, simply run the following command:
 poetry run pytest tests/*
 ```
 
-### coverage
+### Continuous integration (CI)
 
-To test the test suite coverage, use the [coverage](https://github.com/nedbat/coveragepy/blob/coverage-5.0.3/doc/index.rst) package.
+At every push on the project the  CI executes a set of action defined in the `.github/workflows/ci.yml` script.
 
-```bash
-poetry run coverage run --source=braincube_connector -m pytest tests/*
-```
-Then generate the report:
-
-```bash
-poetry run coverage html # for an html report
-poetry run coverage report # for a report in the shell
-```
-
-## Build documentation
-
-The documentation is built with [mkdocs](https://www.mkdocs.org/) using the [material](https://squidfunk.github.io/mkdocs-material/) theme, modified to match braincube's commons.
-
-To get the braincube modification on the style, run the following commands:
-
-```bash
-git clone https://gitlab.ipleanware.com/braincube/misc/gitlabci-commons.git
-cp -r gitlabci-commons/braincube-pages/docs/* docs/
-cp -r gitlabci-commons/braincube-pages/custom_theme .
-```
-
-**Note:**  `cp -r gitlabci-commons/braincube-pages/docs/* docs/ ` overwrites the `index.md` so it is best to leave unchanged.
-
-Additional files can be added to the doc by creating a markdown file within the `docs/` directory and creating referencing to it under the *nav* section in the `mkdocs.yml` file.
-
-*mkdocs* uses `mkdocstrings` to parse the docstrings with a module. This is done automatically when the symbole `::: modulename` is found in one of the markdown source files.
-
-Finally compile the documentation with mkdocs:
-
-```bash
-bash docs/build_doc.sh build
-```
-The site is stored in the `site` directory.  
-
-or to run a server:
-```bash
-bash docs/build_doc.sh serve
-```
-
-
-
-**Note:** The local building of the documentation is useful for test purposes but otherwise it is handled by the CI
-
-## Continuous integration (CI)
-
-At every push on the project the  CI executes a set of action defined in the `.gitlab-ci.yml` script.
-
-- Check the style (with `flake8`)
+- Setup project environment (with `poetry`)
 - Check the type hint consistency (with `mypy`)
+- Fix the code style (with `black`)
+- Check the style (with `flake8`)
 - Run the test suite (with `pytest`)
-- Evaluate the test coverage (with `coverage`)
-- Build the documentation (with `mkdocs`)
-- publish the documentation in gitlab pages
