@@ -14,7 +14,7 @@ DATA_PATH = "braindata/{mb_id}/LF"
 DATACOL = "data"
 
 
-def _expand_var_id(long_mb_id: str, var_id: Union[int, str]) -> str:
+def _expand_var_id(long_mb_id: str, var_id: int) -> str:
     """Extend a variable name to include its memory bases id.
 
     Args:
