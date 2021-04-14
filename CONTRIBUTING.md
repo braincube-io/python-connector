@@ -22,9 +22,6 @@ Before opening an issue, please follow those steps:
 
 - Search existing [issues](https://github.com/braincube-io/python-connector/issues) for your problem.
 - [Update](#update-version) your Braincube-Connector.
-- Fill out the provided issue template.
-- Describe your problem, not your solution.
-- Explain how to reproduce the issue.
 
 Finally, if you are up to date, supported, have collected information about the problem, and have the best reproduction instructions you can give, you are ready to [open an issue](https://github.com/braincube-io/python-connector/issues/new/choose).
 
