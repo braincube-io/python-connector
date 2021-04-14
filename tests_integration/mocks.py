@@ -105,7 +105,7 @@ for bcid in ["101", "102", "103"]:
     )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def patch_endpoints():
     def func():
         for kwargs in available_calls:
@@ -114,7 +114,7 @@ def patch_endpoints():
     return func
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def custom_patch_endpoints():
     def func():
         for kwargs in custom_calls:
