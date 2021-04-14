@@ -130,7 +130,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
 
     def get_data(
         self,
-        var_ids: "List[str]",
+        var_ids: "List[Union[int,str]]",
         filters: "List[Dict[str, Any]]" = None,
         label_type: "str" = "bcid",
         dataframe: "bool" = False,
@@ -146,10 +146,11 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         Returns:
             A dictionary of data list or a pandas DataFrame.
         """
-        datasource = data.collect_data(var_ids, self, filters)
+        int_var_ids = [int(var_id) for var_id in var_ids]
+        datasource = data.collect_data(int_var_ids, self, filters)
 
         if label_type == "name":
-            mapping = {var_id: self.get_variable(var_id).get_name() for var_id in var_ids}
+            mapping = {var_id: self.get_variable(var_id).get_name() for var_id in int_var_ids}
             datasource = {
                 mapping[data_key]: data_value for data_key, data_value in datasource.items()
             }

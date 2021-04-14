@@ -46,20 +46,20 @@ def test_to_datetime():
 def test_extract_format_data():
     parameters.set_parameter({"parse_date": True})
     formated_dataset = data._extract_format_data(DATASET)
-    assert sorted(formated_dataset.keys()) == ["1", "2", "3", "4", "5"]
-    assert formated_dataset["1"] == [1, 2, 3, 4]
+    assert sorted(formated_dataset.keys()) == [1, 2, 3, 4, 5]
+    assert formated_dataset[1] == [1, 2, 3, 4]
 
-    assert type(formated_dataset["1"][0]) is int
-    assert type(formated_dataset["2"][0]) is float  # No NaN for int...
-    assert type(formated_dataset["3"][0]) is float
-    assert type(formated_dataset["4"][0]) is datetime
-    assert type(formated_dataset["5"][0]) is str
+    assert type(formated_dataset[1][0]) is int
+    assert type(formated_dataset[2][0]) is float  # No NaN for int...
+    assert type(formated_dataset[3][0]) is float
+    assert type(formated_dataset[4][0]) is datetime
+    assert type(formated_dataset[5][0]) is str
 
 
 def test_extract_format_data_no_parse():
     parameters.set_parameter({"parse_date": False})
     formated_dataset = data._extract_format_data(DATASET)
-    assert type(formated_dataset["4"][0]) is str
+    assert type(formated_dataset[4][0]) is str
 
 
 @pytest.mark.parametrize("filters", [None, [{"AND": ["A", "B"]}]])
