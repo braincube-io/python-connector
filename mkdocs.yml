@@ -1,9 +1,9 @@
 site_name: 'braincube_connector'
-repo_url: 'https://gitlab.ipleanware.com/braincube/core/python/braincube_connector'
-site_url: 'https://braincube.pages.ipleanware.com/core/python/braincube_connector/site/'
+repo_url: 'https://github.com/braincube-io/python-connector'
+site_url: 'https://github.com/braincube-io/python-connector'
 theme: 
   name: 'material'
-  custom_dir: 'custom_theme'
+  custom_dir: 'docs/custom_theme'
   favicon: 'images/favicon.ico'
 extra_css:
   - 'extra.css'
@@ -17,9 +17,33 @@ markdown_extensions:
       custom_checkbox: true
 nav:
   - Home: index.md
-  - Usage: usage.md
-  - Documentation: documentation.md
+  - Usage: jupyter_presentation/usage_example.ipynb
+  - API Reference:
+      - client: reference/braincube_connector/client.md
+      - braincube: reference/braincube_connector/braincube.md
+      - memory_base: reference/braincube_connector/memory_base/memory_base.md
+      - job: reference/braincube_connector/memory_base/nested_resources/job.md
+      - condition: reference/braincube_connector/memory_base/nested_resources/condition_container.md
+      - event: reference/braincube_connector/memory_base/nested_resources/event.md
+      - rule: reference/braincube_connector/memory_base/nested_resources/rule.md
+      - variable: reference/braincube_connector/memory_base/nested_resources/variable.md
+      - datagroup: reference/braincube_connector/memory_base/nested_resources/datagroup.md
   - Contributing: contributing.md
 plugins:
+  - gen-files:
+      scripts:
+        - docs/gen_api_doc_stubs.py
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          rendering:
+            show_source: false
+          setup_commands:
+            - import sys
+            - sys.path.append("docs")
+          selection:
+            new_path_syntax: yes
+      watch:
+        - braincube_connector
+  - mkdocs-jupyter

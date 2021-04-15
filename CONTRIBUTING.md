@@ -3,12 +3,14 @@
 To contribute to the `braincube_connector` project, please make use of the following tools.
 
 Contribute to :
+
 - [The project](#Project-Contribution)
 - [The development](#Development-Contribution)
 
 ## Project Contribution:
 
 ### Table of Contents
+
 - [Code of conduct](#Code-of-conduct)
 - [Opening Issues](#Opening-Issues)
 
@@ -40,6 +42,7 @@ pip install braincube_connector -U
 ## Development Contribution:
 
 ### Table of Contents
+
 - [Install](#Install)
 - [Style](#Style)
 	- [Docstring style](#docstring-style)
