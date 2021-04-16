@@ -35,6 +35,8 @@ mkdocstrings = "^0.10.3"
 mkdocs-material = "^4.6.3"
 anybadge = "^1.7.0"
 isort = "4.3.20"
+jupyter = "^1.0.0"
+notebook = "^6.3.0"
 
 [tool.black]
 line-length = 100

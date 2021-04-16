@@ -3,7 +3,7 @@
 """Module used to collect data from braindata."""
 
 import json
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 import pandas as pd
 

@@ -61,9 +61,6 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# jupyter notebooks
-*ipynb
-
 # Flask stuff:
 instance/
 .webassets-cache
@@ -151,3 +148,6 @@ config.json
 
 #badges
 badge*.svg
+
+# config for jupyter
+docs/jupyter_presentation/config.json
