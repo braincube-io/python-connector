@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - update configuration, we can use `sso_base_url` and `braincube_base_url` to define different domains for those services
 
-## [2.3.0 - 2021-02-23](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.2...2.3.0)
+## [2.3.0 - 2021-02-23](https://github.com/braincube-io/python-connector/compare/2.2.2...2.3.0)
 
 ### Added
 - Make `get_name` and `get_bcid` methods available for all BaseEntity objects
@@ -19,20 +19,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add parameter in MemoryBase get_data() function to return a pandas DataFrame
 - Entities have a get_uuid method
 
-## [2.2.2 - 2020-12-01](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.1...2.2.2)
+## [2.2.2 - 2020-12-01](https://github.com/braincube-io/python-connector/compare/2.2.1...2.2.2)
 
 ### Fixed
- - Fix the parsing of date list containing "null" elements (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2597)
+ - Fix the parsing of date list containing "null" elements
 
 ### Changed
  - Improve list of date parsing using pandas
 
-## [2.2.1 - 2020-11-09](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.2.0...2.2.1)
+## [2.2.1 - 2020-11-09](https://github.com/braincube-io/python-connector/compare/2.2.0...2.2.1)
 
 ### Fixed
- - Fix typo in documentation (https://gitlab.ipleanware.com/braincube/misc/redmine/-/issues/2547)
+ - Fix typo in documentation
 
-## [2.2.0 - 2020-10-27](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.1.0...2.2.0)
+## [2.2.0 - 2020-10-27](https://github.com/braincube-io/python-connector/compare/2.1.0...2.2.0)
 
 ### Added
  - Add the personal access token option for authentication.
@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - Fix the setting of the `verify` parameter for the SSL certificate setting.
 
-## [2.1.0 - 2020-07-08](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.2...2.1.0)
+## [2.1.0 - 2020-07-08](https://github.com/braincube-io/python-connector/compare/2.0.2...2.1.0)
 
 ### Fixed
  - possibility to use other memory base references than dates.
@@ -51,12 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Modified
  - the data's function collect_data now takes a memory_base instead of its metadata as a parameter.
 
-## [2.0.2 - 2020-06-11](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.1...2.0.2)
+## [2.0.2 - 2020-06-11](https://github.com/braincube-io/python-connector/compare/2.0.1...2.0.2)
 
 ### FIXED
- - Fixes the [requests library](https://gitlab.ipleanware.com/braincube/misc/redmine/issues/1791) not present error by adding it to the no-dev dependencies.
+ - Fixes the "requests library not present" error by adding it to the no-dev dependencies.
 
-## [2.0.1 - 2020-06-03](https://gitlab.ipleanware.com/braincube/core/python/py_client/compare/2.0.0...2.0.1)
+## [2.0.1 - 2020-06-03](https://github.com/braincube-io/python-connector/compare/2.0.0...2.0.1)
 
 ### FIXED
  - Convert all object bcid to str in `_get_resource`. Prevents error when bcids are passed as int
