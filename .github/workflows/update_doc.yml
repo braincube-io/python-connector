@@ -1,8 +1,7 @@
 name: Build and Deploy doc
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [created]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -32,6 +31,10 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install
+
+      - name: Update doc version
+        run: |
+          sed -i /VERSION/${{ github.event.release.tag_name }}/ mkdocs.yml
 
       - name: Build documentation
         run: poetry run mkdocs build

@@ -1,6 +1,6 @@
-site_name: 'braincube_connector'
+site_name: 'braincube_connector@VERSION'
 repo_url: 'https://github.com/braincube-io/python-connector'
-site_url: 'https://github.com/braincube-io/python-connector'
+site_url: 'https://braincube-io.github.io/python-connector/'
 theme: 
   name: 'material'
   custom_dir: 'docs/custom_theme'
