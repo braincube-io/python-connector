@@ -1,6 +1,6 @@
 name: Build and Deploy doc
-on:
-  on: [push]
+on: [push]
+# on:
 #  release:
 #    types: [created]
 jobs:
