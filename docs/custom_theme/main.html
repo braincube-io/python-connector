@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if not "\x3ch1" in page.content %}
+    <h1>{{ page.title | default(config.site_name, true)}}</h1>
+  {% endif %}
+  {{ page.content }}
+  {% block source %}
+    {% if page.meta.source %}
+      <h2 id="__source">{{ lang.t('meta.source') }}</h2>
+      {% set path = (page.meta.path | default([""]) | first) %}
+      {% for file in page.meta.source %}
+        <a href="{{
+          [repo_url, path, file] | join('/') | replace('//', '/')
+        }}" title="{{ file }}" class="md-source-file">
+          {{ file }}
+        </a>
+      {% endfor %}
+    {% endif %}
+  {% endblock %}
+{% endblock %}
