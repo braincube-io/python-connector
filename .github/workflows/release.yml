@@ -36,8 +36,8 @@ jobs:
         - name: Deploy
           env:
             PYPI_STAGING_REPO_URL: ${{ secrets.PYPI_STAGING_REPO_URL }}
-            PYPI_STAGING_USERNAME: ${{ secrets.$PYPI_STAGING_USERNAME }}
-            PYPI_STAGING_PASSWORD: ${{ secrets.$PYPI_STAGING_PASSWORD }}
+            PYPI_STAGING_USERNAME: ${{ secrets.PYPI_STAGING_USERNAME }}
+            PYPI_STAGING_PASSWORD: ${{ secrets.PYPI_STAGING_PASSWORD }}
           run: |
             poetry build
             poetry config repositories.test $PYPI_STAGING_REPO_URL
