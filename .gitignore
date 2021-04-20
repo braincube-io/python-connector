@@ -110,7 +110,7 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
+# Spyder project settingsdoc
 .spyderproject
 .spyproject
 
@@ -129,10 +129,6 @@ dmypy.json
 .pyre/
 
 # Doc templates
-custom_theme/
-docs/extra.css
-docs/images/
-docs/index.md
 gitlabci-commons/
 
 # misc

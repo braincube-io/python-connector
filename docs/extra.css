@@ -1,0 +1,42 @@
+.md-logo.md-header-nav__button {
+  padding: 0;
+  margin: 0;
+}
+
+.md-header-nav__button img {
+  margin-top: 5px;
+}
+
+.md-nav__link {
+  overflow: inherit;
+}
+
+.md-header {
+  background-color: rgba(0,0,0,.87);
+  box-shadow: 0 2px 2px 0 #ffde00 !important;
+}
+
+.md-nav--secondary {
+  border-left: .4rem solid #ffde00;
+}
+
+.md-typeset a,
+.md-nav__item--active>.md-nav__link, .md-nav__link:active {
+  color: #1C7FD5;
+}
+
+.md-nav__link:focus, .md-nav__link:hover,
+.md-typeset a:active, .md-typeset a:hover {
+  color: #1560A0
+}
+
+.md-source__facts {
+  display: none;
+}
+
+@media only screen and (max-width: 76.1875em) {
+  html .md-nav--primary .md-nav__title--site,
+  .md-nav__source {
+    background-color: rgba(0,0,0,.87);
+  }
+}

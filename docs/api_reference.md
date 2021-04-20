@@ -1,6 +1,4 @@
-# Documentation
-
-
+# API Reference
 
 ### instances
 ::: braincube_connector.instances
