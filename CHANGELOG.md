@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0 - 2021-04-21](https://github.com/braincube-io/python-connector/compare/2.3.0...2.4.0)
+
 ### Added
 
 - update configuration, we can use `sso_base_url` and `braincube_base_url` to define different domains for those services
+
+### Changed
+
+- Move project to GitHub
 
 ## [2.3.0 - 2021-02-23](https://github.com/braincube-io/python-connector/compare/2.2.2...2.3.0)
 
