@@ -6,6 +6,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+
       - name: Set up python
         uses: actions/setup-python@v2
         with:
@@ -20,7 +21,6 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install Poetry
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1.1.2
         with:
           virtualenvs-create: true
