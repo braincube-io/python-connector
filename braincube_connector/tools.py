@@ -96,8 +96,8 @@ def build_url(base_url: str = EMPTY_STRING, path: str = EMPTY_STRING) -> str:
     """Appends a path to the given base_url to generate a valid url.
 
     Args:
-        base_url: Optional domain, overwrites the default.
-        path: Path to a specific.
+        base_url: Base URL to complete with given path.
+        path: Path to a specific resource.
 
     Returns:
         A complete url.
