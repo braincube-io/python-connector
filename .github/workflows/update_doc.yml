@@ -34,7 +34,7 @@ jobs:
 
       - name: Update doc version
         run: |
-          sed -i /VERSION/${{ github.event.release.tag_name }}/ mkdocs.yml
+          sed -i "s|VERSION|${{ github.event.release.tag_name }}|" mkdocs.yml
 
       - name: Build documentation
         run: poetry run mkdocs build

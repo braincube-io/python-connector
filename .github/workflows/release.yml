@@ -1,4 +1,4 @@
-name: Build and Deploy doc
+name: Build and deploy package
 on:
   release:
     types: [created]
