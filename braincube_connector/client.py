@@ -5,7 +5,6 @@
 from typing import Any, Dict, Tuple
 
 import requests
-from urllib.parse import urljoin
 
 from braincube_connector import instances, tools, constants
 from braincube_connector.bases import base
@@ -72,8 +71,9 @@ class Client(base.Base):
         base_url = self._sso_url
         if api:
             base_url = self._braincube_base_url
-        url = urljoin(base_url, path)
-        ##
+
+        url = tools.build_url(base_url, path)
+
         if not headers:
             headers = self._headers
         request_result = getattr(requests, rtype.lower())(

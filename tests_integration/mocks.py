@@ -81,7 +81,7 @@ custom_calls = [
     },
     {
         "method": "GET",
-        "url": "http://braincube_api.plop.com/braincube/demo/braincube/mb/1/extended",
+        "url": "http://braincube_api.plop.com/prefix/v1.0/braincube/demo/braincube/mb/1/extended",
         "status": 200,
         "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
     },
