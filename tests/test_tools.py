@@ -75,14 +75,6 @@ def test_join_path():
 
 
 @pytest.mark.parametrize(
-    "path, url", [("c", "https://a.b/c"), ("test/c", "https://a.b/test/c"), ("/c", "https://a.b/c")]
-)
-def test_generate_url(path, url):
-    """Test the _generate_url method."""
-    assert tools.generate_url("a.b", path) == url
-
-
-@pytest.mark.parametrize(
     "passed_param, existing_files, expected_dict",
     [
         (
@@ -153,3 +145,24 @@ def test_get_sso_base_url(config, output):
 )
 def test_get_braincube_base_url(config, output):
     assert tools.get_braincube_base_url(config) == output
+
+
+@pytest.mark.parametrize(
+    "base_url, path, full_url",
+    [
+        ("http://a.domain/prefix/v1.0", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
+        ("toto", "with/a/path", "toto/with/a/path"),
+        (
+            "http://a.domain/prefix/v1.0",
+            "with/a/path?size=50&page=2",
+            "http://a.domain/prefix/v1.0/with/a/path?size=50&page=2",
+        ),
+        ("http://a.domain/prefix/v1.0", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
+        ("http://a.domain/prefix/v1.0/", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
+        ("http://a.domain/prefix/v1.0/", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
+        ("http://a.domain/prefix/v1.0", "", "http://a.domain/prefix/v1.0"),
+        ("", "with/a/path", "with/a/path"),
+    ],
+)
+def test_build_url(base_url, path, full_url):
+    assert tools.build_url(base_url, path) == full_url

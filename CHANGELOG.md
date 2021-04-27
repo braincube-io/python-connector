@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.1 - 2021-04-22](https://github.com/braincube-io/python-connector/compare/2.4.0...2.4.1)
+
+### Fixed
+
+- Fix URL construction when there is a path in one of the configured base URLs
+
 ## [2.4.0 - 2021-04-21](https://github.com/braincube-io/python-connector/compare/2.3.0...2.4.0)
 
 ### Added

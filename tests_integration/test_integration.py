@@ -67,7 +67,7 @@ def test_memorybase(patch_endpoints):
 def test_memorybase_with_custom_domains(patch_endpoints, custom_patch_endpoints):
     custom_config = {
         "sso_base_url": "http://another.plop.com",
-        "braincube_base_url": "http://braincube_api.plop.com",
+        "braincube_base_url": "http://braincube_api.plop.com/prefix/v1.0/",
         "api_key": "abcd",
     }
 

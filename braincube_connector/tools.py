@@ -6,8 +6,11 @@ import json
 import os
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
+from urllib.parse import urlsplit, urlunsplit
 
 from braincube_connector import constants
+
+EMPTY_STRING = ""
 
 
 def read_config(path: str) -> Dict[str, str]:
@@ -89,18 +92,21 @@ def join_path(path_elmts: List[str]) -> str:
     return "/".join(clean_elmts)
 
 
-def generate_url(domain: str, path: str) -> str:
-    """Appends a path to the client domain to generate a valid url.
+def build_url(base_url: str = EMPTY_STRING, path: str = EMPTY_STRING) -> str:
+    """Appends a path to the given base_url to generate a valid url.
 
     Args:
-        domain: Optional domain, overwrites the default.
-        path: Path on the domain.
+        base_url: Base URL to complete with given path.
+        path: Path to a specific resource.
 
     Returns:
-        A complete url on the configured domain.
+        A complete url.
     """
-    path = strip_path(path)
-    return "https://{domain}/{path}".format(domain=domain, path=path)
+    parts = urlsplit(base_url)
+    full_path = join_path([parts.path, path])
+    return urlunsplit(
+        (parts.scheme, parts.netloc, strip_path(full_path), EMPTY_STRING, EMPTY_STRING)
+    )
 
 
 def check_config(
