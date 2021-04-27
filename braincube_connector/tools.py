@@ -102,14 +102,11 @@ def build_url(base_url: str = EMPTY_STRING, path: str = EMPTY_STRING) -> str:
     Returns:
         A complete url.
     """
-    try:  # noqa: WPS229
-        parts = urlsplit(base_url)
-        full_path = join_path([parts.path, path])
-        return urlunsplit(
-            (parts.scheme, parts.netloc, strip_path(full_path), EMPTY_STRING, EMPTY_STRING)
-        )
-    except TypeError:
-        return EMPTY_STRING
+    parts = urlsplit(base_url)
+    full_path = join_path([parts.path, path])
+    return urlunsplit(
+        (parts.scheme, parts.netloc, strip_path(full_path), EMPTY_STRING, EMPTY_STRING)
+    )
 
 
 def check_config(
