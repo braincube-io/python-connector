@@ -150,8 +150,13 @@ def test_get_braincube_base_url(config, output):
 @pytest.mark.parametrize(
     "base_url, path, full_url",
     [
-        (None, None, ""),
         ("http://a.domain/prefix/v1.0", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
+        ("toto", "with/a/path", "toto/with/a/path"),
+        (
+            "http://a.domain/prefix/v1.0",
+            "with/a/path?size=50&page=2",
+            "http://a.domain/prefix/v1.0/with/a/path?size=50&page=2",
+        ),
         ("http://a.domain/prefix/v1.0", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
         ("http://a.domain/prefix/v1.0/", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
         ("http://a.domain/prefix/v1.0/", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
