@@ -147,6 +147,14 @@ To run the tests, simply run the following command:
 poetry run pytest tests/*
 ```
 
+To ease development phase, we use [`pytest-watch`](https://pypi.org/project/pytest-watch/). You can run it like this :
+
+```bash
+poetry run ptw --config pytest-watch.conf.ini
+```
+
+Once running, you can edit files, and tests will be run when you save your file.
+
 ### Continuous integration (CI)
 
 At every push on the project the  CI executes a set of action defined in the `.github/workflows/ci.yml` script.
