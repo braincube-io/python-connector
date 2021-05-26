@@ -82,6 +82,25 @@ def test_memorybase_with_custom_domains(patch_endpoints, custom_patch_endpoints)
 
 
 @responses.activate
+def test_memorybase_with_custom_domains_and_placeholder(patch_endpoints, custom_patch_endpoints):
+    custom_config = {
+        "sso_base_url": "http://another.plop.com",
+        "braincube_base_url": "http://{braincube-name}.plop.com/prefix/v1.0/",
+        "api_key": "abcd",
+    }
+
+    with pytest.raises(ConnectionError):
+        test_braincube(patch_endpoints, custom_config)
+
+    bc = test_braincube(custom_patch_endpoints, custom_config)
+    custom_patch_endpoints()
+    mb = bc.get_memory_base(1)
+    assert mb._name == "mb1"
+    assert mb._bcid == 1
+    mb.get_variable_list()
+
+
+@responses.activate
 def test_get_data(patch_endpoints):
     mb = test_memorybase(patch_endpoints)
     patch_endpoints()

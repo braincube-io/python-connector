@@ -44,14 +44,17 @@ def test_generate_path(request_list, expected_req_path):
 def test_get_resource(mock_entity_class, resource_parent, bcid):
     resource_parent._get_resource(mock_entity_class, bcid=bcid)
     mock_entity_class.create_singleton_from_path.assert_called_once_with(
-        "parent_path/entity/1/extended", "parent_path/entity/1"
+        "parent_path/entity/1/extended", "parent_path/entity/1", resource_parent, braincube_name=""
     )
 
 
 def test_get_resource_list(mock_entity_class, resource_parent):
     resource_parent._get_resource_list(mock_entity_class)
     mock_entity_class.create_collection_from_path.assert_called_once_with(
-        "parent_path/entity/all/extended", "parent_path/entity/{bcid}"
+        "parent_path/entity/all/extended",
+        "parent_path/entity/{bcid}",
+        resource_parent,
+        braincube_name="",
     )
 
 

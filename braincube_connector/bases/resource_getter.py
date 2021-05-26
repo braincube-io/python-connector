@@ -2,7 +2,7 @@
 
 from typing import Any, Tuple, Union
 
-from braincube_connector import tools
+from braincube_connector import tools, constants
 
 
 class ResourceGetter(object):
@@ -10,7 +10,23 @@ class ResourceGetter(object):
 
     def __init__(self):
         """Initialize ResourceGetter."""
-        self._path = ""
+        self._path = constants.EMPTY_STRING
+        self._braincube_name = constants.EMPTY_STRING
+        self._parent_entity = None
+
+    def get_braincube_name(self):
+        """Get an object's braincube name.
+
+        Returns:
+            A braincube name.
+        """
+        if self._braincube_name:
+            return self._braincube_name
+
+        if self._parent_entity:
+            return self._parent_entity.get_braincube_name()
+
+        return constants.EMPTY_STRING
 
     def get_braincube_path(self) -> str:
         """Get an object's parent braincube path.
@@ -21,7 +37,11 @@ class ResourceGetter(object):
         return (self._path.split("{webservice}"))[0]
 
     def _get_resource(
-        self, resource_class: Any, bcid: Union[str, int], singleton_path: str = "", **kwargs,
+        self,
+        resource_class: Any,
+        bcid: Union[str, int],
+        singleton_path: str = constants.EMPTY_STRING,
+        **kwargs,
     ):
         """Get a resource from its bcId.
 
@@ -40,10 +60,14 @@ class ResourceGetter(object):
                 resource_class.entity_path.replace("{bcid}", str(bcid)),
                 resource_class.request_one_path if not singleton_path else singleton_path,
             ),
+            self,
+            braincube_name=self.get_braincube_name(),
             **kwargs,
         )
 
-    def _get_resource_list(self, resource_class: Any, collection_path: str = "", **kwargs):
+    def _get_resource_list(
+        self, resource_class: Any, collection_path: str = constants.EMPTY_STRING, **kwargs,
+    ):
         """Get a list a of resources from a list of ids.
 
         Args:
@@ -61,6 +85,8 @@ class ResourceGetter(object):
                 resource_class.request_many_path if not collection_path else collection_path,
                 request_list=True,
             ),
+            self,
+            braincube_name=self.get_braincube_name(),
             **kwargs,
         )
 

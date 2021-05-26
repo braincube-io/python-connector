@@ -65,7 +65,7 @@ def mock_request_entity(mocker, monkeypatch):
 
 
 @pytest.fixture
-def bc_obj():
+def bc_obj(mock_client):
     """Create a mock of the Braincube object."""
     obj = braincube.Braincube(product_id="id123", name="bcname", metadata={"meta": 1},)
     return obj

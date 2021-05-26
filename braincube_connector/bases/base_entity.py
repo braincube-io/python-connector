@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from braincube_connector import client, parameters
+from braincube_connector import client, parameters, constants
 from braincube_connector.bases import base
 
 NAME = "name"
@@ -12,7 +12,15 @@ BCID = "bcid"
 class BaseEntity(base.Base):
     """Basics components of an entity requested by the connector."""
 
-    def __init__(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
+    def __init__(
+        self,
+        bcid: str,
+        name: str,
+        metadata: Dict[str, Any],
+        path: str = constants.EMPTY_STRING,
+        braincube_name: str = constants.EMPTY_STRING,
+        parent_entity: Optional["BaseEntity"] = None,
+    ):
         """Initialize BaseEntity.
 
         Args:
@@ -20,8 +28,11 @@ class BaseEntity(base.Base):
             name: Usual name of the object.
             metadata: Raw metadata associated to the object.
             path: Path of the entity on the server.
+            braincube_name: name of the braincube linked to this entity,
+                            useful if you use a placeholder in your config.
+            parent_entity: parent of this entity, used to retrieve the braincube name if needed.
         """
-        self.initialize(bcid, name, metadata, path)
+        self.initialize(bcid, name, metadata, path, braincube_name, parent_entity)
 
     def __repr__(self) -> str:
         """Produce the a detailed description of the BaseEntity object.
@@ -33,12 +44,13 @@ class BaseEntity(base.Base):
         return "<{self_str} at {addr}>".format(self_str=description, addr=hex(id(self)))
 
     @classmethod
-    def create_from_json(cls, json_data: Dict[str, str], entity_path: str, **kwargs) -> Any:
+    def create_from_json(cls, json_data: Dict[str, str], entity_path: str, caller, **kwargs) -> Any:
         """Create an entity from a raw json.
 
         Args:
             json_data: Json dictionary obtained from a request to the webservice.
             entity_path: Path of the entity on the webservice.
+            caller: class used to call this method, useful to indicate which is the parent entity.
             **kwargs: Additional keyword argument to pass to an object initialization.
 
         Returns:
@@ -51,36 +63,59 @@ class BaseEntity(base.Base):
             json_data[cls.get_parameter_key(NAME)],
             json_data,
             entity_path,
+            parent_entity=caller,
             **kwargs,
         )
         return entity
 
     @classmethod
-    def create_singleton_from_path(cls, request_path: str, entity_path: str, **kwargs) -> Any:
+    def create_singleton_from_path(
+        cls,
+        request_path: str,
+        entity_path: str,
+        caller,
+        braincube_name: str = constants.EMPTY_STRING,
+        **kwargs,
+    ) -> Any:
         """Create an entity from a request path.
 
         Args:
             request_path: Webservice path to request.
             entity_path: Path of the entity on the webservice.
+            caller: class used to call this method, useful to indicate which is the parent entity.
+            braincube_name: name of the braincube linked to this entity,
+                            useful if you use a placeholder in your config.
             **kwargs: Additional keyword argument to pass to an object initialization.
 
         Returns:
             The created entity.
         """
-        json_data = client.request_ws(request_path.format(webservice="braincube"))
-        return cls.create_from_json(json_data, entity_path, **kwargs)
+        json_data = client.request_ws(
+            request_path.format(webservice="braincube"), braincube_name=braincube_name
+        )
+        return cls.create_from_json(json_data, entity_path, caller, **kwargs)
 
     @classmethod
     def create_collection_from_path(
-        cls, request_path: str, entity_path: str, page: int = -1, page_size: int = -1, **kwargs,
+        cls,
+        request_path: str,
+        entity_path: str,
+        caller,
+        page: int = -1,
+        page_size: int = -1,
+        braincube_name: str = constants.EMPTY_STRING,
+        **kwargs,
     ) -> List[Any]:
         """Create many memory_base from a request path.
 
         Args:
             request_path: Webservice path to request.
             entity_path: Path of the entity on the webservice.
+            caller: class used to call this method, useful to indicate which is the parent entity.
             page: Index of page to return, all pages are return if page=-1
             page_size: Number of memory_base per page.
+            braincube_name: name of the braincube linked to this entity,
+                            useful if you use a placeholder in your config.
             **kwargs: Additional keyword argument to pass to an object initialization.
 
         Returns:
@@ -95,10 +130,12 @@ class BaseEntity(base.Base):
             json_data = client.request_ws(
                 "{path}?offset={offset}&size={size}".format(
                     path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
-                )
+                ),
+                braincube_name=braincube_name,
             )
             new_entities = [
-                cls.create_from_json(elmt, entity_path, **kwargs) for elmt in json_data["items"]
+                cls.create_from_json(elmt, entity_path, caller, **kwargs)
+                for elmt in json_data["items"]
             ]
             entity_list += new_entities
             if not new_entities or page > -1:
@@ -123,7 +160,15 @@ class BaseEntity(base.Base):
         """
         return self._bcid
 
-    def initialize(self, bcid: str, name: str, metadata: Dict[str, Any], path: str = ""):
+    def initialize(
+        self,
+        bcid: str,
+        name: str,
+        metadata: Dict[str, Any],
+        path: str = constants.EMPTY_STRING,
+        braincube_name: str = constants.EMPTY_STRING,
+        parent_entity: Optional["BaseEntity"] = None,
+    ):
         """Initialize BaseEntity.
 
         Args:
@@ -131,6 +176,9 @@ class BaseEntity(base.Base):
             name: Usual name of the object.
             metadata: Raw metadata associated to the object.
             path: Path of the entity on the server.
+            braincube_name: name of the braincube linked to this entity,
+                            useful if you use a placeholder in your config.
+            parent_entity: parent of this entity, used to retrieve the braincube name if needed.
         """
         self._bcid = bcid
         self._name = name
@@ -138,6 +186,8 @@ class BaseEntity(base.Base):
         if "{bcid}" in path:
             path = path.replace("{bcid}", str(self._bcid))
         self._path = path
+        self._braincube_name = braincube_name
+        self._parent_entity = parent_entity
 
     @classmethod
     def get_parameter_key(cls, key) -> str:

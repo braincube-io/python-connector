@@ -7,7 +7,6 @@ import responses
 
 from braincube_connector import parameters
 from braincube_connector.bases import base_entity
-from braincube_connector.bases.base_entity import BaseEntity
 from tests.mock import entity_obj, mock_client, base_obj
 import pytest
 
@@ -33,7 +32,7 @@ def test_get_metadata(entity_obj):
 
 def test_create_from_json():
     json_dict = {"bcId": "1", "name": "abcd"}
-    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
+    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}", None)
     assert obj._name == "abcd"
     assert obj._bcid == "1"
     assert obj._path == "path/1"
@@ -45,7 +44,7 @@ def test_create_singleton_from_path(mock_client):
     json_data = {"name": "abcd", "bcId": "1"}
     responses.add(responses.GET, "https://api.a.b/braincube/path", json=json_data, status=200)
     entity = base_entity.BaseEntity.create_singleton_from_path(
-        "{webservice}/path", "{webservice}/path/{bcid}"
+        "{webservice}/path", "{webservice}/path/{bcid}", None
     )
     assert entity._name == "abcd"
     assert entity._bcid == "1"
@@ -66,7 +65,7 @@ def test_create_collection_from_path(
     """Test create_collection_from_path for different pagination settings"""
     items = [{"name": "name{}".format(i), "bcId": str(i)} for i in range(4)]
 
-    def mock_request_ws(path):
+    def mock_request_ws(path, **kwargs):
         path, param = path.split("?")
         params = {key: int(val) for key, val in [pp.split("=") for pp in param.split("&")]}
         assert path == "braincube/path/all/summary"
@@ -75,11 +74,12 @@ def test_create_collection_from_path(
     rpatch = mocker.patch("braincube_connector.client.request_ws", side_effect=mock_request_ws)
     parameters.set_parameter({"page_size": page_size})
     entities = base_entity.BaseEntity.create_collection_from_path(
-        "{webservice}/path/all/summary", "{webservice}/path/{bcid}", page=page
+        "{webservice}/path/all/summary", "{webservice}/path/{bcid}", None, page=page
     )
 
     calls = [
-        mocker.call("braincube/path/all/summary{param}".format(param=pp)) for pp in call_params
+        mocker.call("braincube/path/all/summary{param}".format(param=pp), braincube_name="")
+        for pp in call_params
     ]
     rpatch.assert_has_calls(calls)
     assert len(entities) == length
@@ -95,7 +95,7 @@ def test_get_name(mocker):
         "braincube_connector.instances.instances", {"parameter_set": {}}
     )  # Uses a temporary instance for the test.
     json_dict = {"bcId": "1", "name": "abcd", "tag": "dcba"}
-    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
+    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}", None)
     assert obj.get_name() == "abcd"
     parameters.set_parameter({"BaseEntity_name_key": "tag"})
     assert obj.get_name() == "dcba"
@@ -104,5 +104,5 @@ def test_get_name(mocker):
 def test_get_uuid(mocker):
     uuid = "myuuid"
     json_dict = {"bcId": "1", "name": "abcd", "uuid": "{0}_{1}".format("base64", uuid)}
-    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}")
+    obj = base_entity.BaseEntity.create_from_json(json_dict, "path/{bcid}", None)
     assert obj.get_uuid() == uuid

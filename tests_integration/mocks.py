@@ -85,6 +85,19 @@ custom_calls = [
         "status": 200,
         "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
     },
+    # Expected call for test_memorybase_with_custom_domains_and_placeholder
+    {
+        "method": "GET",
+        "url": "http://demo.plop.com/prefix/v1.0/braincube/mb/1/extended",
+        "status": 200,
+        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+    },
+    {
+        "method": "GET",
+        "url": "http://demo.plop.com/prefix/v1.0/braincube/mb/1/variables/summary?offset=0&size=150",
+        "status": 200,
+        "json": {"items": [],},
+    },
 ]
 
 for bcid in ["101", "102", "103"]:
