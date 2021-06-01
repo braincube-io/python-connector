@@ -7,7 +7,9 @@ from tests.mock import mbchild_obj
 
 
 def test_initialize():
-    child = mb_child.MbChild("id1", "child", {"metadata": []}, "path/mb/11/child/id1", "MB_obj")
+    child = mb_child.MbChild(
+        "id1", "child", {"metadata": []}, "path/mb/11/child/id1", parent_entity="MB_obj"
+    )
     assert child._name == "child"
     assert child._memory_base == "MB_obj"
 
