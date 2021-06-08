@@ -65,7 +65,7 @@ def mock_request_entity(mocker, monkeypatch):
 
 
 @pytest.fixture
-def bc_obj():
+def bc_obj(mock_client):
     """Create a mock of the Braincube object."""
     obj = braincube.Braincube(product_id="id123", name="bcname", metadata={"meta": 1},)
     return obj
@@ -82,7 +82,9 @@ def mb_obj():
 
 @pytest.fixture
 def mbchild_obj():
-    child = mb_child.MbChild("id1", "child", {"metadata": []}, "path/mb/10/child/id1", "MB_obj")
+    child = mb_child.MbChild(
+        "id1", "child", {"metadata": []}, "path/mb/10/child/id1", parent_entity="MB_obj"
+    )
     return child
 
 
@@ -91,7 +93,7 @@ def create_mock_var():
     def create_mock(bcid="1", name="", metadata={"type": "NUMERIC"}, mb=None):
         name = name if name else "var{0}".format(bcid)
         var = variable.VariableDescription(
-            bcid=bcid, name=name, metadata=metadata, path="path", memory_base=mb
+            bcid=bcid, name=name, metadata=metadata, path="path", parent_entity=mb
         )
         return var
 
@@ -103,7 +105,7 @@ def create_mock_datagroup():
     def create_mock(bcid="1", name="", variables=[], mb=None):
         name = name if name else "datagroup{0}".format(bcid)
         metadata = {"variables": [{"bcId": var} for var in variables]}
-        dgroup = datagroup.DataGroup(bcid, name, metadata, "path", mb)
+        dgroup = datagroup.DataGroup(bcid, name, metadata, "path", parent_entity=mb)
         return dgroup
 
     return create_mock
@@ -118,7 +120,7 @@ def create_mock_event():
                 {"variable": {"bcId": var_id}, "minimum": 0, "maximum": 1} for var_id in variables
             ]
         }
-        return event.Event(bcid, name, metadata, "path", mb)
+        return event.Event(bcid, name, metadata, "path", parent_entity=mb)
 
     return create_mock
 
@@ -165,7 +167,7 @@ def create_mock_job():
             datagroups = {"dataGroups": [{"bcId": did} for did in datagroups]}
             metadata.update(datagroups)
         name = name if name else "job{0}".format(bcid)
-        job_obj = job.JobDescription(bcid, name, metadata, path, mb)
+        job_obj = job.JobDescription(bcid, name, metadata, path, parent_entity=mb)
         return job_obj
 
     return create_mock

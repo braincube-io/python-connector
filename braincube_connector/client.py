@@ -28,11 +28,11 @@ class Client(base.Base):
         if instances.get_instance(INSTANCE_KEY) is not None:
             raise Exception("A client has already been inialized.")
         else:
-            config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
-            self._sso_url = tools.get_sso_base_url(config_dict)
-            self._braincube_base_url = tools.get_braincube_base_url(config_dict)
-            self._verify = config_dict.get(constants.VERIFY_CERT, True)  # noqa: WPS425
-            self._authentication = self._build_authentication(config_dict)
+            self._config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
+            self._sso_url = tools.get_sso_base_url(self._config_dict)
+            self._braincube_base_url = tools.get_braincube_base_url(self._config_dict)
+            self._verify = self._config_dict.get(constants.VERIFY_CERT, True)  # noqa: WPS425
+            self._authentication = self._build_authentication(self._config_dict)
             available_braincube_infos = self._request_braincubes()
             self._braincube_infos = available_braincube_infos
             self._timeout = timeout
@@ -54,6 +54,7 @@ class Client(base.Base):
         rtype: str = "GET",
         api: bool = True,
         response_as_json: bool = True,
+        braincube_name: str = "",
     ) -> Dict[str, Any]:
         """Make a request at a given path on the client's domain.
 
@@ -64,6 +65,8 @@ class Client(base.Base):
             rtype: Request type (GET, POST).
             api: Requests the API server on the domain.
             response_as_json: parse a json output to a python dictionary.
+            braincube_name: name of the Braincube you want to use to do this request.
+                            Usefull when you have {braincube-name} in your base URL
 
         Returns:
             The request's json output or the full response.
@@ -72,7 +75,7 @@ class Client(base.Base):
         if api:
             base_url = self._braincube_base_url
 
-        url = tools.build_url(base_url, path)
+        url = tools.build_url(base_url, path, braincube_name)
 
         if not headers:
             headers = self._headers
@@ -91,6 +94,16 @@ class Client(base.Base):
             Return the dictionary of braincubes available to the client.
         """
         return self._braincube_infos
+
+    def has_placeholder_in_braincube_url(self):
+        """Indicates whether or not braincube_base_url contains a placeholder.
+
+        The placeholder format is given by constants.BRAINCUBE_NAME_PLACEHOLDER.
+
+        Returns:
+            Returns a boolean indicating whether or not braincube_base_url contains a placeholder
+        """
+        return constants.BRAINCUBE_NAME_PLACEHOLDER in self._braincube_base_url
 
     def _request_braincubes(self) -> Dict[str, Any]:
         """Request the accessible braincube to the sso server.
@@ -168,6 +181,7 @@ def request_ws(
     rtype: str = "GET",
     api: bool = True,
     response_as_json: bool = True,
+    braincube_name: str = "",
 ) -> Dict[str, Any]:
     """Make a request at a given path on the client's domain.
 
@@ -178,9 +192,11 @@ def request_ws(
         rtype: Request type (GET, POST).
         api: Requests the API server on the domain.
         response_as_json: parse a json output to a python dictionary.
+        braincube_name: name of the braincube on which is made the request,
+                        useful if you use a placeholder in your config
 
     Returns:
         The request's json output or the full response.
     """
     cli = get_instance()
-    return cli.request_ws(path, headers, body_data, rtype, api, response_as_json)
+    return cli.request_ws(path, headers, body_data, rtype, api, response_as_json, braincube_name)

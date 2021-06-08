@@ -172,27 +172,3 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
             if order_id:
                 return order_id
         raise KeyError("The memory base contains neither a reference nor a order key.")
-
-    def _get_resource(self, resource_class: Any, bcid: Union[str, int]):  # type: ignore
-        """Get a resource from its bcId.
-
-        Args:
-            resource_class: Class of the resource to get.
-            bcid: Event bcid.
-
-        Returns:
-            A resource description.
-        """
-        return super()._get_resource(resource_class, bcid, memory_base=self)
-
-    def _get_resource_list(self, resource_class: Any, **kwargs):  # type: ignore
-        """Get a list a of resources from a list of ids.
-
-        Args:
-            resource_class: Class of the resources to get.
-            **kwargs: Optional page and page_size or parent (memory_base).
-
-        Returns:
-            A list of resources.
-        """
-        return super()._get_resource_list(resource_class, memory_base=self, **kwargs)

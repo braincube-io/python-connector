@@ -148,21 +148,54 @@ def test_get_braincube_base_url(config, output):
 
 
 @pytest.mark.parametrize(
-    "base_url, path, full_url",
+    "base_url, path, braincube_name, full_url",
     [
-        ("http://a.domain/prefix/v1.0", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
-        ("toto", "with/a/path", "toto/with/a/path"),
+        (
+            "http://a.domain/prefix/v1.0",
+            "with/a/path",
+            "",
+            "http://a.domain/prefix/v1.0/with/a/path",
+        ),
+        ("toto", "with/a/path", "", "toto/with/a/path"),
         (
             "http://a.domain/prefix/v1.0",
             "with/a/path?size=50&page=2",
+            "",
             "http://a.domain/prefix/v1.0/with/a/path?size=50&page=2",
         ),
-        ("http://a.domain/prefix/v1.0", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
-        ("http://a.domain/prefix/v1.0/", "with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
-        ("http://a.domain/prefix/v1.0/", "/with/a/path", "http://a.domain/prefix/v1.0/with/a/path"),
-        ("http://a.domain/prefix/v1.0", "", "http://a.domain/prefix/v1.0"),
-        ("", "with/a/path", "with/a/path"),
+        (
+            "http://a.domain/prefix/v1.0",
+            "/with/a/path",
+            "",
+            "http://a.domain/prefix/v1.0/with/a/path",
+        ),
+        (
+            "http://a.domain/prefix/v1.0/",
+            "with/a/path",
+            "",
+            "http://a.domain/prefix/v1.0/with/a/path",
+        ),
+        (
+            "http://a.domain/prefix/v1.0/",
+            "/with/a/path",
+            "",
+            "http://a.domain/prefix/v1.0/with/a/path",
+        ),
+        ("http://a.domain/prefix/v1.0", "", "", "http://a.domain/prefix/v1.0"),
+        ("", "with/a/path", "", "with/a/path"),
+        (
+            "http://{braincube-name}.domain/prefix/v1.0/",
+            "/with/a/path",
+            "demo",
+            "http://demo.domain/prefix/v1.0/with/a/path",
+        ),
+        (
+            "http://a.domain/prefix/v1.0/",
+            "/{braincube-name}/with/a/path",
+            "demo",
+            "http://a.domain/prefix/v1.0/demo/with/a/path",
+        ),
     ],
 )
-def test_build_url(base_url, path, full_url):
-    assert tools.build_url(base_url, path) == full_url
+def test_build_url(base_url, path, braincube_name, full_url):
+    assert tools.build_url(base_url, path, braincube_name) == full_url

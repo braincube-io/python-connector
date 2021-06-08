@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- #[25](https://github.com/braincube-io/python-connector/issues/25): support `{braincube-name}` as a placeholder in `braincube_base_url` configuration.
+
 ## [2.4.1 - 2021-04-22](https://github.com/braincube-io/python-connector/compare/2.4.0...2.4.1)
 
 ### Fixed

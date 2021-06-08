@@ -23,3 +23,5 @@ BRAINCUBE_BASE_URL_KEY = "braincube_base_url"
 OAUTH2_KEY = "oauth2_token"
 SSO_TOKEN_KEY = "IPLSSOTOKEN"  # noqa: S105
 VERIFY_CERT = "verify"
+BRAINCUBE_NAME_PLACEHOLDER = "{braincube-name}"
+EMPTY_STRING = ""

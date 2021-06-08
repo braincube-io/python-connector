@@ -10,8 +10,6 @@ from urllib.parse import urlsplit, urlunsplit
 
 from braincube_connector import constants
 
-EMPTY_STRING = ""
-
 
 def read_config(path: str) -> Dict[str, str]:
     """Reads the configuration file.
@@ -92,21 +90,35 @@ def join_path(path_elmts: List[str]) -> str:
     return "/".join(clean_elmts)
 
 
-def build_url(base_url: str = EMPTY_STRING, path: str = EMPTY_STRING) -> str:
+def build_url(
+    base_url: str = constants.EMPTY_STRING,
+    path: str = constants.EMPTY_STRING,
+    braincube_name: str = constants.EMPTY_STRING,
+) -> str:
     """Appends a path to the given base_url to generate a valid url.
 
     Args:
         base_url: Base URL to complete with given path.
         path: Path to a specific resource.
+        braincube_name: name of the braincube to use to replace the placeholder.
 
     Returns:
         A complete url.
     """
     parts = urlsplit(base_url)
     full_path = join_path([parts.path, path])
-    return urlunsplit(
-        (parts.scheme, parts.netloc, strip_path(full_path), EMPTY_STRING, EMPTY_STRING)
+
+    url_with_placeholder = urlunsplit(
+        (
+            parts.scheme,
+            parts.netloc,
+            strip_path(full_path),
+            constants.EMPTY_STRING,
+            constants.EMPTY_STRING,
+        )
     )
+
+    return url_with_placeholder.replace(constants.BRAINCUBE_NAME_PLACEHOLDER, braincube_name)
 
 
 def check_config(

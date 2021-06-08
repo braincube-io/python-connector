@@ -19,7 +19,13 @@ class Braincube(base_entity.BaseEntity, resource_getter.ResourceGetter):
             metadata: Raw metadata associated to the Braincube.
         """
         self._product_id = product_id
-        super().__init__(name, name, metadata, "braincube/{bc_name}".format(bc_name=name))
+
+        entity_path = "braincube/{bc_name}".format(bc_name=name)
+        if client.get_instance().has_placeholder_in_braincube_url():
+            entity_path = ""
+
+        super().__init__(name, name, metadata, entity_path)
+        self._braincube_name = name
 
     def get_memory_base(self, mb_bcid: Union[str, int]) -> memory_base.MemoryBase:
         """Get a MemoryBase object from its id.

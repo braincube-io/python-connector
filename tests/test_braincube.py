@@ -50,7 +50,8 @@ def test_get_memory_base_list(mocker, monkeypatch, bc_obj, mock_request_entity):
     parameters.set_parameter({"page_size": 2})
     mb_list = bc_obj.get_memory_base_list(page=10)
     mock_request_entity.assert_called_with(
-        "braincube/bcname/braincube/mb/all/summary?offset=20&size=2"
+        "braincube/bcname/braincube/mb/all/summary?offset=20&size=2",
+        braincube_name=bc_obj.get_braincube_name(),
     )
 
 

@@ -40,11 +40,11 @@ def test_get_variable_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     assert var_list[0]._name == "name0"
 
     request_path = "braincube/bcname/braincube/mb/1/variables/summary?offset=0&size=2"
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     var_list = mb_obj.get_variable_list(page=0, page_size=2)
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
 
 
 @responses.activate
@@ -61,11 +61,11 @@ def test_get_job_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     job_list = mb_obj.get_job_list(page=0)
     assert job_list[0]._name == "name0"
     request_path = "braincube/bcname/braincube/mb/1/jobs/all/summary?offset=0&size=2"
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     job_list = mb_obj.get_job_list(page=0, page_size=2)
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
 
 
 @responses.activate
@@ -82,11 +82,11 @@ def test_get_datagroup_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     group_list = mb_obj.get_datagroup_list(page=0)
     assert group_list[0]._name == "name0"
     request_path = "braincube/bcname/braincube/mb/1/dataGroups/summary?offset=0&size=2"
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     group_list = mb_obj.get_datagroup_list(page=0, page_size=2)
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
 
 
 @responses.activate
@@ -103,11 +103,11 @@ def test_get_events_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     event_list = mb_obj.get_event_list(page=0)
     assert event_list[0]._name == "name0"
     request_path = "braincube/bcname/braincube/mb/1/events/all/extended?offset=0&size=2"
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     event_list = mb_obj.get_event_list(page=0, page_size=2)
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
 
 
 @responses.activate
@@ -124,11 +124,11 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
     rule_list = mb_obj.get_rule_list(page=0)
     assert rule_list[0]._name == "name0"
     request_path = "braincube/bcname/braincube/mb/1/rules/all/selector?offset=0&size=2"
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
     mock_request_entity.reset_mock()
     parameters.set_parameter({"page_size": 4})
     rule_list = mb_obj.get_rule_list(page=0, page_size=2)
-    mock_request_entity.assert_called_with(request_path)
+    mock_request_entity.assert_called_with(request_path, braincube_name="")
 
 
 @pytest.mark.parametrize(
