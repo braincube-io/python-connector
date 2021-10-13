@@ -135,7 +135,7 @@ class Client(base.Base):
                 )
             }
             access_data = self.request_ws(
-                "sso-server/rest/session/openWithToken", headers=headers, api=False
+                "sso-server/ws/oauth2/session", headers=headers, api=False
             )
             return {constants.SSO_TOKEN_KEY: access_data["token"]}
         raise KeyError(

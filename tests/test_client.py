@@ -82,7 +82,7 @@ def test_request_braincubes(mock_client):
 @responses.activate
 def test_build_authentication_oauth2(mock_client):
     """Test the build authentication function for an oauth2 token."""
-    mock_url = "https://a.b/sso-server/rest/session/openWithToken"
+    mock_url = "https://a.b/sso-server/ws/oauth2/session"
     responses.add(responses.GET, mock_url, status=200, json={"token": "abcd"})
     header = mock_client._build_authentication({constants.OAUTH2_KEY: "efgh"})
     assert header == {constants.SSO_TOKEN_KEY: "abcd"}
