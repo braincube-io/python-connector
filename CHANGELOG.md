@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0 - 2021-10-13](https://github.com/braincube-io/python-connector/compare/2.4.1...2.5.0)
+
 ### Changed
 
 - #[25](https://github.com/braincube-io/python-connector/issues/25): support `{braincube-name}` as a placeholder in `braincube_base_url` configuration.
+- #[30](https://github.com/braincube-io/python-connector/issues/25): use new SSO URL for OAuth authentication flow
 
 ## [2.4.1 - 2021-04-22](https://github.com/braincube-io/python-connector/compare/2.4.0...2.4.1)
 
