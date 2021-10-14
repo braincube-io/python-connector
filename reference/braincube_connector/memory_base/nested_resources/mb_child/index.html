@@ -18,7 +18,7 @@
 <meta content="[\s\-]+" name="lang:search.tokenizer"/>
 <link href="../../../../../images/favicon.ico" rel="shortcut icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-4.6.3" name="generator"/>
-<title>Mb child - braincube_connector@2.4.1</title>
+<title>Mb child - braincube_connector@2.5.0</title>
 <link href="../../../../../assets/stylesheets/application.adb8469c.css" rel="stylesheet"/>
 <script src="../../../../../assets/javascripts/modernizr.86422ebf.js"></script>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -43,7 +43,7 @@
 <nav class="md-header-nav md-grid">
 <div class="md-flex">
 <div class="md-flex__cell md-flex__cell--shrink">
-<a class="md-logo md-header-nav__button" href="" title="braincube_connector@2.4.1">
+<a class="md-logo md-header-nav__button" href="" title="braincube_connector@2.5.0">
 <img height="45" src="../../../../../images/braincube.png" width="45"/>
 </a>
 </div>
@@ -110,10 +110,10 @@
 <div class="md-sidebar__inner">
 <nav class="md-nav md-nav--primary" data-md-level="0">
 <label class="md-nav__title md-nav__title--site" for="__drawer">
-<a class="md-nav__button md-logo" href="https://braincube-io.github.io/python-connector/" title="braincube_connector@2.4.1">
+<a class="md-nav__button md-logo" href="https://braincube-io.github.io/python-connector/" title="braincube_connector@2.5.0">
 <i class="md-icon"></i>
 </a>
-    braincube_connector@2.4.1
+    braincube_connector@2.5.0
   </label>
 <div class="md-nav__source">
 <a class="md-source" data-md-source="github" href="https://github.com/braincube-io/python-connector/" title="Go to repository">
@@ -245,7 +245,7 @@
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="braincube_connector.memory_base.nested_resources.mb_child.MbChild.__init__">
 <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bcid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">memory_base</span><span class="p">)</span> </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bcid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
@@ -296,12 +296,12 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>memory_base</code></td>
+<td><code>**kwargs</code></td>
 <td><code></code></td>
 <td>
-<p>Instance of the parent memory base.</p>
+<p>Optional braincube_name or parent_entity.</p>
 </td>
-<td><em>required</em></td>
+<td><code>{}</code></td>
 </tr>
 </tbody>
 </table>
@@ -336,7 +336,7 @@ get_memory_base<span class="p">(</span><span class="bp">self</span><span class="
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="braincube_connector.memory_base.nested_resources.mb_child.MbChild.initialize">
 <code class="highlight language-python">
-initialize<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bcid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">memory_base</span><span class="p">)</span> </code>
+initialize<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bcid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Initialize a memory bases child.</p>
@@ -384,12 +384,12 @@ initialize<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>memory_base</code></td>
+<td><code>**kwargs</code></td>
 <td><code></code></td>
 <td>
-<p>Instance of the parent memory base.</p>
+<p>Optional braincube_name or parent_entity.</p>
 </td>
-<td><em>required</em></td>
+<td><code>{}</code></td>
 </tr>
 </tbody>
 </table>
