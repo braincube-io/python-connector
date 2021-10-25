@@ -127,6 +127,22 @@ def test_get_data(patch_endpoints):
 
 
 @responses.activate
+def test_get_braindata_memory_base_info_with_custom_domains(custom_patch_endpoints):
+    custom_config = {
+        "sso_base_url": "http://another.plop.com",
+        "braincube_base_url": "http://{braincube-name}.plop.com/prefix/v1.0/",
+        "api_key": "abcd",
+    }
+
+    bc = test_braincube(custom_patch_endpoints, custom_config)
+    custom_patch_endpoints()
+    mb = bc.get_memory_base(1)
+
+    order_id = mb.get_order_variable_long_id()
+    assert order_id == "100001"
+
+
+@responses.activate
 def test_variable(patch_endpoints):
     mb = test_memorybase(patch_endpoints)
     patch_endpoints()

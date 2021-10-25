@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.1 - 2021-10-25](https://github.com/braincube-io/python-connector/compare/2.5.0...2.5.1)
+
+### FIXED
+
+- #[32](https://github.com/braincube-io/python-connector/issues/32): Fix `{braincube-name}` placeholder usage in data module
+
 ## [2.5.0 - 2021-10-13](https://github.com/braincube-io/python-connector/compare/2.4.1...2.5.0)
 
 ### Changed

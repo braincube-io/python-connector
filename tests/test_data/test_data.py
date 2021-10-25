@@ -68,13 +68,17 @@ def test_collect_data(mocker, filters, body_data):
     mb_obj.get_bcid.return_value = "1"
     mb_obj.get_order_variable_long_id.return_value = "mb1/d4"
     mb_obj.get_braincube_path.return_value = "braincube/bcname"
+    mb_obj.get_braincube_name.return_value = "bcname"
 
     rpatch = mocker.patch("braincube_connector.client.request_ws", return_value=DATASET)
     received_data = data.collect_data(["1", "2", "3", "4", "5"], mb_obj, filters)
     if filters:
         body_data["context"]["filter"] = filters[0]
     rpatch.assert_called_with(
-        "braincube/bcname/braindata/mb1/LF", body_data=json.dumps(body_data), rtype="POST"
+        "braincube/bcname/braindata/mb1/LF",
+        body_data=json.dumps(body_data),
+        rtype="POST",
+        braincube_name="bcname",
     )
 
 
@@ -84,4 +88,4 @@ def test_get_braindata_memory_base_info(mocker):
     expected_endpoint = "{bc_path}/braindata/mb{mb_id}/simple".format(bc_path=bc_path, mb_id=mb_id)
     request_patch = mocker.patch("braincube_connector.client.request_ws")
     data.get_braindata_memory_base_info(bc_path, mb_id)
-    request_patch.assert_called_once_with(expected_endpoint)
+    request_patch.assert_called_once_with(expected_endpoint, braincube_name="")

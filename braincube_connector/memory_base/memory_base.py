@@ -166,7 +166,9 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         Returns:
             A variable long id.
         """
-        infos = data.get_braindata_memory_base_info(self.get_braincube_path(), self._bcid)
+        infos = data.get_braindata_memory_base_info(
+            self.get_braincube_path(), self._bcid, self.get_braincube_name()
+        )
         for order_key in ("reference", "order"):
             order_id = infos.get(order_key)
             if order_id:
