@@ -81,12 +81,15 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[int, Any]:
     return formatted_dataset
 
 
-def get_braindata_memory_base_info(braincube_path: str, memory_base_bcid: str) -> Dict[str, str]:
+def get_braindata_memory_base_info(
+    braincube_path: str, memory_base_bcid: str, braincube_name=""
+) -> Dict[str, str]:
     """Get the memory base informations from the braindata.
 
     Args:
         braincube_path: Path of the memory base's parent braincube.
         memory_base_bcid: memory base's bcid.
+        braincube_name: Name of the braincube to use to replace the `{braincube-name}` placeholder
 
     Returns:
         Json dictionary with the memory base informations.
@@ -94,7 +97,7 @@ def get_braindata_memory_base_info(braincube_path: str, memory_base_bcid: str) -
     long_mb_id = "mb{bcid}".format(bcid=memory_base_bcid)
     braindata_info_path = "braindata/{mb_id}/simple".format(mb_id=long_mb_id)
     data_path = tools.join_path([braincube_path, braindata_info_path.format()])
-    return client.request_ws(data_path)
+    return client.request_ws(data_path, braincube_name=braincube_name)
 
 
 def collect_data(
@@ -126,5 +129,10 @@ def collect_data(
     if len(filters) == 1:
         body_data["context"]["filter"] = filters[0]  # type: ignore
     return _extract_format_data(
-        client.request_ws(data_path, body_data=json.dumps(body_data), rtype="POST")
+        client.request_ws(
+            data_path,
+            body_data=json.dumps(body_data),
+            rtype="POST",
+            braincube_name=memory_base.get_braincube_name(),
+        )
     )

@@ -98,6 +98,12 @@ custom_calls = [
         "status": 200,
         "json": {"items": [],},
     },
+    {
+        "method": "GET",
+        "url": "http://demo.plop.com/prefix/v1.0/braindata/mb1/simple",
+        "status": 200,
+        "json": {"name": "mb1", "reference": "100001"},
+    },
 ]
 
 for bcid in ["101", "102", "103"]:
