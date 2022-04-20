@@ -1,20 +1,24 @@
 from typing import List, Dict
 
 from braincube_connector import client
+from braincube_connector.bases import resource_getter
+from braincube_connector.bases.resource_getter import ResourceGetter
 from braincube_connector.memory_base.nested_resources.condition_container import ConditionContainer
 from braincube_connector.memory_base.nested_resources.event import Event
 from braincube_connector.memory_base.nested_resources.period import Period
 from braincube_connector.memory_base.nested_resources.variable import VariableDescription
 
 
-class ModelBuilder(client.Client):
+class ModelBuilder(resource_getter.ResourceGetter):
 
-    @staticmethod
+    def __init__(self, headers):
+        super().__init__()
+        self.headers = headers
+
     def create_study(self, name: str, target: VariableDescription, period: Period, variables: List[VariableDescription],
                      description: str = '', conditions: ConditionContainer = None, events: List[Event] = None):
 
-        path = "{braincube_path}/studies".format(braincube_path=target.get_memory_base().get_braincube_name())
-        header = self._authentication
+        path = "{braincube_path}/studies".format(braincube_path=self.get_braincube_path())
         body_data = {
             "name": name,
             "description": description,
@@ -25,4 +29,4 @@ class ModelBuilder(client.Client):
             "events": [([] if event is None else event.get_metadata()) for event in events],
             "variables": [var.get_metadata() for var in variables]
         }
-        return self.request_ws(path=path, headers=header, body_data=body_data, rtype="POST")
+        return client.request_ws(path=path, headers=self.headers, body_data=body_data, rtype="POST")
