@@ -27,13 +27,27 @@ def test_create_study(mocker, create_mock_var, clean_client_instances):
 
     test = client.get_instance()
     target = create_mock_var(name="any", metadata={"standard": "name_standard", "tag": "name_tag"})
-    period = Period(begin=1650456660871, end=1650456660900, period_unit_type=PeriodUnitType.DAY, quantity=2,
-                    calendar_quantity=2, offset=2, offset_quantity=2)
-    variables = [create_mock_var(name="var1", metadata={"standard": "name_standard_1", "tag": "name_tag_1"}),
-                 create_mock_var(name="var2", metadata={"standard": "name_standard_2", "tag": "name_tag_2"}),
-                 create_mock_var(name="var3", metadata={"standard": "name_standard_3", "tag": "name_tag_3"}),
-                 create_mock_var(name="var4", metadata={"standard": "name_standard_4", "tag": "name_tag_4"})]
-    study = test.ModelBuilder.create_study(name="my_study", description="test of a study", target=target,
-                                           period=period, variables=variables)
+    period = Period(
+        begin=1650456660871,
+        end=1650456660900,
+        period_unit_type=PeriodUnitType.DAY,
+        quantity=2,
+        calendar_quantity=2,
+        offset=2,
+        offset_quantity=2,
+    )
+    variables = [
+        create_mock_var(name="var1", metadata={"standard": "name_standard_1", "tag": "name_tag_1"}),
+        create_mock_var(name="var2", metadata={"standard": "name_standard_2", "tag": "name_tag_2"}),
+        create_mock_var(name="var3", metadata={"standard": "name_standard_3", "tag": "name_tag_3"}),
+        create_mock_var(name="var4", metadata={"standard": "name_standard_4", "tag": "name_tag_4"}),
+    ]
+    study = test.ModelBuilder.create_study(
+        name="my_study",
+        description="test of a study",
+        target=target,
+        period=period,
+        variables=variables,
+    )
 
-    assert study == 'test'
+    assert study == "test"

@@ -10,13 +10,20 @@ from braincube_connector.memory_base.nested_resources.variable import VariableDe
 
 
 class ModelBuilder(resource_getter.ResourceGetter):
-
     def __init__(self, headers):
         super().__init__()
         self.headers = headers
 
-    def create_study(self, name: str, target: VariableDescription, period: Period, variables: List[VariableDescription],
-                     description: str = '', conditions: ConditionContainer = None, events: List[Event] = None):
+    def create_study(
+        self,
+        name: str,
+        target: VariableDescription,
+        period: Period,
+        variables: List[VariableDescription],
+        description: str = "",
+        conditions: ConditionContainer = None,
+        events: List[Event] = None,
+    ):
 
         path = "{braincube_path}/studies".format(braincube_path=self.get_braincube_path())
         body_data = {
@@ -27,6 +34,6 @@ class ModelBuilder(resource_getter.ResourceGetter):
             "period": period.get_metadata(),
             "conditions": [] if conditions is None else conditions.get_metadata(),
             "events": [([] if event is None else event.get_metadata()) for event in events],
-            "variables": [var.get_metadata() for var in variables]
+            "variables": [var.get_metadata() for var in variables],
         }
         return client.request_ws(path=path, headers=self.headers, body_data=body_data, rtype="POST")
