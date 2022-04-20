@@ -23,3 +23,6 @@ class ConditionContainer(object):
             if new_filter:
                 filters.append(new_filter)
         return filters
+
+    def get_metadata(self):
+        return self._metadata.get("conditions", [])  # type: ignore

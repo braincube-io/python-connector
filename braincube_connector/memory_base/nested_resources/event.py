@@ -9,3 +9,6 @@ class Event(mb_child.MbChild, condition_container.ConditionContainer):
     entity_path = "events/{bcid}"
     request_one_path = "extended"
     request_many_path = "events/all/extended"
+
+    def get_metadata(self):
+        return self._metadata

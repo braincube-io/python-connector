@@ -36,3 +36,6 @@ class VariableDescription(mb_child.MbChild):
         """
         warnings.warn("VariableDescription do not have uuid, returning long_id instead.")
         return self.get_long_id()
+
+    def get_metadata(self):
+        return self._metadata

@@ -37,6 +37,7 @@ class Client(base.Base):
             self._braincube_infos = available_braincube_infos
             self._timeout = timeout
             self._headers = tools.generate_header(authentication=self._authentication)
+            self.Modelbuilder = None
 
     def __str__(self) -> str:
         """Produce informal representation of the Client object.
