@@ -14,6 +14,8 @@ def clean_client_instances():
 
 
 def test_create_study(mocker, create_mock_var, clean_client_instances):
+    mock_mb = mocker.Mock()
+    mock_mb.get_bcid.return_value = "12"
     check_conf_mock = mocker.patch("os.path.exists", mocker.Mock(return_value=False))
     sso_mock = mocker.patch.object(
         client.Client, "_request_braincubes", lambda x: [base.Base("test")]
@@ -26,7 +28,8 @@ def test_create_study(mocker, create_mock_var, clean_client_instances):
     )
 
     test = client.get_instance()
-    target = create_mock_var(name="any", metadata={"standard": "name_standard", "tag": "name_tag"})
+    target = create_mock_var(name="any", metadata={"standard": "name_standard", "tag": "name_tag"}, bcid="30",
+                             mb=mock_mb)
     period = Period(
         begin=1650456660871,
         end=1650456660900,

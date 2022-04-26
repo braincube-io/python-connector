@@ -1,8 +1,7 @@
-from typing import List, Dict
+from typing import List
 
 from braincube_connector import client
 from braincube_connector.bases import resource_getter
-from braincube_connector.bases.resource_getter import ResourceGetter
 from braincube_connector.memory_base.nested_resources.condition_container import ConditionContainer
 from braincube_connector.memory_base.nested_resources.event import Event
 from braincube_connector.memory_base.nested_resources.period import Period
@@ -15,16 +14,15 @@ class ModelBuilder(resource_getter.ResourceGetter):
         self.headers = headers
 
     def create_study(
-        self,
-        name: str,
-        target: VariableDescription,
-        period: Period,
-        variables: List[VariableDescription],
-        description: str = "",
-        conditions: ConditionContainer = None,
-        events: List[Event] = None,
+            self,
+            name: str,
+            target: VariableDescription,
+            period: Period,
+            variables: List[VariableDescription],
+            description: str = "",
+            conditions: ConditionContainer = None,
+            events: List[Event] = None,
     ):
-
         path = "{braincube_path}/studies".format(braincube_path=self.get_braincube_path())
         body_data = {
             "name": name,
@@ -33,7 +31,7 @@ class ModelBuilder(resource_getter.ResourceGetter):
             "variableToPredict": target.get_metadata(),
             "period": period.get_metadata(),
             "conditions": [] if conditions is None else conditions.get_metadata(),
-            "events": [([] if event is None else event.get_metadata()) for event in events],
-            "variables": [var.get_metadata() for var in variables],
+            "events": [] if events is None else [event.get_metadata() for event in events],
+            "variables": [variable.get_metadata() for variable in variables],
         }
         return client.request_ws(path=path, headers=self.headers, body_data=body_data, rtype="POST")
