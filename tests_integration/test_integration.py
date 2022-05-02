@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
 """Tests for the data module."""
+import http
 
 import responses
 from requests.exceptions import ConnectionError
 import pytest
 from datetime import datetime
 import math
+
+from braincube_connector.memory_base.nested_resources.period import Period, PeriodUnitType
+from tests.mock import create_mock_var
 from tests_integration.mocks import patch_endpoints, custom_patch_endpoints
 from braincube_connector import client, braincube, parameters
 
@@ -153,3 +157,24 @@ def test_variable(patch_endpoints):
     parameters.set_parameter({"VariableDescription_name_key": "tag"})
     assert var.get_parameter_key("name") == "tag"
     assert var.get_name() == "tag_name"
+
+
+@responses.activate
+def test_modelbuilder(patch_endpoints, config=None):
+    mb = test_memorybase(patch_endpoints)
+    patch_endpoints()
+
+    period = Period(
+        begin=1650456660871,
+        end=1650456660900,
+        period_unit_type=PeriodUnitType.DAY,
+        quantity=2,
+        calendar_quantity=2,
+        offset=2,
+        offset_quantity=2,
+    )
+
+    target = mb.get_variable("0")
+    test = test_client(patch_endpoints, config).ModelBuilder.create_study(name="My_Study", target=target, period=period,
+                                                                          variables=mb.get_variable_list())
+    assert test == http.HTTPStatus.CREATED

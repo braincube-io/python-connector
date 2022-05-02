@@ -65,6 +65,11 @@ available_calls = [
             ]
         },
     },
+    {
+        "method": "POST",
+        "url": "https://api.test.com/braincube/demo/studies",
+        "status": 201,
+    },
 ]
 
 custom_calls = [
