@@ -51,7 +51,7 @@ available_calls = [
     },
     {
         "method": "GET",
-        "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/summary",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/summary?offset=0&size=150",
         "status": 200,
         "json": {
             "items": [
@@ -75,6 +75,12 @@ available_calls = [
                 },
             ]
         }
+    },
+    {
+        "method": "GET",
+        "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/summary?offset=150&size=150",
+        "status": 200,
+        "json": {"items": []}
     },
     {
         "method": "POST",
