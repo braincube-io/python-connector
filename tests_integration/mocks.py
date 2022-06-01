@@ -55,32 +55,17 @@ available_calls = [
         "status": 200,
         "json": {
             "items": [
-                {
-                    "bcId": 101,
-                    "tag": "tag_101",
-                    "local": "local_101",
-                    "standard": "standard_101",
-                },
-                {
-                    "bcId": 102,
-                    "tag": "tag_102",
-                    "local": "local_102",
-                    "standard": "standard_102",
-                },
-                {
-                    "bcId": 103,
-                    "tag": "tag_103",
-                    "local": "local_103",
-                    "standard": "standard_103",
-                },
+                {"bcId": 101, "tag": "tag_101", "local": "local_101", "standard": "standard_101",},
+                {"bcId": 102, "tag": "tag_102", "local": "local_102", "standard": "standard_102",},
+                {"bcId": 103, "tag": "tag_103", "local": "local_103", "standard": "standard_103",},
             ]
-        }
+        },
     },
     {
         "method": "GET",
         "url": "https://api.test.com/braincube/demo/braincube/mb/1/variables/summary?offset=150&size=150",
         "status": 200,
-        "json": {"items": []}
+        "json": {"items": []},
     },
     {
         "method": "POST",
