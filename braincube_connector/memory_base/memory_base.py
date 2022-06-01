@@ -151,7 +151,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
 
         if label_type == "name":
             mapping = {
-                collected_variable.get_bcid(): collected_variable.get_name()
+                int(collected_variable.get_bcid()): collected_variable.get_name()
                 for collected_variable
                 in self.get_variable_list()
             }
