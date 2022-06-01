@@ -150,7 +150,8 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
         datasource = data.collect_data(int_var_ids, self, filters)
 
         if label_type == "name":
-            mapping = {var_id: self.get_variable(var_id).get_name() for var_id in int_var_ids}
+            vars_infos = self.get_variable_list()
+            mapping = {v.get_bcid(): v.get_name() for v in vars_infos}
             datasource = {
                 mapping[data_key]: data_value for data_key, data_value in datasource.items()
             }
