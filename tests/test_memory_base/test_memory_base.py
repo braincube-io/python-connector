@@ -161,7 +161,7 @@ def test_get_data(mocker, mb_obj, create_mock_var, label_type, dataframe, expect
         return_value=[
             create_mock_var(bcid=1, metadata={"standard": "name_standard_1"}),
             create_mock_var(bcid=2, metadata={"standard": "name_standard_2"}),
-        ]
+        ],
     )
 
     mocker.patch(
