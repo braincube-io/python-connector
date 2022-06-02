@@ -157,10 +157,11 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 )
 def test_get_data(mocker, mb_obj, create_mock_var, label_type, dataframe, expected_data):
     mocker.patch(
-        "braincube_connector.memory_base.memory_base.MemoryBase.get_variable",
-        lambda memory_base_object, bcid: create_mock_var(
-            bcid=bcid, metadata={"standard": "name_standard_{0}".format(bcid)}
-        ),
+        "braincube_connector.memory_base.memory_base.MemoryBase.get_variable_list",
+        return_value=[
+            create_mock_var(bcid=1, metadata={"standard": "name_standard_1"}),
+            create_mock_var(bcid=2, metadata={"standard": "name_standard_2"}),
+        ]
     )
 
     mocker.patch(
