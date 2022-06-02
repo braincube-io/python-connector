@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### FIXED
+
+- #[29](https://github.com/braincube-io/python-connector/issues/29): Fix `{get_data}` very slow when using `{label_type="name"}`
+
 ## [2.5.1 - 2021-10-25](https://github.com/braincube-io/python-connector/compare/2.5.0...2.5.1)
 
 ### FIXED
