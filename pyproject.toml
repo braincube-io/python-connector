@@ -25,7 +25,7 @@ pandas = "^1.1.4"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.761"
-responses = "^0.10.9"
+responses = "^0.22.0"
 coverage = "^5.0.3"
 black = "^19.10b0"
 wemake-python-styleguide = "^0.13.4"
