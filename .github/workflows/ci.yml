@@ -11,7 +11,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
       
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -41,7 +41,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -72,7 +72,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -103,7 +103,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -134,7 +134,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -167,7 +167,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11.0
+          python-version: 3.11.1
 
       - name: Load cached venv
         id: cached-poetry-dependencies
