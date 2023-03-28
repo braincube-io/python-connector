@@ -36,7 +36,9 @@ def _to_datetime(dates: List["str"]):
     Returns:
         A datetime object.
     """
-    dates = pd.to_datetime(dates, errors="coerce", format="%Y%m%d_%H%M%S").to_series()
+    dates = pd.to_datetime(
+        dates, errors="coerce", format="%Y%m%d_%H%M%S"  # noqa: WPS323
+    ).to_series()
     return [pandas_timestamp_to_datetime(timestamp) for timestamp in dates]
 
 

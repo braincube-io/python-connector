@@ -129,7 +129,9 @@ class BaseEntity(base.Base):
         while True:
             json_data = client.request_ws(
                 "{path}?offset={offset}&size={size}".format(
-                    path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
+                    path=request_path.format(webservice="braincube"),
+                    offset=offset,
+                    size=page_size,
                 ),
                 braincube_name=braincube_name,
             )
@@ -144,7 +146,7 @@ class BaseEntity(base.Base):
                 offset += page_size
         return entity_list
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> Dict[str, Any]:  # noqa: WPS615
         """Gets the metadata of the Object.
 
         Returns:
@@ -152,7 +154,7 @@ class BaseEntity(base.Base):
         """
         return self._metadata
 
-    def get_bcid(self) -> str:
+    def get_bcid(self) -> str:  # noqa: WPS615
         """Get the entity's bcId.
 
         Returns:
@@ -205,7 +207,7 @@ class BaseEntity(base.Base):
             parameter_key if parameter_key else cls.__base__.get_parameter_key(key)  # type: ignore
         )
 
-    def get_name(self):
+    def get_name(self):  # noqa: WPS615
         """Get the entity's name.
 
         Returns:

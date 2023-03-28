@@ -8,9 +8,7 @@ packages = [
 	{ include = "braincube_connector" },
 ]
 classifiers = [
-		"Programming Language :: Python :: 3.8",
-		"Programming Language :: Python :: 3.7",
-		"Programming Language :: Python :: 3.6",
+	"Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent"
 ]
 keywords = ["bc_connector", "API", "braincube"]
@@ -19,16 +17,16 @@ homepage = "https://braincube-io.github.io/python-connector/"
 repository = "https://github.com/braincube-io/python-connector"
 
 [tool.poetry.dependencies]
-python = "^3.8.5"
+python = "^3.11.1"
 requests = "^2.23.0"
 pandas = "^1.1.4"
 
 [tool.poetry.dev-dependencies]
-mypy = "^0.761"
+mypy = "^1.1.1"
 responses = "^0.10.9"
 coverage = "^5.0.3"
-black = "^19.10b0"
-wemake-python-styleguide = "^0.13.4"
+black = "^23.1.0"
+wemake-python-styleguide = "^0.17.0"
 pytest = "^7.1.2"
 pytest_mock = "^2.0.0"
 pre-commit = "^2.0.1"

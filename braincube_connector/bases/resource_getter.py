@@ -14,7 +14,7 @@ class ResourceGetter(object):
         self._braincube_name = constants.EMPTY_STRING
         self._parent_entity = None
 
-    def get_braincube_name(self):
+    def get_braincube_name(self):  # noqa: WPS615
         """Get an object's braincube name.
 
         Returns:
@@ -58,7 +58,7 @@ class ResourceGetter(object):
             *generate_path(
                 self._path,
                 resource_class.entity_path.replace("{bcid}", str(bcid)),
-                resource_class.request_one_path if not singleton_path else singleton_path,
+                singleton_path if singleton_path else resource_class.request_one_path,
             ),
             self,
             braincube_name=self.get_braincube_name(),
@@ -66,7 +66,10 @@ class ResourceGetter(object):
         )
 
     def _get_resource_list(
-        self, resource_class: Any, collection_path: str = constants.EMPTY_STRING, **kwargs,
+        self,
+        resource_class: Any,
+        collection_path: str = constants.EMPTY_STRING,
+        **kwargs,
     ):
         """Get a list a of resources from a list of ids.
 
@@ -82,7 +85,7 @@ class ResourceGetter(object):
             *generate_path(
                 self._path,
                 resource_class.entity_path,
-                resource_class.request_many_path if not collection_path else collection_path,
+                collection_path if collection_path else resource_class.request_many_path,
                 request_list=True,
             ),
             self,

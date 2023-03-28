@@ -7,7 +7,7 @@ from braincube_connector.data import conditions
 from braincube_connector.memory_base.nested_resources import condition_container, mb_child, rule
 
 BCID = "bcId"
-VARIABLE = "variable"
+VARIABLE = "variable"  # noqa: WPS110
 POSITIVE_EVENTS = "positiveEvents"
 NEGATIVE_EVENTS = "negativeEvents"
 
