@@ -172,7 +172,8 @@ def get_sso_base_url(config: Dict[str, str]) -> str:
         An URL to the Braincube SSO API
     """
     default_base_url = "{protocol}://{domain}".format(
-        protocol=constants.DEFAULT_PROTOCOL, domain=config.get(constants.DOMAIN_KEY),
+        protocol=constants.DEFAULT_PROTOCOL,
+        domain=config.get(constants.DOMAIN_KEY),
     )
 
     base_url = config.get(constants.SSO_BASE_URL_KEY, default_base_url)

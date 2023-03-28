@@ -16,7 +16,10 @@ class Client(base.Base):
     """A Client handles html requests."""
 
     def __init__(
-        self, config_file: str = None, config_dict: Dict[str, str] = None, timeout: int = 60,
+        self,
+        config_file: str = None,
+        config_dict: Dict[str, str] = None,
+        timeout: int = 60,
     ) -> None:
         """Initialize Client.
 
@@ -26,7 +29,7 @@ class Client(base.Base):
             timeout: Combined connect and read timeout for HTTP requests, in seconds.
         """
         if instances.get_instance(INSTANCE_KEY) is not None:
-            raise Exception("A client has already been inialized.")
+            raise Exception("A client has already been inialized.")  # noqa: WPS454
         else:
             self._config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
             self._sso_url = tools.get_sso_base_url(self._config_dict)
@@ -87,7 +90,7 @@ class Client(base.Base):
             return request_result.json()
         return request_result
 
-    def get_braincube_infos(self) -> Dict[str, Any]:
+    def get_braincube_infos(self) -> Dict[str, Any]:  # noqa: WPS615
         """Get the information about the braincubes available to the client.
 
         Returns:
