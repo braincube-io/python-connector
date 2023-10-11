@@ -1,5 +1,9 @@
 name: CI-Braincube-Connector
-on: [push]
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
 env:
   pyhon_version: 3.10.0  
 
