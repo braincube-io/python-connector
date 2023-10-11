@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Update
 - Move to python 3.9 (python 3.8 is not supported anymore)
 - Move to pandas 2.1.11
-- Update all dev dependencies
+- Update all dev dependencies except responses
 
 ## [2.5.2 - 2022-06-02](https://github.com/braincube-io/python-connector/compare/2.5.1...2.5.2)
 
