@@ -40,6 +40,7 @@ mkdocs-jupyter = "^0.24.5"
 pytest = "^7.4.2"
 pytest-mock = "^3.11.1"
 pre-commit = "^3.4.0"
+types-requests = "^2.31.0.8"
 
 [tool.black]
 line-length = 100
