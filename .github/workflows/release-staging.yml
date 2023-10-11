@@ -1,0 +1,45 @@
+name: Build and deploy package
+on:
+  push:
+    branches: [master]
+env:
+  python_version: "3.10"
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ env.python_version }}
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.3.1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install
+
+      - name: Deploy
+        env:
+          PYPI_REPO_URL: ${{ secrets.PYPI_STAGING_REPO_URL }}
+          PYPI_USERNAME: ${{ secrets.PYPI_STAGING_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_STAGING_PASSWORD }}
+        run: |
+          poetry build
+          poetry config repositories.pypi $PYPI_REPO_URL
+          poetry publish -r pypi -u $PYPI_USERNAME -p $PYPI_PASSWORD
