@@ -14,8 +14,12 @@ available_calls = [
         "status": 200,
         "json": {
             "accessList": [
-                {"product": {"name": "demo", "productId": "123"},},
-                {"product": {"name": "other", "productId": "456"},},
+                {
+                    "product": {"name": "demo", "productId": "123"},
+                },
+                {
+                    "product": {"name": "other", "productId": "456"},
+                },
             ]
         },
     },
@@ -29,7 +33,18 @@ available_calls = [
         "method": "GET",
         "url": "https://api.test.com/braincube/demo/braincube/mb/all/summary?offset=0&size=150",
         "status": 200,
-        "json": {"items": [{"name": "mb1", "bcId": 1,}, {"name": "mb2", "bcId": 2,},]},
+        "json": {
+            "items": [
+                {
+                    "name": "mb1",
+                    "bcId": 1,
+                },
+                {
+                    "name": "mb2",
+                    "bcId": 2,
+                },
+            ]
+        },
     },
     {
         "method": "GET",
@@ -41,13 +56,20 @@ available_calls = [
         "method": "GET",
         "url": "https://api.test.com/braincube/demo/braincube/mb/1/extended",
         "status": 200,
-        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+        "json": {
+            "referenceDateVariable": {"bcId": 101, "id": 101},
+            "name": "mb1",
+            "bcId": 1,
+        },
     },
     {
         "method": "GET",
         "url": "https://api.test.com/braincube/demo/braindata/mb1/simple",
         "status": 200,
-        "json": {"name": "mb1", "order": "mb1/d101",},
+        "json": {
+            "name": "mb1",
+            "order": "mb1/d101",
+        },
     },
     {
         "method": "GET",
@@ -55,9 +77,24 @@ available_calls = [
         "status": 200,
         "json": {
             "items": [
-                {"bcId": 101, "tag": "tag_101", "local": "local_101", "standard": "standard_101",},
-                {"bcId": 102, "tag": "tag_102", "local": "local_102", "standard": "standard_102",},
-                {"bcId": 103, "tag": "tag_103", "local": "local_103", "standard": "standard_103",},
+                {
+                    "bcId": 101,
+                    "tag": "tag_101",
+                    "local": "local_101",
+                    "standard": "standard_101",
+                },
+                {
+                    "bcId": 102,
+                    "tag": "tag_102",
+                    "local": "local_102",
+                    "standard": "standard_102",
+                },
+                {
+                    "bcId": 103,
+                    "tag": "tag_103",
+                    "local": "local_103",
+                    "standard": "standard_103",
+                },
             ]
         },
     },
@@ -92,8 +129,12 @@ custom_calls = [
         "status": 200,
         "json": {
             "accessList": [
-                {"product": {"name": "demo", "productId": "123"},},
-                {"product": {"name": "other", "productId": "456"},},
+                {
+                    "product": {"name": "demo", "productId": "123"},
+                },
+                {
+                    "product": {"name": "other", "productId": "456"},
+                },
             ]
         },
     },
@@ -101,20 +142,30 @@ custom_calls = [
         "method": "GET",
         "url": "http://braincube_api.plop.com/prefix/v1.0/braincube/demo/braincube/mb/1/extended",
         "status": 200,
-        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+        "json": {
+            "referenceDateVariable": {"bcId": 101, "id": 101},
+            "name": "mb1",
+            "bcId": 1,
+        },
     },
     # Expected call for test_memorybase_with_custom_domains_and_placeholder
     {
         "method": "GET",
         "url": "http://demo.plop.com/prefix/v1.0/braincube/mb/1/extended",
         "status": 200,
-        "json": {"referenceDateVariable": {"bcId": 101, "id": 101}, "name": "mb1", "bcId": 1,},
+        "json": {
+            "referenceDateVariable": {"bcId": 101, "id": 101},
+            "name": "mb1",
+            "bcId": 1,
+        },
     },
     {
         "method": "GET",
         "url": "http://demo.plop.com/prefix/v1.0/braincube/mb/1/variables/summary?offset=0&size=150",
         "status": 200,
-        "json": {"items": [],},
+        "json": {
+            "items": [],
+        },
     },
     {
         "method": "GET",

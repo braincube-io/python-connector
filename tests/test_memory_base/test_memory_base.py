@@ -134,7 +134,11 @@ def test_get_rule_list(mocker, monkeypatch, mb_obj, mock_request_entity):
 @pytest.mark.parametrize(
     "label_type, dataframe, expected_data",
     [
-        ("bcid", True, pd.DataFrame({1: ["val1", "val2", "val3"], 2: ["val4", "val5", "val6"]}),),
+        (
+            "bcid",
+            True,
+            pd.DataFrame({1: ["val1", "val2", "val3"], 2: ["val4", "val5", "val6"]}),
+        ),
         (
             "name",
             True,

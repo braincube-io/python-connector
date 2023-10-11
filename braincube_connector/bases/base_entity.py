@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
-from braincube_connector import client, parameters, constants
+from braincube_connector import client, constants, parameters
 from braincube_connector.bases import base
 
 NAME = "name"
@@ -129,7 +129,9 @@ class BaseEntity(base.Base):
         while True:
             json_data = client.request_ws(
                 "{path}?offset={offset}&size={size}".format(
-                    path=request_path.format(webservice="braincube"), offset=offset, size=page_size,
+                    path=request_path.format(webservice="braincube"),
+                    offset=offset,
+                    size=page_size,
                 ),
                 braincube_name=braincube_name,
             )

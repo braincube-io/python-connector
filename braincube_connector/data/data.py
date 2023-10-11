@@ -3,11 +3,11 @@
 """Module used to collect data from braindata."""
 
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
-from braincube_connector import client, parameters, tools
+from braincube_connector import client, custom_types, parameters, tools
 from braincube_connector.data import conditions
 
 DATA_PATH = "braindata/{mb_id}/LF"
@@ -36,7 +36,9 @@ def _to_datetime(dates: List["str"]):
     Returns:
         A datetime object.
     """
-    dates = pd.to_datetime(dates, errors="coerce", format="%Y%m%d_%H%M%S").to_series()
+    dates = pd.to_datetime(
+        dates, errors="coerce", format="%Y%m%d_%H%M%S"  # noqa: WPS323
+    ).to_series()
     return [pandas_timestamp_to_datetime(timestamp) for timestamp in dates]
 
 
@@ -103,7 +105,7 @@ def get_braindata_memory_base_info(
 def collect_data(
     variable_ids: List[int],
     memory_base: "MemoryBase",  # type: ignore  # noqa
-    filters: List[Dict[str, Any]] = None,
+    filters: Optional[List[custom_types.FILTER_TYPE]] = None,
 ) -> Dict[int, Any]:
     """Get data from the memory bases.
 

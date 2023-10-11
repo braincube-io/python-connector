@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
+from braincube_connector import custom_types
 from braincube_connector.bases import resource_getter
 from braincube_connector.data import conditions
 from braincube_connector.memory_base.nested_resources import condition_container, mb_child, rule
 
 BCID = "bcId"
-VARIABLE = "variable"
+VARIABLE_KEY = "variable"
 POSITIVE_EVENTS = "positiveEvents"
 NEGATIVE_EVENTS = "negativeEvents"
 
@@ -21,7 +22,9 @@ class JobDescription(
     request_one_path = "extended"
     request_many_path = "jobs/all/summary"
 
-    def get_data(self, filters: "List[Dict[str, Any]]" = None) -> Dict[str, Any]:
+    def get_data(
+        self, filters: "Optional[List[custom_types.FILTER_TYPE]]" = None
+    ) -> Dict[str, Any]:
         """Get the filtered data used in the job.
 
         Warning: As for now the webservice does not have access to the actual job data. This
@@ -74,7 +77,7 @@ class JobDescription(
         variables: List[str] = []
         for entry in self._metadata["modelEntries"]:
             variables = variables + [
-                cond[VARIABLE][BCID] for cond in entry["conditions"] if VARIABLE in cond
+                cond[VARIABLE_KEY][BCID] for cond in entry["conditions"] if VARIABLE_KEY in cond
             ]
         for group in self._metadata["dataGroups"]:
             variables = variables + self._memory_base.get_datagroup(group[BCID]).get_variable_ids()

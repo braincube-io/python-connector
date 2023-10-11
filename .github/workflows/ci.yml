@@ -1,6 +1,8 @@
 name: CI-Braincube-Connector
 on: [push]
-    
+env:
+  python_version: '3.10'
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -11,7 +13,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }}
       
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -41,7 +43,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }}
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -72,7 +74,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }}
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -103,7 +105,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }} 
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -134,7 +136,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }}
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -167,7 +169,7 @@ jobs:
       - name: Set up python 
         uses: actions/setup-python@v3
         with:
-          python-version: 3.8.5
+          python-version: ${{ env.python_version }}
 
       - name: Load cached venv
         id: cached-poetry-dependencies

@@ -59,10 +59,14 @@ def test_get_data(mocker, create_mock_job):
     conditions = ["cond1", "cond2"]
     filters = ["cond3"]
     mocker.patch.object(
-        job, "get_conditions", return_value=conditions,
+        job,
+        "get_conditions",
+        return_value=conditions,
     )
     mocker.patch.object(
-        job, "get_variable_ids", return_value=variables,
+        job,
+        "get_variable_ids",
+        return_value=variables,
     )
     job.get_data()
     job.get_data(filters)

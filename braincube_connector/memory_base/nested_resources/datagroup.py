@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
+from braincube_connector import custom_types
 from braincube_connector.memory_base.nested_resources import mb_child
 
 
@@ -28,7 +29,9 @@ class DataGroup(mb_child.MbChild):
         """
         return [self._memory_base.get_variable(bcid) for bcid in self.get_variable_ids()]
 
-    def get_data(self, filters: "List[Dict[str, Any]]" = None) -> Dict[str, Any]:
+    def get_data(
+        self, filters: "Optional[List[custom_types.FILTER_TYPE]]" = None
+    ) -> Dict[str, Any]:
         """Get data from the data group.
 
         Args:
