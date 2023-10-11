@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from braincube_connector import client
 from braincube_connector.bases import base_entity, resource_getter
@@ -72,7 +72,7 @@ def get_braincube(name: str) -> Braincube:
     return Braincube(*available_braincube_infos[name])
 
 
-def get_braincube_list(names: List[str] = None) -> List[Braincube]:
+def get_braincube_list(names: Optional[List[str]] = None) -> List[Braincube]:
     """Get a list of available memory bases in the braincube.
 
     Args:

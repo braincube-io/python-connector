@@ -2,21 +2,37 @@
 
 """This module manages the user identity and to perform the requests to the API web services."""
 
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import requests
 
-from braincube_connector import instances, tools, constants
+from braincube_connector import constants, instances, tools
 from braincube_connector.bases import base
 
 INSTANCE_KEY = "client"
+
+
+class AlreadyExistsError(Exception):
+    """Raised when an client already exists."""
+
+    def __init__(self, message="Object already exists."):
+        """Initialize AlreadyExistsError.
+
+        Args:
+            message: A message to display.
+        """
+        self.message = message
+        super().__init__(self.message)
 
 
 class Client(base.Base):
     """A Client handles html requests."""
 
     def __init__(
-        self, config_file: str = None, config_dict: Dict[str, str] = None, timeout: int = 60,
+        self,
+        config_file: Optional[str] = None,
+        config_dict: Optional[Dict[str, str]] = None,
+        timeout: int = 60,
     ) -> None:
         """Initialize Client.
 
@@ -26,7 +42,7 @@ class Client(base.Base):
             timeout: Combined connect and read timeout for HTTP requests, in seconds.
         """
         if instances.get_instance(INSTANCE_KEY) is not None:
-            raise Exception("A client has already been inialized.")
+            raise AlreadyExistsError("A client has already been inialized.")
         else:
             self._config_dict = tools.check_config(config_dict=config_dict, config_file=config_file)
             self._sso_url = tools.get_sso_base_url(self._config_dict)
@@ -49,7 +65,7 @@ class Client(base.Base):
     def request_ws(
         self,
         path: str,
-        headers: Dict[str, Any] = None,
+        headers: Optional[Dict[str, Any]] = None,
         body_data: Any = None,
         rtype: str = "GET",
         api: bool = True,
@@ -157,7 +173,9 @@ def _extract_braincube_param(metadata: Dict[str, Any]) -> "Tuple[str, str, Dict[
     return (metadata["product"]["productId"], metadata["product"]["name"], metadata)
 
 
-def get_instance(config_file: str = None, config_dict: Dict[str, str] = None) -> Client:
+def get_instance(
+    config_file: Optional[str] = None, config_dict: Optional[Dict[str, str]] = None
+) -> Client:
     """Static method to get the client.
 
     Args:
@@ -176,7 +194,7 @@ def get_instance(config_file: str = None, config_dict: Dict[str, str] = None) ->
 
 def request_ws(
     path: str,
-    headers: Dict[str, Any] = None,
+    headers: Optional[Dict[str, Any]] = None,
     body_data: Any = None,
     rtype: str = "GET",
     api: bool = True,

@@ -2,7 +2,7 @@
 
 """A set of tools to extract conditions from an entity."""
 
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 from braincube_connector import tools
 

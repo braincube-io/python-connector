@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List, Any, Union
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 
+from braincube_connector import custom_types
 from braincube_connector.bases import base_entity, resource_getter
 from braincube_connector.data import data
-from braincube_connector.memory_base.nested_resources import variable, event, datagroup, job, rule
+from braincube_connector.memory_base.nested_resources import datagroup, event, job, rule, variable
 
 
 class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
@@ -131,7 +132,7 @@ class MemoryBase(base_entity.BaseEntity, resource_getter.ResourceGetter):
     def get_data(
         self,
         var_ids: "List[Union[int,str]]",
-        filters: "List[Dict[str, Any]]" = None,
+        filters: "Optional[List[custom_types.FILTER_TYPE]]" = None,
         label_type: "str" = "bcid",
         dataframe: "bool" = False,
     ) -> Union[pd.DataFrame, Dict[str, Any]]:

@@ -39,7 +39,8 @@ def test_generate_path(request_list, expected_req_path):
 
 
 @pytest.mark.parametrize(
-    "bcid", [1, "1"],
+    "bcid",
+    [1, "1"],
 )
 def test_get_resource(mock_entity_class, resource_parent, bcid):
     resource_parent._get_resource(mock_entity_class, bcid=bcid)

@@ -23,7 +23,10 @@ def test_get_bcid(entity_obj):
 
 
 def test_entity_repr(entity_obj):
-    assert re.search(r"<BaseEntity\(name=entity, id=id123\) at .*?>", repr(entity_obj),)
+    assert re.search(
+        r"<BaseEntity\(name=entity, id=id123\) at .*?>",
+        repr(entity_obj),
+    )
 
 
 def test_get_metadata(entity_obj):

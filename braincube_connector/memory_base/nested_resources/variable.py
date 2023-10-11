@@ -34,5 +34,7 @@ class VariableDescription(mb_child.MbChild):
         Returns:
             a variable long id.
         """
-        warnings.warn("VariableDescription do not have uuid, returning long_id instead.")
+        warnings.warn(
+            "VariableDescription do not have uuid, returning long_id instead.", stacklevel=1
+        )
         return self.get_long_id()

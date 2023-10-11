@@ -69,7 +69,14 @@ def test_request_braincubes(mock_client):
     path = "sso-server/ws/user/me"
     mock_url = "https://a.b/" + path
     returned_json = {
-        "accessList": [{"product": {"productId": "id1234", "name": "testbraincube",}}],
+        "accessList": [
+            {
+                "product": {
+                    "productId": "id1234",
+                    "name": "testbraincube",
+                }
+            }
+        ],
     }
     mock_client._authentication = {"token": "abcd"}
     responses.add(responses.GET, mock_url, json=returned_json, status=200)
@@ -137,7 +144,8 @@ def test_create_client(mocker, clean_client_instances):
 
 
 @pytest.mark.parametrize(
-    "verify_cert_config, expected_verify", [(False, False), (None, True), (True, True)],
+    "verify_cert_config, expected_verify",
+    [(False, False), (None, True), (True, True)],
 )
 def test_client_verify(mocker, verify_cert_config, expected_verify, clean_client_instances):
     """Test the setting of the verify SSL certificate parameter."""
@@ -150,5 +158,7 @@ def test_client_verify(mocker, verify_cert_config, expected_verify, clean_client
     }
     if verify_cert_config is not None:
         config_dict[constants.VERIFY_CERT] = verify_cert_config
-    test_client = client.get_instance(config_dict=config_dict,)
+    test_client = client.get_instance(
+        config_dict=config_dict,
+    )
     assert test_client._verify == expected_verify
