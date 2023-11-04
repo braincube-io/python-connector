@@ -8,6 +8,7 @@ import requests
 
 from braincube_connector import constants, instances, tools
 from braincube_connector.bases import base
+from braincube_connector.memory_base.nested_resources.modelbuilder import ModelBuilder
 
 INSTANCE_KEY = "client"
 
@@ -53,6 +54,7 @@ class Client(base.Base):
             self._braincube_infos = available_braincube_infos
             self._timeout = timeout
             self._headers = tools.generate_header(authentication=self._authentication)
+            self.ModelBuilder = ModelBuilder()
 
     def __str__(self) -> str:
         """Produce informal representation of the Client object.
