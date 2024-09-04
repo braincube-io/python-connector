@@ -3,7 +3,7 @@
 """Module used to collect data from braindata."""
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 
@@ -69,18 +69,39 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[int, Any]:
         A formated dictionary {column_key: formated column data}
     """
     formatted_dataset = {}
+    parse_date = parameters.get_parameter("parse_date")
+
     for col in raw_dataset["datadefs"]:
         col_id = int(col["id"].split("/d")[1])
-        if col["type"] == "DATETIME" and parameters.get_parameter("parse_date"):
-            formatted_dataset[col_id] = _to_datetime(col[DATACOL])
+
+        if DATACOL not in col:
+            continue
+
+        col_data = col[DATACOL]
+
+        if col["type"] == "DATETIME" and parse_date:
+            formatted_dataset[col_id] = _to_datetime(col_data)
         elif col["type"] == "NUMERIC":
-            try:
-                formatted_dataset[col_id] = list(map(int, col[DATACOL]))
-            except ValueError:
-                formatted_dataset[col_id] = list(map(float, col[DATACOL]))
+            formatted_dataset[col_id] = _parse_numeric_column(col_data)
         else:
-            formatted_dataset[col_id] = col[DATACOL]
+            formatted_dataset[col_id] = col_data
+
     return formatted_dataset
+
+
+def _parse_numeric_column(col_data: List[Any]) -> List[Union[int, float]]:
+    """Parse numeric columns and handle ValueError by falling back to float.
+
+    Args:
+        col_data (List[Any]): The column data to parse.
+
+    Returns:
+        List[Union[int, float]]: A list of parsed values, either int or float.
+    """
+    try:
+        return list(map(int, col_data))
+    except ValueError:
+        return list(map(float, col_data))
 
 
 def get_braindata_memory_base_info(
