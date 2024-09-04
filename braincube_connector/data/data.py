@@ -76,7 +76,7 @@ def _extract_format_data(raw_dataset: Dict[str, Any]) -> Dict[int, Any]:
         col_id = int(col["id"].split("/d")[1])
 
         if DATACOL not in col:
-            warnings.warn("No data found for: " + col["id"])
+            warnings.warn(f"No data found for: {col['id']}", stacklevel=2)
             continue
 
         col_data = col[DATACOL]
