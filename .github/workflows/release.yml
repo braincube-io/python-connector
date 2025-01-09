@@ -37,9 +37,9 @@ jobs:
         - name: Deploy
           env:
             PYPI_REPO_URL: ${{ secrets.PYPI_PROD_REPO_URL }}
-            PYPI_USERNAME: ${{ secrets.PYPI_PROD_USERNAME }}
-            PYPI_PASSWORD: ${{ secrets.PYPI_PROD_PASSWORD }}
+            PYPI_PROD_API_KEY: ${{ secrets.PYPI_PROD_API_KEY }}
           run: |
             poetry build
             poetry config repositories.pypi $PYPI_REPO_URL
-            poetry publish -r pypi -u $PYPI_USERNAME -p $PYPI_PASSWORD
+            poetry config pypi-token.pypi $PYPI_PROD_API_KEY
+            poetry publish -r pypi
