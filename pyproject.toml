@@ -19,7 +19,7 @@ homepage = "https://braincube-io.github.io/python-connector/"
 repository = "https://github.com/braincube-io/python-connector"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.9,<4.0"
 requests = "^2.23.0"
 pandas = "^2.1.1"
 

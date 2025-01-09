@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### FIXED
 - Improve resilience to error variables during the data extraction
 
+### CHANGED
+- #[106](https://github.com/braincube-io/python-connector/issues/106) Allow python version greater or equals to 3.13 (until inferior to 4.0)
+
 ## [2.6.0 - 2023-10-11](https://github.com/braincube-io/python-connector/compare/2.5.1...2.6.0)
 
 ### Update
