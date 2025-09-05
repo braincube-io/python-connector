@@ -64,6 +64,27 @@ def test_request_ws_succes_no_json(mock_client):
 
 
 @responses.activate
+def test_request_ws_json_decode_error_with_content(mock_client):
+    """Test whether request_ws includes response content in JSON decode error messages."""
+    # Mock a response that returns non-JSON content
+    responses.add(
+        responses.GET,
+        LOAD_URL,
+        body="<html><body>Response content not JSON</body></html>",
+        status=200,
+    )
+
+    with pytest.raises(requests.exceptions.JSONDecodeError) as excinfo:
+        mock_client.request_ws("path", response_as_json=True)
+
+    # Check that the error message contains the response content
+    error_message = str(excinfo.value)
+    assert "Invalid JSON response" in error_message
+    assert "Response content:" in error_message
+    assert "<html><body>Response content not JSON</body></html>" in error_message
+
+
+@responses.activate
 def test_request_braincubes(mock_client):
     """Test the _request_braincubes method"""
     path = "sso-server/ws/user/me"
