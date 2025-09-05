@@ -1,5 +1,5 @@
 [tool.poetry]
-version = "2.7.0"
+version = "2.8.0"
 name = "braincube-connector"
 description = "python client to the braincube web services"
 authors = ["Braincube <io@braincube.com>"]
