@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### CHANGED
+
+- #[110](https://github.com/braincube-io/python-connector/issues/110): Improved JSON decode error messages in client.request_ws() to include response content when the server returns non-JSON responses.
+
 ## [2.7.0 - 2025-01-09](https://github.com/braincube-io/python-connector/compare/2.6.1...2.7.0)
 
 ### CHANGED

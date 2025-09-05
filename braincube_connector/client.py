@@ -100,7 +100,11 @@ class Client(base.Base):
         )
         request_result.raise_for_status()
         if response_as_json:
-            return request_result.json()
+            try:
+                return request_result.json()
+            except requests.exceptions.JSONDecodeError as e:
+                error_msg = f"Invalid JSON response: {e}. Response content: {request_result.text}"
+                raise requests.exceptions.JSONDecodeError(error_msg, request_result.text, e.pos) from e
         return request_result
 
     def get_braincube_infos(self) -> Dict[str, Any]:
